@@ -1,0 +1,125 @@
+.jumbotron {
+    padding-top: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.container-fluid {
+    padding: 5px;
+}
+
+
+@media (min-width: 1400px) {
+    .navbar-nav.navbar-center {
+        max-width: 970px;
+        position: absolute;
+        left: 50%;
+        transform: translatex(-50%);
+    }
+}
+
+.navbar-default .navbar-nav>li>a {
+    font-size: 1em;
+    font-family: 'Open Sans Condensed', sans-serif;
+
+}
+
+.mainArea {
+
+    position: relative;
+    left: 50%;
+    width: 300px;
+    margin-left: -100px;
+    display: inline-block;
+}
+
+.mainHeding {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 3.5em;
+    height: 80px;
+}
+
+.subHeading {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2em;
+    left: 50%;
+    position: relative;
+    width: 250px;
+    margin-left: -125px;
+
+}
+
+.topRightHeadingArea {
+    margin-top: 20px;
+    display: inline-block;
+    width: 150px;
+    float: right;
+}
+
+.outerParentDiv{
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.footer *{
+    font-size: .9em;
+}
+
+.footer{
+    margin-top:20px;
+    padding:0;
+}
+
+.imageFooter{
+    background-color: black;
+    height:150px;
+    background-image:url("/images/footer.png");
+
+    background-size: 100% 100%;
+    width:100%;
+}
+
+.baseFooter{
+    margin-top:20px;
+}
+
+
+
+/* social media stuff  */
+
+.social:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+.social {
+    -webkit-transform: scale(0.8);
+    /* Browser Variations: */
+
+    -moz-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    color:#DDC8B8;
+}
+/*
+    Multicoloured Hover Variations
+*/
+
+#social-fb:hover {
+    color: #3B5998;
+}
+#social-tw:hover {
+    color: #4099FF;
+}
+#social-gp:hover {
+    color: #d34836;
+}
+#social-em:hover {
+    color: #DDC8B8;
+}
+
+.footer li{
+    display:block;
+}

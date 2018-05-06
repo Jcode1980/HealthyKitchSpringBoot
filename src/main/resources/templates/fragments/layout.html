@@ -1,0 +1,143 @@
+<!doctype html>
+<html th:fragment="layout (template, menu)">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/resources/images/favicon.png}">
+
+    <title>PetClinic :: a Spring Framework demonstration</title>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/resources/css/common.css}"/>
+
+</head>
+
+<body>
+<div class="outerParentDiv">
+    <div>
+        <div>
+            <div class="mainArea">
+                <div class="mainHeding">HEALTHY KITCH</div>
+                <div class="subHeading">Healthy doesn't need to be boring</div>
+            </div>
+            <div class="topRightHeadingArea">
+                        <span>
+                            <?php if(!$controller->hasUser()): ?>
+                            <a href="#tour" data-target="#modal1" data-toggle="modal">Register | Login</a>
+                            <?php endif; ?>
+                            <?php if($controller->hasUser()): ?>
+                            <?php addSubmitLinkWithActions("mainForm", ["page" => "RecipeList", "action" => "logout"], "Logout"); ?>
+                            <?php endif; ?>
+                        </span>
+            </div>
+        </div>
+
+    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">Left</a>
+                </li>
+                <?php if($controller->hasUser()): ?>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", ["page" => "UserEdit", "action" => "doNothing"], "Profile"); ?>
+                </li>
+                <?php endif; ?>
+            </ul>
+            <ul class="nav navbar-nav navbar-center">
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "HOME"); ?>
+                </li>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "DIETARY REQUIREMENTS"); ?>
+                </li>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "NUTRITIONAL BENEFITS"); ?>
+                </li>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "CUISINES"); ?>
+                </li>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "POPULAR COLLECTIONS"); ?>
+                </li>
+                <li>
+                    <?php addSubmitLinkWithActions("mainForm", array("page" => "RecipeList", "action" => "doNothing"), "LIVE FEED"); ?>
+                </li>
+                <li>
+                    <a href="#">HK News</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Rendering INnser template -->
+    <?php $controller->renderInnerTemplate(); ?>
+    <!-- End Rendering INnser template -->
+    <!-- End PageWrapper Form -->
+
+    <div class="footer">
+        <div class="imageFooter"></div>
+        <div class="baseFooter container">
+            <div class="col-xs-3">
+                <div>HEALTHY KITCH</div>
+                <div>2018 Copyright Healthy Kitch</div>
+                <div>Design by Amber Stopff</div>
+            </div>
+            <div class="col-xs-3">
+                <ul>
+                    <li class="list-inline-item">Home</li>
+                    <li class="list-inline-item">Dietary Requirements</li>
+                    <li class="list-inline-item">Nutritional Benefits</li>
+                    <li class="list-inline-item">Cuisines</li>
+                    <li class="list-inline-item">Popular Colletions</li>
+                    <li class="list-inline-item">Live Feed</li>
+                    <li class="list-inline-item">HK News</li>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                <ul class="list-group">
+                    <li class="list-inline-item">Contact Us</li>
+                    <li class="list-inline-item">About us</li>
+                    <li class="list-inline-item">Terms & conditions</li>
+                    <li class="list-inline-item">Dietary information(foodful)</li>
+                    <li class="list-inline-item">FAQ</li>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                STAY CONNECTED
+                <br>
+                <a href="https://www.facebook.com/bootsnipp"><i class="fa fa-facebook-square fa-3x social"></i></a>
+                <a href="https://twitter.com/bootsnipp"><i class="fa fa-twitter-square fa-3x social"></i></a>
+                <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+                <a href="mailto:bootsnipp@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>
