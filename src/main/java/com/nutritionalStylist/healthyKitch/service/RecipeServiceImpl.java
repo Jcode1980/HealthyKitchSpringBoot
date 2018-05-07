@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -26,10 +27,12 @@ public class RecipeServiceImpl implements RecipeService {
         return null;
     }
 
+
+
     @Override
     public Recipe findRecipeByID(int id) {
 
-        return recipeRepository.findOne(id);
+        return recipeRepository.findById(id).get();
     }
 
 

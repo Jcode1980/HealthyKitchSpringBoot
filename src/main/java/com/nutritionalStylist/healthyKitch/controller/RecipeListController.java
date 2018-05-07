@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class RecipeListController {
@@ -34,16 +35,17 @@ public class RecipeListController {
      */
     @RequestMapping(value = "/owners/{recipeID}", method = RequestMethod.PUT)
     public Recipe updateOwner(@PathVariable("recipeID") int recipeID, @Valid @RequestBody Recipe recipeRequest) {
-        Recipe recipeModel = retrieveRecipe(recipeID);
+        Optional<Recipe> recipeModel = retrieveRecipe(recipeID);
         // This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
-        recipeModel.setName(recipeRequest.getName());
+        recipeModel.get().setName(recipeRequest.getName());
 
-        this.recipeRepository.save(recipeModel);
-        return recipeModel;
+        //this.recipeRepository.save(recipeModel);
+        this.recipeRepository.save(recipeModel.get());
+        return recipeModel.get();
     }
 
-    private Recipe retrieveRecipe(Integer recipeID){
-        return recipeRepository.findOne(recipeID);
+    private Optional<Recipe> retrieveRecipe(Integer recipeID){
+        return recipeRepository.findById(1);
     }
 
 }

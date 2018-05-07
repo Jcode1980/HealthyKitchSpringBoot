@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.core.io.Resource;
 
 @RestController
+@RequestMapping("/api")
 public class RecipeController {
     private final RecipeService recipeService;
     private final StorageService storageService;
@@ -37,7 +38,7 @@ public class RecipeController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/recipe")
+    @GetMapping("/recipe")
     public Recipe recipe(@RequestParam(value="name", defaultValue="World") String name) {
         Recipe recipe = new Recipe();
         recipe.setName(name);

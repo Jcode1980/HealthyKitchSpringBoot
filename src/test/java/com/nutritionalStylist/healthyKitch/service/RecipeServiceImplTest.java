@@ -28,8 +28,8 @@ public class RecipeServiceImplTest {
     @Test
     public void findRecipeByID() {
         System.out.println("recipeRepository :" + recipeRepository);
-        System.out.println("NOt null?? " + (recipeRepository.findOne(1)));
-        assertThat(recipeRepository.findOne(1).getName(), is("test"));
+        System.out.println("NOt null?? " + (recipeRepository.findById(1)));
+        assertThat(recipeRepository.findById(1).get().getName(), is("Test"));
     }
 
     @Test
