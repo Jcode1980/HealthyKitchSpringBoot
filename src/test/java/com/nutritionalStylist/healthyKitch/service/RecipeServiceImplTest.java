@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.google.common.base.Predicate;
 import com.nutritionalStylist.healthyKitch.Application;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.not;
+import static springfox.documentation.builders.PathSelectors.regex;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -40,6 +42,12 @@ public class RecipeServiceImplTest {
     public void findAllRecipes() {
     }
 
+    @Test
+    public void regexTest(){
+        Predicate<String> regexER =  regex("api.*|/login|/logout");
+        assertThat(regexER.apply("api/"),is(true));
+        assertThat(regexER.apply("/login"),is(true));
+    }
 
 
 }

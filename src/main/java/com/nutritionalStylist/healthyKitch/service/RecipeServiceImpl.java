@@ -1,7 +1,12 @@
 package com.nutritionalStylist.healthyKitch.service;
 
 import com.nutritionalStylist.healthyKitch.model.MealType;
+import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
+import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
+import com.nutritionalStylist.healthyKitch.repository.MealTypeRepository;
+import com.nutritionalStylist.healthyKitch.repository.NutritionalBenefitRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -9,30 +14,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private RecipeRepository recipeRepository;
+    private MealTypeRepository mealTypeRepository;
+    private NutritionalBenefitRepository nutritionalBenefitRepository;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository){
+    public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
+                             NutritionalBenefitRepository nutritionalBenefitRepository){
         this.recipeRepository  = recipeRepository;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Collection<MealType> findMealTypes() throws DataAccessException {
-        return null;
+        this.mealTypeRepository  = mealTypeRepository;
+        this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
     }
 
 
-
     @Override
-    public Recipe findRecipeByID(int id) {
-
-        return recipeRepository.findById(id).get();
+    public Optional<Recipe> findRecipeByID(int id) {
+        return recipeRepository.findById(id);
     }
 
 
@@ -42,12 +45,41 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    public Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto recipeDto) {
+        ArrayList<Integer> mealTypesID = new ArrayList(recipeDto.getMealTypesID());
+        Collection<MealType> mealTypes = makeCollection(mealTypeRepository.findAllById(mealTypesID));
+        System.out.println("these are the meal Types: "+ mealTypes);
+        return recipeRepository.findByMealTypesIn(mealTypes);
+    }
+
+    @Override
     public Collection<Recipe> findAllRecipes() {
         return (Collection<Recipe>) recipeRepository.findAll();
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<MealType> findAllMealTypes() throws DataAccessException { return (Collection<MealType>) mealTypeRepository.findAll(); }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<NutritionalBenefit> findAllNutritionalBenefits() throws DataAccessException { return (Collection<NutritionalBenefit>) nutritionalBenefitRepository.findAll(); }
+
+
+
+
     @Override
     public void addImageToRecipe(MultipartFile file) {
 
+    }
+
+
+    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
+        Collection<E> list = new ArrayList<E>();
+        for (E item : iter) {
+            list.add(item);
+        }
+        return list;
     }
 }

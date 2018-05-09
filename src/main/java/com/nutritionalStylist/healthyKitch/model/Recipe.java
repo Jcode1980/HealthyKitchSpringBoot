@@ -41,9 +41,6 @@ public class Recipe extends NamedEntity{
         inverseJoinColumns = @JoinColumn(name = "dietaryCategoryID"))
     private Set<DietaryCategory> dietaryCategories;
 
-
-
-
     @PrePersist
     protected void onCreate() {
         created = new Date();
@@ -115,7 +112,6 @@ public class Recipe extends NamedEntity{
 
     }
 
-
     public Optional<Instruction> lastInstruction(){
         return sortedInstructions().stream().reduce((first, second) -> second);
     }
@@ -162,7 +158,6 @@ public class Recipe extends NamedEntity{
 
 
     //Nutrional Benefits Area
-
     protected Set<NutritionalBenefit> getNutritionalBenefitInternal() {
         if (this.nutritionalBenefits == null) {
             this.nutritionalBenefits = new HashSet<>();
@@ -187,6 +182,8 @@ public class Recipe extends NamedEntity{
     public boolean nutritionalBenefitExistsInRecipe(NutritionalBenefit value) {
         return getNutritionalBenefitInternal().contains(value);
     }
+
+
 
 
 //    public function removeMealType($mealType){
