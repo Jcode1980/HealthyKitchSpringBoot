@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -46,10 +48,24 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto recipeDto) {
-        ArrayList<Integer> mealTypesID = new ArrayList(recipeDto.getMealTypesID());
-        Collection<MealType> mealTypes = makeCollection(mealTypeRepository.findAllById(mealTypesID));
+
+        Collection<MealType> mealTypes;
+        String searchString = recipeDto.getSearchString();
+        if(recipeDto.getMealTypesID() != null) {
+            Collection<Integer> mealTypesID =  new ArrayList(recipeDto.getMealTypesID()) ;
+            mealTypes = makeCollection(mealTypeRepository.findAllById(mealTypesID));
+        }else{
+            mealTypes = Collections.EMPTY_LIST;
+        }
         System.out.println("these are the meal Types: "+ mealTypes);
-        return recipeRepository.findByMealTypesIn(mealTypes);
+        System.out.println("this is the search String: " + searchString);
+
+        if(mealTypes.size() == 0){
+            return recipeRepository.findByNameLike(recipeDto.getSearchString());
+        }
+        else{
+            return recipeRepository.findByNameLikeAndMealTypesIn(recipeDto.getSearchString(), mealTypes);
+        }
     }
 
     @Override
@@ -68,12 +84,10 @@ public class RecipeServiceImpl implements RecipeService {
 
 
 
-
     @Override
     public void addImageToRecipe(MultipartFile file) {
 
     }
-
 
     public static <E> Collection<E> makeCollection(Iterable<E> iter) {
         Collection<E> list = new ArrayList<E>();
@@ -82,4 +96,7 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return list;
     }
+
+
+
 }

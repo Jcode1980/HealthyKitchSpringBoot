@@ -10,6 +10,8 @@ import java.util.Collection;
 public class RecipeSearchDto {
     private String searchString;
     private Collection<Integer> mealTypesID;
+    private Collection<Integer> nutritionalBenefitID;
+
 
     public Collection<Integer> getMealTypesID() {
         return mealTypesID;
@@ -19,6 +21,12 @@ public class RecipeSearchDto {
         this.mealTypesID = mealTypes;
     }
 
+    public Collection<Integer> getNutritionalBenefitID() {
+        return nutritionalBenefitID;
+    }
+
+    public void setNutritionalBenefitID(Collection<Integer> nutritionalBenefitID) { this.nutritionalBenefitID = nutritionalBenefitID; }
+
     public String getSearchString() {
         return searchString;
     }
@@ -26,4 +34,6 @@ public class RecipeSearchDto {
     public void setSearchString(String searchString) {
         this.searchString = searchString;
     }
+
+
 }
