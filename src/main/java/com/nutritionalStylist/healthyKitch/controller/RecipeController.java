@@ -66,16 +66,7 @@ public class RecipeController {
         return recipeService.findRecipeByID(recipeID).orElse(null);
     }
 
-    @PostMapping("/recipe/UploadRecipe")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
 
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "redirect:/";
-    }
 
     /**
      * Update Recipe

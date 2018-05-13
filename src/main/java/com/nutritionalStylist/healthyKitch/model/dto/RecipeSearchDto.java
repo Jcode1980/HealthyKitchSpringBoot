@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class RecipeSearchDto {
-    private String searchString;
+    private Collection<String> searchStrings;
     private Collection<Integer> mealTypesID;
     private Collection<Integer> nutritionalBenefitID;
+    private boolean searchForTrending;
 
 
     public Collection<Integer> getMealTypesID() {
@@ -27,13 +28,16 @@ public class RecipeSearchDto {
 
     public void setNutritionalBenefitID(Collection<Integer> nutritionalBenefitID) { this.nutritionalBenefitID = nutritionalBenefitID; }
 
-    public String getSearchString() {
-        return searchString;
+    public Collection<String> getSearchStrings() { return searchStrings; }
+
+    public void setSearchStrings(Collection<String> searchStrings) {
+        this.searchStrings = searchStrings;
     }
 
-    public void setSearchString(String searchString) {
-        this.searchString = searchString;
-    }
+    public boolean isSearchForTrending() { return searchForTrending; }
+
+    public void setSearchForTrending(boolean searchForTrending) { this.searchForTrending = searchForTrending; }
+
 
 
 }
