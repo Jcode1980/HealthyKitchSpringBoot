@@ -1,10 +1,12 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.model.Cuisine;
 import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
+import com.nutritionalStylist.healthyKitch.repository.CuisineRepository;
 import com.nutritionalStylist.healthyKitch.repository.MealTypeRepository;
 import com.nutritionalStylist.healthyKitch.repository.NutritionalBenefitRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
@@ -25,13 +27,15 @@ public class RecipeServiceImpl implements RecipeService {
     private RecipeRepository recipeRepository;
     private MealTypeRepository mealTypeRepository;
     private NutritionalBenefitRepository nutritionalBenefitRepository;
+    private CuisineRepository cuisineRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
-                             NutritionalBenefitRepository nutritionalBenefitRepository){
+                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
+        this.cuisineRepository = cuisineRepository;
     }
 
 
@@ -84,6 +88,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     @Transactional(readOnly = true)
     public Collection<NutritionalBenefit> findAllNutritionalBenefits() throws DataAccessException { return (Collection<NutritionalBenefit>) nutritionalBenefitRepository.findAll(); }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Cuisine> findAllCuisines() throws DataAccessException { return (Collection<Cuisine>) cuisineRepository.findAll(); }
 
 
 
