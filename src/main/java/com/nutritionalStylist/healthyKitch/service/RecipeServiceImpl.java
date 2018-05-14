@@ -47,25 +47,28 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto recipeDto) {
+    public Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto searchDto) {
 
         Collection<MealType> mealTypes;
-        String searchString = recipeDto.getSearchString();
-        if(recipeDto.getMealTypesID() != null) {
-            Collection<Integer> mealTypesID =  new ArrayList(recipeDto.getMealTypesID()) ;
-            mealTypes = makeCollection(mealTypeRepository.findAllById(mealTypesID));
-        }else{
-            mealTypes = Collections.EMPTY_LIST;
-        }
-        System.out.println("these are the meal Types: "+ mealTypes);
-        System.out.println("this is the search String: " + searchString);
+        String searchString = searchDto.getSearchString();
 
-        if(mealTypes.size() == 0){
-            return recipeRepository.findByNameLike(recipeDto.getSearchString());
-        }
-        else{
-            return recipeRepository.findByNameLikeAndMealTypesIn(recipeDto.getSearchString(), mealTypes);
-        }
+        return recipeRepository.getRecipeUsingSearchDTO(searchDto);
+//
+//        if(recipeDto.getMealTypesID() != null) {
+//            Collection<Integer> mealTypesID =  new ArrayList(recipeDto.getMealTypesID()) ;
+//            mealTypes = makeCollection(mealTypeRepository.findAllById(mealTypesID));
+//        }else{
+//            mealTypes = Collections.EMPTY_LIST;
+//        }
+//        System.out.println("these are the meal Types: "+ mealTypes);
+//        System.out.println("this is the search String: " + searchString);
+//
+//        if(mealTypes.size() == 0){
+//            return recipeRepository.findByNameLike(recipeDto.getSearchString());
+//        }
+//        else{
+//            return recipeRepository.findByNameLikeAndMealTypesIn(recipeDto.getSearchString(), mealTypes);
+//        }
     }
 
     @Override
