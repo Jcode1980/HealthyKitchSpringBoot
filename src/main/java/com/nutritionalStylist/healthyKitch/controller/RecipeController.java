@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 
+import com.nutritionalStylist.healthyKitch.model.Cuisine;
 import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
@@ -99,8 +100,12 @@ public class RecipeController {
     public Collection<MealType> getAllMealtypes(){ return recipeService.findAllMealTypes(); }
 
 
-    @GetMapping("/recipes/allNutritionalBenefit")
+    @GetMapping("/recipes/allNutritionalBenefits")
     public Collection<NutritionalBenefit> getAllNutritionalBenefit(){ return recipeService.findAllNutritionalBenefits(); }
+
+    @GetMapping("/recipes/allCuisines")
+    public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
+
 
 
 //     @RequestMapping(method = RequestMethod.GET)

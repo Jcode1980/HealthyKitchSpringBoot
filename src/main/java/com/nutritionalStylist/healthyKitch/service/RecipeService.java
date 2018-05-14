@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.model.Cuisine;
 import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
@@ -16,6 +17,8 @@ public interface RecipeService {
     Collection<MealType> findAllMealTypes();
 
     Collection<NutritionalBenefit> findAllNutritionalBenefits();
+
+    Collection<Cuisine> findAllCuisines();
 
     Optional<Recipe> findRecipeByID(int id);
 
