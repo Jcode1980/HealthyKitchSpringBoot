@@ -49,8 +49,8 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto searchDto) {
 
-        Collection<MealType> mealTypes;
-        String searchString = searchDto.getSearchString();
+        //Collection<MealType> mealTypes;
+        //String searchString = searchDto.getSearchString();
 
         return recipeRepository.getRecipeUsingSearchDTO(searchDto);
 //

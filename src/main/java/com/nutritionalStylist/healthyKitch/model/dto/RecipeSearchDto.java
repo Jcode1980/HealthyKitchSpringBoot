@@ -38,6 +38,13 @@ public class RecipeSearchDto {
 
     public void setSearchForTrending(boolean searchForTrending) { this.searchForTrending = searchForTrending; }
 
+    public boolean hasMealTypesSearch(){ return getMealTypesID() != null && getMealTypesID().size() > 0; }
+
+    public boolean hasNutritionalBenefitSearch(){ return getNutritionalBenefitID() != null && getNutritionalBenefitID().size() > 0; }
+
+    public boolean hasSearchStrings(){ return getSearchStrings() != null && getSearchStrings().size() > 0; }
+
+    public boolean hasSomeKindOfSearch(){return hasMealTypesSearch() || hasNutritionalBenefitSearch() || hasSearchStrings();};
 
 
 }

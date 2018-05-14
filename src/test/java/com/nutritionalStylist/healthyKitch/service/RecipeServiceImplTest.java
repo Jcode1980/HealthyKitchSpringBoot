@@ -2,6 +2,7 @@ package com.nutritionalStylist.healthyKitch.service;
 
 import com.google.common.base.Predicate;
 import com.nutritionalStylist.healthyKitch.Application;
+import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
@@ -12,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -40,9 +44,18 @@ public class RecipeServiceImplTest {
 
     @Test
     public void getRecipeUsingSearchDTOTest(){
-        RecipeSearchDto recipeSearch = new RecipeSearchDto();
-        recipeSearch.setSearchString("Test");
-        List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearch);
+        RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
+        ArrayList<String> searchStrings = new ArrayList<String>();
+        searchStrings.add("Test");
+        searchStrings.add("st");
+
+        ArrayList<Integer> mealTypes = new ArrayList<Integer>();
+        mealTypes.add(new Integer(1));
+
+
+        recipeSearchDTO.setSearchStrings(searchStrings);
+        recipeSearchDTO.setMealTypesID(mealTypes);
+        List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
         assertThat(recipes.size(), is(1));
     }
 
