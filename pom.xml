@@ -80,7 +80,12 @@
         <version>1.3</version>
         <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/log4j/log4j -->
+    <dependency>
+        <groupId>org.imgscalr</groupId>
+        <artifactId>imgscalr-lib</artifactId>
+        <version>4.2</version>
+    </dependency>
+        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
