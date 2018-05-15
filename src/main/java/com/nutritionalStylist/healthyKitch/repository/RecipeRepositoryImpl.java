@@ -18,7 +18,15 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
     @Override
     public List<Recipe> getRecipeUsingSearchDTO(RecipeSearchDto searchDto) {
-        StringBuilder searchQuery = new StringBuilder("Select r.* FROM recipe as r " );
+        String searchQuery = searchDto.isSearchForTrending() ? queryForTrendingRecipes() : standardQuerySearch(searchDto);
+
+        Query query = entityManager.createNativeQuery(searchQuery.toString(), Recipe.class);
+        return query.getResultList();
+
+    }
+
+    private String standardQuerySearch(RecipeSearchDto searchDto){
+        StringBuilder searchQuery= new StringBuilder("Select r.* FROM recipe as r " );
 
         searchQuery.append(createJoinPartOfQuery(searchDto));
         searchQuery.append(createWherePartOfQuery(searchDto));
@@ -33,14 +41,12 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 //                "Where r.name LIKE ?", Recipe.class);
 //        query.setParameter(1, "Test" + "%");
 
-
-        Query query = entityManager.createNativeQuery(searchQuery.toString(), Recipe.class);
-        return query.getResultList();
-
+        return searchQuery.toString();
     }
 
+
     private String queryQualsForSearchStrings(Collection<String> searchStrings){
-        String searchString = searchStrings.stream().map(s->"name like '%"+s+"%'").collect(Collectors.joining(" and "));
+        String searchString = searchStrings.stream().map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" and "));
         //searchString = searchString.substring(0, searchString.lastIndexOf(" and "));
         System.out.println("returning search String : " + searchString);
         return searchString;
@@ -48,10 +54,10 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
     }
 
     private String createJoinPartOfQuery(RecipeSearchDto recipeSearchDto){
-        StringBuilder joinTableStringBuffer = new StringBuilder(" where ");
+        StringBuilder joinTableStringBuffer = new StringBuilder("");
         if(recipeSearchDto.hasMealTypesSearch()){
             joinTableStringBuffer.append("left join meal_type_recipe rtc on (r.id = rtc.recipeID) " +
-                    "left join meal_type m on (rtc.mealTypeID on m.ID)");
+                    "left join meal_type m on (rtc.meal_typeID = m.ID)");
         }
 
         return joinTableStringBuffer.toString();
@@ -63,7 +69,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         whereClauseStringBuffer.append(queryQualsForSearchStrings(recipeSearchDto.getSearchStrings()));
 
         if(recipeSearchDto.hasMealTypesSearch()){
-            String mealTypeSearchString = "m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")";
+            String mealTypeSearchString = " and m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
@@ -71,6 +77,14 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
     }
 
+    //TODO: Figure out logic to this.. but for now it returns the newest recipes.
+    private String queryForTrendingRecipes(){
+        StringBuilder query = new StringBuilder("Select r.* FROM recipe as r\n" );
+        query.append("order by created desc\n");
+        query.append("LIMIT 6;");
+
+        return query.toString();
+    }
 
 
 }

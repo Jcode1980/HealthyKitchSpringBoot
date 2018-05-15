@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="Cusine")
+@Table(name="Cuisine")
 public class Cuisine extends NamedEntity {
 
 }

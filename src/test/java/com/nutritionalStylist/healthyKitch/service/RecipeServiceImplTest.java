@@ -45,11 +45,11 @@ public class RecipeServiceImplTest {
     @Test
     public void getRecipeUsingSearchDTOTest(){
         RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
-        ArrayList<String> searchStrings = new ArrayList<String>();
+        ArrayList<String> searchStrings = new ArrayList<>();
         searchStrings.add("Test");
         searchStrings.add("st");
 
-        ArrayList<Integer> mealTypes = new ArrayList<Integer>();
+        ArrayList<Integer> mealTypes = new ArrayList<>();
         mealTypes.add(new Integer(1));
 
 
@@ -57,6 +57,14 @@ public class RecipeServiceImplTest {
         recipeSearchDTO.setMealTypesID(mealTypes);
         List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
         assertThat(recipes.size(), is(1));
+    }
+
+    @Test
+    public void getRecipeUsingSearchDTO_TestTrendingFlag_Should_Return_Six_Recipes(){
+        RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
+        recipeSearchDTO.setSearchForTrending(true);
+        List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
+        assertThat(recipes.size(), is(6));
     }
 
     @Test
