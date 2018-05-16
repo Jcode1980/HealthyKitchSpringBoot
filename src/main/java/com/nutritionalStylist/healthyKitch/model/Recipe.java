@@ -56,6 +56,7 @@ public class Recipe extends NamedEntity{
 
     public Optional<RecipeImage> getDefaultImage() { return Optional.ofNullable(this.defaultImage); }
 
+
     public boolean hasDefaultImage() {
         return getDefaultImage().isPresent();
     }
@@ -183,7 +184,10 @@ public class Recipe extends NamedEntity{
         return getNutritionalBenefitInternal().contains(value);
     }
 
-
+    //used by RecipeDTO
+    public Integer getDefaultImageID(){
+        return getDefaultImage().map(RecipeImage::getId).orElse(null);
+    }
 
 
 //    public function removeMealType($mealType){

@@ -1,32 +1,18 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
-
-
-import com.nutritionalStylist.healthyKitch.model.Cuisine;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
-import com.sun.deploy.net.HttpResponse;
-import com.sun.xml.internal.bind.v2.util.CollisionCheckStack;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
 
 @RestController
@@ -41,8 +27,17 @@ public class RecipeController {
         this.storageService = storageService;
         this.recipeService = recipeService;
 
-
         modelMapper = new ModelMapper();
+        PropertyMap<Recipe, RecipeDto> recipeMap = new PropertyMap<Recipe, RecipeDto>() {
+            protected void configure() {
+                //map(source.getDefaultImage(, destination.getDefaultImageID());
+                map(source.sortedMeasuredIngredients(), destination.getMeasuredIngredients());
+                map(source.sortedInstructions(), destination.getInstructions());
+                map(source.sortedDietaryCategories(), destination.getDietaryCategories());
+            }
+        };
+
+        modelMapper.addMappings(recipeMap);
     }
 
 
