@@ -11,7 +11,7 @@ public class RecipeDto {
 
     private Integer id;
     private String name;
-
+    private Integer defaultImageID;
     private ArrayList<Instruction> instructions;
     private ArrayList<MealType> mealTypes;
     private ArrayList<MeasuredIngredient> measuredIngredients;
@@ -56,5 +56,12 @@ public class RecipeDto {
         this.measuredIngredients = measuredIngredients;
     }
 
+    public Integer getDefaultImageID() {
+        return defaultImageID;
+    }
+
+    public void setDefaultImageID(Integer defaultImageID) {
+        this.defaultImageID = defaultImageID;
+    }
 
 }
