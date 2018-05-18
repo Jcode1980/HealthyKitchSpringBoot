@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.model.Recipe;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,16 +9,18 @@ import java.util.stream.Stream;
 
 public interface StorageService {
 
-    void init();
+    //void init();
 
-    void store(MultipartFile file);
+    //void store(MultipartFile file);
 
-    Stream<Path> loadAll();
+    void processAndStoreImage(Recipe recipe, MultipartFile file) throws Exception;
 
-    Path load(String filename);
+    //Stream<Path> loadAll();
 
-    Resource loadAsResource(String filename);
+    //Path load(String filename);
 
-    void deleteAll();
+    Resource loadAsResource(String filePath);
+
+    //void deleteAll();
 
 }

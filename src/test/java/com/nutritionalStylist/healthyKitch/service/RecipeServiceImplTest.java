@@ -23,12 +23,12 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.not;
 import static springfox.documentation.builders.PathSelectors.regex;
 
+//To do autowired. u must run these two lines
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class RecipeServiceImplTest {
     @Autowired
     private RecipeRepository recipeRepository;
-
 
     @Test
     public void findMealTypes() {

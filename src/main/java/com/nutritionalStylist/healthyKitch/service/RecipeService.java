@@ -28,6 +28,6 @@ public interface RecipeService {
 
     Collection<Recipe> findAllRecipes();
 
-    void addImageToRecipe(MultipartFile file);
+    void addImageToRecipe(int recipeID, MultipartFile file);
 
 }

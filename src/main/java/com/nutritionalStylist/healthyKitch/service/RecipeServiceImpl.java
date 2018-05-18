@@ -1,15 +1,9 @@
 package com.nutritionalStylist.healthyKitch.service;
 
-import com.nutritionalStylist.healthyKitch.model.Cuisine;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
-import com.nutritionalStylist.healthyKitch.repository.CuisineRepository;
-import com.nutritionalStylist.healthyKitch.repository.MealTypeRepository;
-import com.nutritionalStylist.healthyKitch.repository.NutritionalBenefitRepository;
-import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
+import com.nutritionalStylist.healthyKitch.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -22,20 +16,29 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
+
 @Service
 public class RecipeServiceImpl implements RecipeService {
+    private Logger log = Logger.getLogger(RecipeServiceImpl.class);
     private RecipeRepository recipeRepository;
     private MealTypeRepository mealTypeRepository;
     private NutritionalBenefitRepository nutritionalBenefitRepository;
     private CuisineRepository cuisineRepository;
+    private StorageService storageService ;
+    //private RecipeImageRepository recipeImageRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
-                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository){
+                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository,
+                             StorageService storageService){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
         this.cuisineRepository = cuisineRepository;
+        this.storageService = storageService;
+        //this.recipeImageRepository = recipeImageRepository;
+
     }
 
 
@@ -47,7 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void saveRecipe(Recipe recipe) {
-
+        recipeRepository.save(recipe);
     }
 
     @Override
@@ -94,19 +97,26 @@ public class RecipeServiceImpl implements RecipeService {
     public Collection<Cuisine> findAllCuisines() throws DataAccessException { return (Collection<Cuisine>) cuisineRepository.findAll(); }
 
 
-
     @Override
-    public void addImageToRecipe(MultipartFile file) {
+    public void addImageToRecipe(int recipeID, MultipartFile file) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
+        RecipeImage recipeImage = recipeOptional.get().createRecipeImagePlaceHolder();
+        //recipeImageRepository.save(recipeImage);
+
+        log.info("this is the previewPath : " + recipeImage.displayPreviewImagePath());
+        log.info("this is the originalPath : " + recipeImage.displayOriginalImagePath());
+        log.info("this is the thumbnailPath : " + recipeImage.displayThumbnailImagePath());
+
 
     }
 
-    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
-        Collection<E> list = new ArrayList<E>();
-        for (E item : iter) {
-            list.add(item);
-        }
-        return list;
-    }
+//    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
+//        Collection<E> list = new ArrayList<E>();
+//        for (E item : iter) {
+//            list.add(item);
+//        }
+//        return list;
+//    }
 
 
 

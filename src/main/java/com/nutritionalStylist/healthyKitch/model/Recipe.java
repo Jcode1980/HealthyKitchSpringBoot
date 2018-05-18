@@ -46,13 +46,18 @@ public class Recipe extends NamedEntity{
         created = new Date();
     }
 
-    public String displayImagePath() {
-        return getDefaultImage().map(RecipeImage::filePath).orElse("images/NoImage.jpg");
+    public String displayPreviewImagePath() {
+        return getDefaultImage().map(RecipeImage::displayPreviewImagePath).orElse("images/NoImage.jpg");
     }
 
-    public String displayImageThumbnailPath() {
-        return getDefaultImage().map(RecipeImage::thumbnailImagePath).orElse("images/NoImage.jpg");
+    public String displayThumbnailImagePath() {
+        return getDefaultImage().map(RecipeImage::displayThumbnailImagePath).orElse("images/NoImage.jpg");
     }
+
+    public String displayOriginalImagePath() {
+        return getDefaultImage().map(RecipeImage::displayOriginalImagePath).orElse("images/NoImage.jpg");
+    }
+
 
     public Optional<RecipeImage> getDefaultImage() { return Optional.ofNullable(this.defaultImage); }
 
@@ -187,6 +192,20 @@ public class Recipe extends NamedEntity{
     //used by RecipeDTO
     public Integer getDefaultImageID(){
         return getDefaultImage().map(RecipeImage::getId).orElse(null);
+    }
+
+    public RecipeImage createRecipeImagePlaceHolder(){
+        RecipeImage recipeImage = new RecipeImage();
+        recipeImage.setRecipe(this);
+
+        RecipeFile orginalFile = new RecipeFile();
+        RecipeFile previewFile = new RecipeFile();
+        RecipeFile thumbnailFile = new RecipeFile();
+        recipeImage.setOrginalImage(orginalFile);
+        recipeImage.setPreviewImage(previewFile);
+        recipeImage.setThumbnailImage(thumbnailFile);
+
+        return recipeImage;
     }
 
 

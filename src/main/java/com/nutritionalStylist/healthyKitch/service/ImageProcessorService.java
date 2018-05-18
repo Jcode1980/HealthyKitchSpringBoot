@@ -1,14 +1,14 @@
 package com.nutritionalStylist.healthyKitch.service;
 
-import com.nutritionalStylist.healthyKitch.enums.ImageType;
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.HashMap;
 
 public interface ImageProcessorService {
-    public static final int THUMBNAIL = 1;
-    public static final int PREVIEW = 2;
 
-    public abstract BufferedImage createResizedImage(ImageType imageType, BufferedImage imageFile);
+    BufferedImage createResizedImage(ImageQualityType imageQualityType, BufferedImage imageFile);
+
+    HashMap<ImageQualityType, BufferedImage> processImageFile(BufferedImage imageFile);
 
 }

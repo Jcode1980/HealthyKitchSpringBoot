@@ -2,6 +2,7 @@ package com.nutritionalStylist.healthyKitch.controller;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
@@ -13,6 +14,9 @@ import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 
 @RestController
@@ -101,6 +105,18 @@ public class RecipeController {
     @GetMapping("/recipes/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
+
+    @PostMapping("/recipe/UploadRecipeImage")
+    public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) {
+
+
+        recipeService.addImageToRecipe(recipeID, file);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/";
+    }
 
 
 //     @RequestMapping(method = RequestMethod.GET)
