@@ -1,10 +1,17 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Entity
@@ -194,13 +201,38 @@ public class Recipe extends NamedEntity{
         return getDefaultImage().map(RecipeImage::getId).orElse(null);
     }
 
-    public RecipeImage createRecipeImagePlaceHolder(){
+//    public RecipeImage createRecipeImage(HashMap<ImageQualityType, BufferedImage> imagesMap, String fileName) throws Exception{
+//        RecipeImage recipeImage = new RecipeImage();
+//        recipeImage.setRecipe(this);
+//        recipeImage.setName(fileName);
+//
+//        String fileExtension = fileName.substring(fileName.lastIndexOf('.') +1, fileName.length());
+//
+//        for(ImageQualityType imageQualityType : imagesMap.keySet()){
+//            RecipeFile newRecipeFile = new RecipeFile(imageQualityType);
+//            BufferedImage image = imagesMap.get(imageQualityType);
+//            ImageIO.write(image, fileExtension, new File(newRecipeFile.filePath()));
+//
+//        }
+//
+//        RecipeFile orginalFile = new RecipeFile(ImageQualityType.ORIGINAL);
+//        RecipeFile previewFile = new RecipeFile(ImageQualityType.PREVIEW);
+//        RecipeFile thumbnailFile = new RecipeFile(ImageQualityType.THUMBNAIL);
+//        recipeImage.setOrginalImage(orginalFile);
+//        recipeImage.setPreviewImage(previewFile);
+//        recipeImage.setThumbnailImage(thumbnailFile);
+//
+//        return recipeImage;
+//    }
+
+    public RecipeImage createRecipeImage( String fileName) throws Exception{
         RecipeImage recipeImage = new RecipeImage();
         recipeImage.setRecipe(this);
+        recipeImage.setName(fileName);
 
-        RecipeFile orginalFile = new RecipeFile();
-        RecipeFile previewFile = new RecipeFile();
-        RecipeFile thumbnailFile = new RecipeFile();
+        RecipeFile orginalFile = new RecipeFile(ImageQualityType.ORIGINAL);
+        RecipeFile previewFile = new RecipeFile(ImageQualityType.PREVIEW);
+        RecipeFile thumbnailFile = new RecipeFile(ImageQualityType.THUMBNAIL);
         recipeImage.setOrginalImage(orginalFile);
         recipeImage.setPreviewImage(previewFile);
         recipeImage.setThumbnailImage(thumbnailFile);

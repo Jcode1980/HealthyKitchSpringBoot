@@ -1,6 +1,7 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,8 +9,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "File")
 public class RecipeFile extends File {
-    @Column(name = "imageType")
-    protected  int qualityType;
 
     @Column(name="imageQualityType")
     @NotNull
@@ -26,9 +25,16 @@ public class RecipeFile extends File {
         return 1;
     }
 
+    public RecipeFile(ImageQualityType qualityType){
+        this.imageQualityType = qualityType.name();
+    }
+
+    public  String fileFolder(){ return "RecipeImage/"; }
+
     public String filePath(){
-        String filePath = System.getProperty("FILES_PRODUCTION_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/Production/") +
-                getClass().getName() + "/" + imageQualityType + "/" + getId();
+        String filePath = System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/")
+                + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/") + fileFolder()
+                + imageQualityType.toLowerCase() + "/" + getId();
 
         return filePath;
     }

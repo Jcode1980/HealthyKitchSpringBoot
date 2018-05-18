@@ -81,16 +81,17 @@ public class StorageServiceImpl implements StorageService {
     private String storeToTempFile(MultipartFile file) throws Exception{
         System.out.println("what is the tmp folder? " + tmpFolder);
         System.out.println("what is the root folder? " + rootFolder);
-        Path tempPath = Paths.get(tmpFolder);
+        String fullTmpPath = rootFolder + tmpFolder;
+        Path tempPath = Paths.get(fullTmpPath);
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
 
         //String tmpFolder = System.getProperty("com.nutritionalStylist.TMP_FOLDER");
-        log.info("temp folder is: " + tmpFolder + " original file name: " + file.getOriginalFilename());
+        log.info("temp folder is: " + fullTmpPath + " original file name: " + file.getOriginalFilename());
         String fileExtension = file.getOriginalFilename().substring(file.getOriginalFilename().
                 lastIndexOf('.') +1, file.getOriginalFilename().length());
 
-        String tmpFileName  = File.getUniqueFileName(tmpFolder, fileExtension);
+        String tmpFileName  = File.getUniqueFileName(fullTmpPath, fileExtension);
 
 
         log.info("Unique file name is : " + tmpFileName);
@@ -112,7 +113,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void processAndStoreImage(Recipe recipe, MultipartFile file) throws Exception {
+    public HashMap<ImageQualityType, BufferedImage> processAndStoreImage(Recipe recipe, MultipartFile file) throws Exception {
         //Check if file is image
 
         //store file in tmp folder
@@ -122,7 +123,7 @@ public class StorageServiceImpl implements StorageService {
         //Process the file.
         BufferedImage img = ImageIO.read(new java.io.File(tmpFile));
         HashMap<ImageQualityType, BufferedImage> allRecipeFilesForImage = imageProcessorService.processImageFile(img);
-
+        return allRecipeFilesForImage;
 
         //create recipeImage for file for the Recipe
         //Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);

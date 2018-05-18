@@ -110,8 +110,13 @@ public class RecipeController {
     public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
+        try{
+            recipeService.addImageToRecipe(recipeID, file);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
-        recipeService.addImageToRecipe(recipeID, file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 

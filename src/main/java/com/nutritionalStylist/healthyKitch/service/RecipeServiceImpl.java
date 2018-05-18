@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import org.apache.log4j.Logger;
+
+import javax.imageio.ImageIO;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -26,18 +27,18 @@ public class RecipeServiceImpl implements RecipeService {
     private NutritionalBenefitRepository nutritionalBenefitRepository;
     private CuisineRepository cuisineRepository;
     private StorageService storageService ;
-    //private RecipeImageRepository recipeImageRepository;
+    private RecipeImageRepository recipeImageRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
                              NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository,
-                             StorageService storageService){
+                             StorageService storageService, RecipeImageRepository recipeImageRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
         this.cuisineRepository = cuisineRepository;
         this.storageService = storageService;
-        //this.recipeImageRepository = recipeImageRepository;
+        this.recipeImageRepository = recipeImageRepository;
 
     }
 
@@ -98,10 +99,22 @@ public class RecipeServiceImpl implements RecipeService {
 
 
     @Override
-    public void addImageToRecipe(int recipeID, MultipartFile file) {
+    public void addImageToRecipe(int recipeID, MultipartFile file) throws Exception {
+        String fileName = file.getOriginalFilename();
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
-        RecipeImage recipeImage = recipeOptional.get().createRecipeImagePlaceHolder();
-        //recipeImageRepository.save(recipeImage);
+        Recipe theRecipe = recipeOptional.get();
+
+        HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processAndStoreImage(theRecipe, file);
+        RecipeImage recipeImage = theRecipe.createRecipeImage(fileName);
+
+        recipeImageRepository.save(recipeImage);
+
+        String fileExtension = fileName.substring(fileName.lastIndexOf('.') +1, fileName.length());
+
+        //TODO: tmp file should be removed.
+        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
+        ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
+        ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));
 
         log.info("this is the previewPath : " + recipeImage.displayPreviewImagePath());
         log.info("this is the originalPath : " + recipeImage.displayOriginalImagePath());

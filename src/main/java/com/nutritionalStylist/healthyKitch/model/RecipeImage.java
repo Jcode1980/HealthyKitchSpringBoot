@@ -14,16 +14,15 @@ public class RecipeImage extends NamedEntity {
     private Recipe recipe;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "originalImageID")
     private RecipeFile orginalImage;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "thumbnailImageID")
     private RecipeFile thumbnailImage;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "previewImageID")
     private RecipeFile previewImage;
 

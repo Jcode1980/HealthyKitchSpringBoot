@@ -26,17 +26,5 @@ public class StorageServiceImplTest {
 
 
 
-    @Test
-    public void processAndStoreImage(){
-        try{
-            String testFile = "/Users/johnadolfo/Desktop/test.png";
-            MockMultipartFile multipartFile = new MockMultipartFile("files", "Test.png",
-                    "text/plain",  new FileInputStream(testFile));
 
-            storageService.processAndStoreImage(recipeService.findRecipeByID(1).get(), multipartFile);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-    }
 }

@@ -1,9 +1,11 @@
 package com.nutritionalStylist.healthyKitch.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import com.nutritionalStylist.healthyKitch.config.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
+import javax.persistence.*;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -66,6 +68,7 @@ public abstract class File extends BaseEntity{
 
     public abstract String filePath();
 
+    public abstract String fileFolder();
 
     //Maybe in future check if fileName doesn't exists in the directory?
     //however this might not be an issue isn't tmp fils will be moved to orginal file location
