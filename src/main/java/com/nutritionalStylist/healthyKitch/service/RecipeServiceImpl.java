@@ -6,6 +6,7 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,9 +110,12 @@ public class RecipeServiceImpl implements RecipeService {
 
         recipeImageRepository.save(recipeImage);
 
-        String fileExtension = fileName.substring(fileName.lastIndexOf('.') +1, fileName.length());
+
 
         //TODO: tmp file should be removed.
+
+        String fileExtension =  recipeImage.getOrginalImage().get().fileExtension();
+
         ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
         ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
         ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));

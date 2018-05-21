@@ -20,21 +20,36 @@ public class RecipeFile extends File {
     @Column(name = "width")
     protected  int width;
 
+//    @ManyToOne
+//    @JoinColumn(name = "recipeImageID")
+//    private RecipeImage recipeImage;
+
+
+
+
     @Override
     public int type() {
         return 1;
     }
 
-    public RecipeFile(ImageQualityType qualityType){
+    public RecipeFile(String fileName, ImageQualityType qualityType){
+        setFileName(fileName);
         this.imageQualityType = qualityType.name();
     }
+
+    public RecipeFile(){ }
+
+//    public RecipeImage getRecipeImage() { return recipeImage; }
+//
+//    public void setRecipeImage(RecipeImage recipeImage) { this.recipeImage = recipeImage; }
+
 
     public  String fileFolder(){ return "RecipeImage/"; }
 
     public String filePath(){
         String filePath = System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/")
                 + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/") + fileFolder()
-                + imageQualityType.toLowerCase() + "/" + getId();
+                + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
 
         return filePath;
     }

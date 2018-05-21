@@ -1,10 +1,14 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Optional;
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import org.springframework.boot.web.server.MimeMappings;
 
 @Entity
 public class RecipeImage extends NamedEntity {
@@ -26,6 +30,7 @@ public class RecipeImage extends NamedEntity {
     @JoinColumn(name = "previewImageID")
     private RecipeFile previewImage;
 
+
     public Recipe getRecipe() {
         return recipe;
     }
@@ -40,6 +45,7 @@ public class RecipeImage extends NamedEntity {
 
     public void setOrginalImage(RecipeFile orginalImage) {
         this.orginalImage = orginalImage;
+
     }
 
     public Optional<RecipeFile> getThumbnailImage() {
@@ -48,6 +54,7 @@ public class RecipeImage extends NamedEntity {
 
     public void setThumbnailImage(RecipeFile thumbnailImage) {
         this.thumbnailImage = thumbnailImage;
+        //thumbnailImage.setRecipeImage(this);
     }
 
     public Optional<RecipeFile> getPreviewImage() {
@@ -56,6 +63,7 @@ public class RecipeImage extends NamedEntity {
 
     public void setPreviewImage(RecipeFile previewImage) {
         this.previewImage = previewImage;
+        //previewImage.setRecipeImage(this);
     }
 
     public String displayPreviewImagePath() {
@@ -69,6 +77,20 @@ public class RecipeImage extends NamedEntity {
     public String displayOriginalImagePath() {
         return getOrginalImage().map(RecipeFile::filePath).orElse("images/NoImage.jpg");
     }
+
+    public Optional<RecipeFile> recipeFileForImageType(ImageQualityType imageQualityType){
+        if(ImageQualityType.PREVIEW.equals(imageQualityType)){
+            return getPreviewImage();
+        }
+        else if(ImageQualityType.THUMBNAIL.equals(imageQualityType)){
+                return getThumbnailImage();
+        }
+        else{
+            return getOrginalImage();
+        }
+    }
+
+
 
 //    public String displayThumbnailImagePath() {
 //        return getDefaultImage().map(RecipeImage::filePath).orElse("images/NoImage.jpg");

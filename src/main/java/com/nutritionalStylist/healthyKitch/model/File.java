@@ -3,6 +3,7 @@ package com.nutritionalStylist.healthyKitch.model;
 import com.nutritionalStylist.healthyKitch.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "File")
 public abstract class File extends BaseEntity{
+    public static final MimeMappings mimeMappings = new MimeMappings();
     @Column(name = "created")
     private Date created;
 
@@ -31,6 +33,8 @@ public abstract class File extends BaseEntity{
         created = new Date();
         type = type();
     }
+
+    protected String fileName;
 
     public Date getCreated() {
         return created;
@@ -75,5 +79,17 @@ public abstract class File extends BaseEntity{
     public static String getUniqueFileName(String directory, String extension) {
         String fileName = MessageFormat.format("{0}.{1}", UUID.randomUUID(), extension.trim());
         return Paths.get(directory, fileName).toString();
+    }
+
+    public String getFileName() { return fileName; }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+        setMimeType(mimeMappings.get(fileExtension()));
+
+    }
+
+    public String fileExtension(){
+        return getFileName().substring(getFileName().lastIndexOf('.') +1, getFileName().length());
     }
 }

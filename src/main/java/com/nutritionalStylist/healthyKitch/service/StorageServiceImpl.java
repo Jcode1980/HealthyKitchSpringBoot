@@ -20,9 +20,11 @@ import com.nutritionalStylist.healthyKitch.model.Recipe;
 import com.nutritionalStylist.healthyKitch.model.RecipeFile;
 import com.nutritionalStylist.healthyKitch.model.RecipeImage;
 import com.nutritionalStylist.healthyKitch.repository.FileRepository;
+import com.nutritionalStylist.healthyKitch.repository.RecipeImageRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ import javax.imageio.ImageIO;
 public class StorageServiceImpl implements StorageService {
     public static Logger log = Logger.getLogger(StorageServiceImpl.class);
     private RecipeRepository recipeRepository;
+    private RecipeImageRepository recipeImageRepository;
     private FileRepository fileRepository;
     private ImageProcessorService imageProcessorService;
 
@@ -48,10 +51,12 @@ public class StorageServiceImpl implements StorageService {
     protected String tmpFolder;
 
     @Autowired
-    public StorageServiceImpl(FileRepository fileRepository, RecipeRepository recipeRepository, ImageProcessorService imageProcessorService) {
+    public StorageServiceImpl(FileRepository fileRepository, RecipeRepository recipeRepository, ImageProcessorService imageProcessorService,
+                              RecipeImageRepository recipeImageRepository) {
         this.recipeRepository = recipeRepository;
         this.fileRepository = fileRepository;
         this.imageProcessorService = imageProcessorService;
+        this.recipeImageRepository = recipeImageRepository;
 
         //this.tempFolderPath = Paths.get(tmpFolder);
     }
@@ -85,6 +90,7 @@ public class StorageServiceImpl implements StorageService {
         Path tempPath = Paths.get(fullTmpPath);
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+
 
         //String tmpFolder = System.getProperty("com.nutritionalStylist.TMP_FOLDER");
         log.info("temp folder is: " + fullTmpPath + " original file name: " + file.getOriginalFilename());
@@ -155,21 +161,46 @@ public class StorageServiceImpl implements StorageService {
 //        return tempFolderPath.resolve(filename);
 //    }
 
+
+    //fix me
     @Override
+    public Resource recipeImageAsResource(int recipeImageID, int quality){
+        Optional<RecipeImage> recipeImage = recipeImageRepository.findById(recipeImageID);
+        System.out.println("found recipe image?? " + recipeImage.get());
+        ImageQualityType imageQualityType = ImageQualityType.imageTypeForID(quality);
+
+        Optional<RecipeFile> recipeFile = recipeImage.get().recipeFileForImageType(imageQualityType);
+        String filePath = recipeFile.get().filePath();
+        log.info("looking for recipeimage with filePath: " + filePath);
+
+        return loadAsResource(filePath);
+
+    }
+
+
+
     public Resource loadAsResource(String filePath) {
         try {
             Path file = Paths.get(filePath);
+            //Path file = Paths.get("/Users/johnadolfo/Desktop/31");
+            //Path file = Paths.get("/Users/johnadolfo/Desktop/test.png");
+            System.out.println("fund file path : "  + file);
+
             Resource resource = new UrlResource(file.toUri());
+
+
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             }
             else {
+                System.out.println("Could not read file");
                 throw new StorageFileNotFoundException(
                         "Could not read file: " + filePath);
 
             }
         }
         catch (MalformedURLException e) {
+            System.out.println("Could not read file catch");
             throw new StorageFileNotFoundException("Could not read file: " + filePath, e);
         }
     }

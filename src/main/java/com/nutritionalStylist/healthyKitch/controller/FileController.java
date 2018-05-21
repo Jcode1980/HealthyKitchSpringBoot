@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
+import com.nutritionalStylist.healthyKitch.repository.RecipeImageRepository;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageFileNotFoundException;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
@@ -44,7 +45,7 @@ public class FileController {
 //
 //        return "uploadForm";
 //    }
-
+//
     @GetMapping("/files/{filename:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -53,6 +54,14 @@ public class FileController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
+    @GetMapping("/RecipeImage/{recipeImageID}")
+    public ResponseEntity<Resource> serveRecipeImage(@RequestParam int recipeImageID) {
+        System.out.println("got here");
+        //Resource file = storageService.loadAsResource(filename);
+        Resource file = storageService.recipeImageAsResource(recipeImageID, 1);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
 
 
     @ExceptionHandler(StorageFileNotFoundException.class)

@@ -24,6 +24,8 @@ public interface StorageService {
 
     Resource loadAsResource(String filePath);
 
+    Resource recipeImageAsResource(int recipeImageID, int quality);
+
     //void deleteAll();
 
 }

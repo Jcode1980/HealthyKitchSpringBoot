@@ -3,6 +3,7 @@ package com.nutritionalStylist.healthyKitch.model;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.imageio.ImageIO;
@@ -226,13 +227,15 @@ public class Recipe extends NamedEntity{
 //    }
 
     public RecipeImage createRecipeImage( String fileName) throws Exception{
+        MimeMappings mimeMappings = new MimeMappings();
         RecipeImage recipeImage = new RecipeImage();
         recipeImage.setRecipe(this);
         recipeImage.setName(fileName);
 
-        RecipeFile orginalFile = new RecipeFile(ImageQualityType.ORIGINAL);
-        RecipeFile previewFile = new RecipeFile(ImageQualityType.PREVIEW);
-        RecipeFile thumbnailFile = new RecipeFile(ImageQualityType.THUMBNAIL);
+
+        RecipeFile orginalFile = new RecipeFile(fileName, ImageQualityType.ORIGINAL);
+        RecipeFile previewFile = new RecipeFile(fileName, ImageQualityType.PREVIEW);
+        RecipeFile thumbnailFile = new RecipeFile(fileName, ImageQualityType.THUMBNAIL);
         recipeImage.setOrginalImage(orginalFile);
         recipeImage.setPreviewImage(previewFile);
         recipeImage.setThumbnailImage(thumbnailFile);
