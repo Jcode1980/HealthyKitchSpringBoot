@@ -79,6 +79,7 @@ public class RecipeImage extends NamedEntity {
     }
 
     public Optional<RecipeFile> recipeFileForImageType(ImageQualityType imageQualityType){
+        System.out.println("I'm in here");
         if(ImageQualityType.PREVIEW.equals(imageQualityType)){
             return getPreviewImage();
         }

@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recipes")
 public class RecipeController {
     private final RecipeService recipeService;
     private final StorageService storageService;
@@ -45,14 +45,14 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/recipes/allRecipes")
+    @GetMapping("/allRecipes")
     public Collection<RecipeDto> getAllRecipes(){
         System.out.println("got to all recipes");
         return recipeService.findAllRecipes().stream().map(recipe -> convertToDto(recipe)).
                 collect(Collectors.toList());
     }
 
-    @GetMapping("/recipes/recipes")
+    @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
         //TODO do search here
 
@@ -61,7 +61,7 @@ public class RecipeController {
         return recipes.stream().map(recipe -> convertToDto(recipe)).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/recipes/{recipeID}")
+    @GetMapping(value = "/{recipeID}")
     public Recipe getRecipeById(@PathVariable("recipeID") int recipeID) {
         return recipeService.findRecipeByID(recipeID).orElse(null);
     }
@@ -95,18 +95,18 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/recipes/allMealTypes")
+    @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(){ return recipeService.findAllMealTypes(); }
 
 
-    @GetMapping("/recipes/allNutritionalBenefits")
+    @GetMapping("/allNutritionalBenefits")
     public Collection<NutritionalBenefit> getAllNutritionalBenefit(){ return recipeService.findAllNutritionalBenefits(); }
 
-    @GetMapping("/recipes/allCuisines")
+    @GetMapping("/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
 
-    @PostMapping("/recipe/UploadRecipeImage")
+    @PostMapping("/UploadRecipeImage")
     public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 

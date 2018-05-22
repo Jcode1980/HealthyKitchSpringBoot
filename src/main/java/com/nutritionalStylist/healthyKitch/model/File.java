@@ -1,12 +1,17 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 import com.nutritionalStylist.healthyKitch.config.AppConfig;
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import com.nutritionalStylist.healthyKitch.service.RecipeServiceImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Date;
@@ -15,6 +20,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "File")
 public abstract class File extends BaseEntity{
+    @Transient
+    private Logger log = Logger.getLogger(File.class);
+
     public static final MimeMappings mimeMappings = new MimeMappings();
     @Column(name = "created")
     private Date created;
@@ -27,6 +35,12 @@ public abstract class File extends BaseEntity{
 
     @Column(name = "fileSize")
     private int fileSize;
+
+    @Column(name = "height")
+    protected  int height;
+
+    @Column(name = "width")
+    protected  int width;
 
     @PrePersist
     protected void onCreate() {
@@ -74,6 +88,14 @@ public abstract class File extends BaseEntity{
 
     public abstract String fileFolder();
 
+    public int getHeight() { return height; }
+
+    public void setHeight(int height) { this.height = height; }
+
+    public int getWidth() { return width; }
+
+    public void setWidth(int width) { this.width = width; }
+
     //Maybe in future check if fileName doesn't exists in the directory?
     //however this might not be an issue isn't tmp fils will be moved to orginal file location
     public static String getUniqueFileName(String directory, String extension) {
@@ -90,6 +112,19 @@ public abstract class File extends BaseEntity{
     }
 
     public String fileExtension(){
+        log.info("this is my filName: " + getFileName());
         return getFileName().substring(getFileName().lastIndexOf('.') +1, getFileName().length());
+    }
+
+    public String productionFolder(){
+        return System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/")
+                + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/");
+    }
+
+    public void processBufferedImage(BufferedImage img) throws Exception{
+        ImageIO.write(img, fileExtension(), new java.io.File(filePath()));
+        setHeight(img.getHeight());
+        setWidth(img.getWidth());
+        setFileSize(img.getRaster().getDataBuffer().getSize());
     }
 }

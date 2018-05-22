@@ -2,7 +2,6 @@ package com.nutritionalStylist.healthyKitch.service;
 
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -10,15 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
-import com.nutritionalStylist.healthyKitch.model.File;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
-import com.nutritionalStylist.healthyKitch.model.RecipeFile;
-import com.nutritionalStylist.healthyKitch.model.RecipeImage;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.repository.FileRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeImageRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
@@ -28,7 +22,6 @@ import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -143,6 +136,22 @@ public class StorageServiceImpl implements StorageService {
         //do a save.
     }
 
+    @Override
+    public MealTypeFile mealTypeFileForMealType(MealType mealType, MultipartFile file) throws Exception {
+        //Check if file is image
+
+        //store file in tmp folder
+        String tmpFile = storeToTempFile(file);
+
+        MealTypeFile mealTypeFile = new MealTypeFile(file.getOriginalFilename());
+        fileRepository.save(mealTypeFile);
+        BufferedImage img = ImageIO.read(new java.io.File(tmpFile));
+        mealTypeFile.processBufferedImage(img);
+        fileRepository.save(mealTypeFile);
+        return mealTypeFile;
+
+    }
+
 //    @Override
 //    public Stream<Path> loadAll() {
 //        try {
@@ -167,20 +176,63 @@ public class StorageServiceImpl implements StorageService {
     public Resource recipeImageAsResource(int recipeImageID, int quality){
         Optional<RecipeImage> recipeImage = recipeImageRepository.findById(recipeImageID);
         System.out.println("found recipe image?? " + recipeImage.get());
-        ImageQualityType imageQualityType = ImageQualityType.imageTypeForID(quality);
+        ImageQualityType imageQualityType = null;
 
-        Optional<RecipeFile> recipeFile = recipeImage.get().recipeFileForImageType(imageQualityType);
-        String filePath = recipeFile.get().filePath();
+        try{
+            imageQualityType = ImageQualityType.imageTypeForID(quality);
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+        System.out.println("found recipe image??1 " + imageQualityType);
+        Optional<RecipeFile> recipeFileOpt = recipeImage.get().recipeFileForImageType(imageQualityType);
+        RecipeFile recipeFile = recipeFileOpt.get();
+        System.out.println("found recipeFile:  " + recipeFile);
+        String filePath = null;
+        try{
+            filePath = recipeFile.filePath();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         log.info("looking for recipeimage with filePath: " + filePath);
 
         return loadAsResource(filePath);
 
     }
 
+    public Resource resourceForFileID(Integer id) {
+
+        try {
+            Optional<File> theFile = fileRepository.findById(id);
+            String theFilePath = theFile.get().filePath();
+            Path thePath = Paths.get(theFilePath);
+            System.out.println("fund file path : "  + theFile.get().filePath());
+
+            Resource resource = new UrlResource(thePath.toUri());
+
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                System.out.println("Could not read file");
+                throw new StorageFileNotFoundException(
+                        "Could not read file: " + theFilePath);
+
+            }
+        }
+        catch (MalformedURLException e) {
+            System.out.println("Could not read file catch");
+            throw new StorageFileNotFoundException("Could not read file: ", e);
+        }
+    }
 
 
     public Resource loadAsResource(String filePath) {
         try {
+
             Path file = Paths.get(filePath);
             //Path file = Paths.get("/Users/johnadolfo/Desktop/31");
             //Path file = Paths.get("/Users/johnadolfo/Desktop/test.png");

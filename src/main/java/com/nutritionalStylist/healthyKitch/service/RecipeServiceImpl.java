@@ -116,14 +116,30 @@ public class RecipeServiceImpl implements RecipeService {
 
         String fileExtension =  recipeImage.getOrginalImage().get().fileExtension();
 
-        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
-        ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
-        ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));
+//        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
+//        ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
+//        ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));
+        recipeImage.getPreviewImage().get().processBufferedImage(imagesMap.get(ImageQualityType.PREVIEW));
+        recipeImage.getThumbnailImage().get().processBufferedImage(imagesMap.get(ImageQualityType.THUMBNAIL));
+        recipeImage.getOrginalImage().get().processBufferedImage(imagesMap.get(ImageQualityType.ORIGINAL));
 
         log.info("this is the previewPath : " + recipeImage.displayPreviewImagePath());
         log.info("this is the originalPath : " + recipeImage.displayOriginalImagePath());
         log.info("this is the thumbnailPath : " + recipeImage.displayThumbnailImagePath());
 
+
+    }
+
+    @Override
+    public void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception{
+        //TODO: check if file is image.
+        //Process the file.
+
+        Optional<MealType> mealTypeOpt = mealTypeRepository.findById(mealTypeID);
+        MealType mealType = mealTypeOpt.get();
+        MealTypeFile mealTypeFile = storageService.mealTypeFileForMealType(mealType, file);
+        mealType.setImage(mealTypeFile);
+        mealTypeRepository.save(mealType);
 
     }
 

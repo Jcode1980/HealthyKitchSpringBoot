@@ -1,6 +1,7 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 @Entity
@@ -13,5 +14,15 @@ public class MealType extends NamedEntity {
 
     @ManyToOne
     @JoinColumn(name = "imageID")
-    private File image;
+    private MealTypeFile image;
+
+    public MealTypeFile getImage() {
+        return image;
+    }
+
+    public void setImage(MealTypeFile image) {
+        this.image = image;
+    }
+
+
 }

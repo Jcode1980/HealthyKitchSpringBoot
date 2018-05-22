@@ -14,11 +14,7 @@ public class RecipeFile extends File {
     @NotNull
     protected String imageQualityType;
 
-    @Column(name = "height")
-    protected  int height;
 
-    @Column(name = "width")
-    protected  int width;
 
 //    @ManyToOne
 //    @JoinColumn(name = "recipeImageID")
@@ -47,9 +43,7 @@ public class RecipeFile extends File {
     public  String fileFolder(){ return "RecipeImage/"; }
 
     public String filePath(){
-        String filePath = System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/")
-                + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/") + fileFolder()
-                + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
+        String filePath = productionFolder() + fileFolder() + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
 
         return filePath;
     }
