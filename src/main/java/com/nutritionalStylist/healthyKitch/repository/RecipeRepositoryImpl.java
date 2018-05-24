@@ -6,12 +6,12 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
+
+
 
     @PersistenceContext
     EntityManager entityManager;
@@ -46,7 +46,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
 
     private String queryQualsForSearchStrings(Collection<String> searchStrings){
-        String searchString = searchStrings.stream().map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" and "));
+        String searchString = searchStrings.stream().map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
         //searchString = searchString.substring(0, searchString.lastIndexOf(" and "));
         System.out.println("returning search String : " + searchString);
         return searchString;
@@ -55,10 +55,17 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
     private String createJoinPartOfQuery(RecipeSearchDto recipeSearchDto){
         StringBuilder joinTableStringBuffer = new StringBuilder("");
+
         if(recipeSearchDto.hasMealTypesSearch()){
             joinTableStringBuffer.append("left join meal_type_recipe rtc on (r.id = rtc.recipeID) " +
-                    "left join meal_type m on (rtc.meal_typeID = m.ID)");
+                    "left join meal_type m on (rtc.meal_typeID = m.ID)\n");
         }
+
+        if(recipeSearchDto.hasNutritionalBenefitSearch()){
+            joinTableStringBuffer.append("left join nutritional_benefit_recipe nbr on (r.id = nbr.recipeID) " +
+                    "left join nutritional_benefit n on (nbr.nutritional_benefitid = n.ID)\n");
+        }
+
 
         return joinTableStringBuffer.toString();
     }
@@ -69,7 +76,12 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         whereClauseStringBuffer.append(queryQualsForSearchStrings(recipeSearchDto.getSearchStrings()));
 
         if(recipeSearchDto.hasMealTypesSearch()){
-            String mealTypeSearchString = " and m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")";
+            String mealTypeSearchString = " and m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(mealTypeSearchString);
+        }
+
+        if(recipeSearchDto.hasNutritionalBenefitSearch()){
+            String mealTypeSearchString = " and n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 

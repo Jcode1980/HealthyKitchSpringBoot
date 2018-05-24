@@ -11,7 +11,9 @@ public class RecipeSearchDto {
     private Collection<String> searchStrings;
     private Collection<Integer> mealTypesID;
     private Collection<Integer> nutritionalBenefitID;
+    private Collection<Integer> cuisinesID;
     private boolean searchForTrending;
+
 
 
     public Collection<Integer> getMealTypesID() {
@@ -27,6 +29,8 @@ public class RecipeSearchDto {
     }
 
     public void setNutritionalBenefitID(Collection<Integer> nutritionalBenefitID) { this.nutritionalBenefitID = nutritionalBenefitID; }
+
+
 
     public Collection<String> getSearchStrings() { return searchStrings; }
 
