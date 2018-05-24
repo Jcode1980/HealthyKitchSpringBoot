@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,12 +25,15 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.not;
 import static springfox.documentation.builders.PathSelectors.regex;
 
+//To do autowired. u must run these two lines
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class RecipeServiceImplTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
+    @Autowired
+    private RecipeService recipeService;
 
     @Test
     public void findMealTypes() {
@@ -83,5 +88,17 @@ public class RecipeServiceImplTest {
     }
 
 
+    @Test
+    public void addImageToRecipe(){
+        try{
+            String testFile = "/Users/johnadolfo/Desktop/test.png";
+            MockMultipartFile multipartFile = new MockMultipartFile("files", "Test.png",
+                    "text/plain",  new FileInputStream(testFile));
 
+            recipeService.addImageToRecipe(1, multipartFile);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }

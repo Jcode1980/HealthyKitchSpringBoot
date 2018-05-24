@@ -1,23 +1,16 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
-
-
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
-import com.sun.deploy.net.HttpResponse;
-import com.sun.xml.internal.bind.v2.util.CollisionCheckStack;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recipes")
 public class RecipeController {
     private final RecipeService recipeService;
     private final StorageService storageService;
@@ -38,19 +31,28 @@ public class RecipeController {
         this.storageService = storageService;
         this.recipeService = recipeService;
 
-
         modelMapper = new ModelMapper();
+        PropertyMap<Recipe, RecipeDto> recipeMap = new PropertyMap<Recipe, RecipeDto>() {
+            protected void configure() {
+                //map(source.getDefaultImage(, destination.getDefaultImageID());
+                map(source.sortedMeasuredIngredients(), destination.getMeasuredIngredients());
+                map(source.sortedInstructions(), destination.getInstructions());
+                map(source.sortedDietaryCategories(), destination.getDietaryCategories());
+            }
+        };
+
+        modelMapper.addMappings(recipeMap);
     }
 
 
-    @GetMapping("/recipes/allRecipes")
+    @GetMapping("/allRecipes")
     public Collection<RecipeDto> getAllRecipes(){
         System.out.println("got to all recipes");
         return recipeService.findAllRecipes().stream().map(recipe -> convertToDto(recipe)).
                 collect(Collectors.toList());
     }
 
-    @GetMapping("/recipes/recipes")
+    @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
         //TODO do search here
 
@@ -59,7 +61,7 @@ public class RecipeController {
         return recipes.stream().map(recipe -> convertToDto(recipe)).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/recipes/{recipeID}")
+    @GetMapping(value = "/{recipeID}")
     public Recipe getRecipeById(@PathVariable("recipeID") int recipeID) {
         return recipeService.findRecipeByID(recipeID).orElse(null);
     }
@@ -93,18 +95,35 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/recipes/allMealTypes")
+    @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(){ return recipeService.findAllMealTypes(); }
 
 
-    @GetMapping("/recipes/allNutritionalBenefits")
+    @GetMapping("/allNutritionalBenefits")
     public Collection<NutritionalBenefit> getAllNutritionalBenefit(){ return recipeService.findAllNutritionalBenefits(); }
 
-    @GetMapping("/recipes/allCuisines")
+    @GetMapping("/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
     @GetMapping("/recipes/allDietaryCategories")
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories();}
+
+    @PostMapping("/UploadRecipeImage")
+    public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) {
+
+        try{
+            recipeService.addImageToRecipe(recipeID, file);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/";
+    }
 
 
     

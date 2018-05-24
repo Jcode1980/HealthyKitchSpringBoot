@@ -1,10 +1,18 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Entity
@@ -46,15 +54,21 @@ public class Recipe extends NamedEntity{
         created = new Date();
     }
 
-    public String displayImagePath() {
-        return getDefaultImage().map(RecipeImage::filePath).orElse("images/NoImage.jpg");
+    public String displayPreviewImagePath() {
+        return getDefaultImage().map(RecipeImage::displayPreviewImagePath).orElse("images/NoImage.jpg");
     }
 
-    public String displayImageThumbnailPath() {
-        return getDefaultImage().map(RecipeImage::thumbnailImagePath).orElse("images/NoImage.jpg");
+    public String displayThumbnailImagePath() {
+        return getDefaultImage().map(RecipeImage::displayThumbnailImagePath).orElse("images/NoImage.jpg");
     }
+
+    public String displayOriginalImagePath() {
+        return getDefaultImage().map(RecipeImage::displayOriginalImagePath).orElse("images/NoImage.jpg");
+    }
+
 
     public Optional<RecipeImage> getDefaultImage() { return Optional.ofNullable(this.defaultImage); }
+
 
     public boolean hasDefaultImage() {
         return getDefaultImage().isPresent();
@@ -183,7 +197,51 @@ public class Recipe extends NamedEntity{
         return getNutritionalBenefitInternal().contains(value);
     }
 
+    //used by RecipeDTO
+    public Integer getDefaultImageID(){
+        return getDefaultImage().map(RecipeImage::getId).orElse(null);
+    }
 
+//    public RecipeImage createRecipeImage(HashMap<ImageQualityType, BufferedImage> imagesMap, String fileName) throws Exception{
+//        RecipeImage recipeImage = new RecipeImage();
+//        recipeImage.setRecipe(this);
+//        recipeImage.setName(fileName);
+//
+//        String fileExtension = fileName.substring(fileName.lastIndexOf('.') +1, fileName.length());
+//
+//        for(ImageQualityType imageQualityType : imagesMap.keySet()){
+//            RecipeFile newRecipeFile = new RecipeFile(imageQualityType);
+//            BufferedImage image = imagesMap.get(imageQualityType);
+//            ImageIO.write(image, fileExtension, new File(newRecipeFile.filePath()));
+//
+//        }
+//
+//        RecipeFile orginalFile = new RecipeFile(ImageQualityType.ORIGINAL);
+//        RecipeFile previewFile = new RecipeFile(ImageQualityType.PREVIEW);
+//        RecipeFile thumbnailFile = new RecipeFile(ImageQualityType.THUMBNAIL);
+//        recipeImage.setOrginalImage(orginalFile);
+//        recipeImage.setPreviewImage(previewFile);
+//        recipeImage.setThumbnailImage(thumbnailFile);
+//
+//        return recipeImage;
+//    }
+
+    public RecipeImage createRecipeImage( String fileName) throws Exception{
+        MimeMappings mimeMappings = new MimeMappings();
+        RecipeImage recipeImage = new RecipeImage();
+        recipeImage.setRecipe(this);
+        recipeImage.setName(fileName);
+
+
+        RecipeFile orginalFile = new RecipeFile(fileName, ImageQualityType.ORIGINAL);
+        RecipeFile previewFile = new RecipeFile(fileName, ImageQualityType.PREVIEW);
+        RecipeFile thumbnailFile = new RecipeFile(fileName, ImageQualityType.THUMBNAIL);
+        recipeImage.setOrginalImage(orginalFile);
+        recipeImage.setPreviewImage(previewFile);
+        recipeImage.setThumbnailImage(thumbnailFile);
+
+        return recipeImage;
+    }
 
 
 //    public function removeMealType($mealType){

@@ -1,9 +1,8 @@
 package com.nutritionalStylist.healthyKitch.repository;
 
-import com.nutritionalStylist.healthyKitch.model.Cuisine;
 import com.nutritionalStylist.healthyKitch.model.File;
+import com.nutritionalStylist.healthyKitch.model.MealType;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface CuisineRepository extends PagingAndSortingRepository<Cuisine,Integer> {
-
+public interface FileRepository extends PagingAndSortingRepository<File,Integer> {
 }

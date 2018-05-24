@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,16 +89,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//
+//        web.ignoring().antMatchers("/api/v1/signup");
+//        http
+//            .authorizeRequests()
+//                .antMatchers("/css/**", "/index", "/api/**", "/files/**", "/files/*").permitAll()
+//            //.antMatchers("/api/**", "/").authenticated()
+//            .antMatchers("/user/**").hasRole("USER");
+//
+//    }
+//
+//
 
-        http
-            .authorizeRequests()
-            .antMatchers("/css/**", "/index", "/api/**").permitAll()
-            //.antMatchers("/api/**", "/").authenticated()
-            .antMatchers("/user/**").hasRole("USER");
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/**");
 
     }
-//
-//
+
 }

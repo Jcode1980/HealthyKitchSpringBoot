@@ -27,6 +27,7 @@ public interface RecipeService {
 
     Collection<Recipe> findAllRecipes();
 
-    void addImageToRecipe(MultipartFile file);
+    void addImageToRecipe(int recipeID, MultipartFile file) throws Exception;
 
+    void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception;
 }

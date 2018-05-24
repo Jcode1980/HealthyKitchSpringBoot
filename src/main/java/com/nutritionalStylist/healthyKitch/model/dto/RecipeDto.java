@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
+import com.nutritionalStylist.healthyKitch.model.DietaryCategory;
 import com.nutritionalStylist.healthyKitch.model.Instruction;
 import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.MeasuredIngredient;
@@ -15,6 +16,7 @@ public class RecipeDto {
     private ArrayList<Instruction> instructions;
     private ArrayList<MealType> mealTypes;
     private ArrayList<MeasuredIngredient> measuredIngredients;
+    private ArrayList<DietaryCategory> dietaryCategories;
 
     public Integer getId() {
         return id;
@@ -54,6 +56,14 @@ public class RecipeDto {
 
     public void setMeasuredIngredients(ArrayList<MeasuredIngredient> measuredIngredients) {
         this.measuredIngredients = measuredIngredients;
+    }
+
+    public ArrayList<DietaryCategory> getDietaryCategories() {
+        return dietaryCategories;
+    }
+
+    public void setDietaryCategories(ArrayList<DietaryCategory> dietaryCategories) {
+        this.dietaryCategories = dietaryCategories;
     }
 
     public Integer getDefaultImageID() {
