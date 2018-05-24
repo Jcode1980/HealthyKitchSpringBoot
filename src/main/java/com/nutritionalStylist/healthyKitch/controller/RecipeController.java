@@ -105,6 +105,8 @@ public class RecipeController {
     @GetMapping("/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
+    @GetMapping("/recipes/allDietaryCategories")
+    public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories();}
 
     @PostMapping("/UploadRecipeImage")
     public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
@@ -123,6 +125,8 @@ public class RecipeController {
         return "redirect:/";
     }
 
+
+    
 
 //     @RequestMapping(method = RequestMethod.GET)
 //    @ResponseBody

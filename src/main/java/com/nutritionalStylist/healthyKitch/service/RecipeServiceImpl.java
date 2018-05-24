@@ -1,6 +1,9 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+<<<<<<< HEAD
+=======
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+>>>>>>> 9589d286daa0500875b1fa024a98b887ff57375e
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -27,20 +30,19 @@ public class RecipeServiceImpl implements RecipeService {
     private MealTypeRepository mealTypeRepository;
     private NutritionalBenefitRepository nutritionalBenefitRepository;
     private CuisineRepository cuisineRepository;
+    private DietaryCategoryRepository dietaryCategoryRepository;
     private StorageService storageService ;
     private RecipeImageRepository recipeImageRepository;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
-                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository,
-                             StorageService storageService, RecipeImageRepository recipeImageRepository){
+    public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository, StorageService storageService, RecipeImageRepository recipeImageRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
         this.cuisineRepository = cuisineRepository;
+        this.dietaryCategoryRepository = dietaryCategoryRepository;
         this.storageService = storageService;
         this.recipeImageRepository = recipeImageRepository;
-
     }
 
 
@@ -97,6 +99,12 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     @Transactional(readOnly = true)
     public Collection<Cuisine> findAllCuisines() throws DataAccessException { return (Collection<Cuisine>) cuisineRepository.findAll(); }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<DietaryCategory> findAllDietaryCategories() throws DataAccessException { return (Collection<DietaryCategory>)dietaryCategoryRepository.findAll(); }
 
 
     @Override
