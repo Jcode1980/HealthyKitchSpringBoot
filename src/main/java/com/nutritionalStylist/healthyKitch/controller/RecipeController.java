@@ -54,8 +54,6 @@ public class RecipeController {
 
     @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
-        //TODO do search here
-
         Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
         System.out.println("found recipes : " + recipes);
         return recipes.stream().map(recipe -> convertToDto(recipe)).collect(Collectors.toList());
@@ -65,8 +63,6 @@ public class RecipeController {
     public Recipe getRecipeById(@PathVariable("recipeID") int recipeID) {
         return recipeService.findRecipeByID(recipeID).orElse(null);
     }
-
-
 
     /**
      * Update Recipe
@@ -79,7 +75,7 @@ public class RecipeController {
         try{
             recipe = convertToEntity(recipeDto);
         }catch (Exception e){
-            System.out.println("something went wrong");
+            System.out.println("something went wrong when converting dto to recipe");
             return;
         }
 
@@ -108,10 +104,11 @@ public class RecipeController {
     @GetMapping("/recipes/allDietaryCategories")
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories();}
 
-    @PostMapping("/UploadRecipeImage")
+    @PostMapping("/UploadRecipeImage/{recipeID}")
     public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
+        System.out.println("got here UploadRecipeImage");
         try{
             recipeService.addImageToRecipe(recipeID, file);
         }

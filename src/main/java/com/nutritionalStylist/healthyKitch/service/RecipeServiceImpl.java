@@ -1,9 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
-<<<<<<< HEAD
-=======
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
->>>>>>> 9589d286daa0500875b1fa024a98b887ff57375e
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -116,12 +113,20 @@ public class RecipeServiceImpl implements RecipeService {
         HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processAndStoreImage(theRecipe, file);
         RecipeImage recipeImage = theRecipe.createRecipeImage(fileName);
 
+
+
         recipeImageRepository.save(recipeImage);
 
+        if(!theRecipe.getDefaultImage().isPresent() ){
 
+            theRecipe.setDefaultImage(recipeImage);
+
+        }
+
+        System.out.println("the default image of the recipe is: " + recipeImage);
+        recipeRepository.save(theRecipe);
 
         //TODO: tmp file should be removed.
-
         String fileExtension =  recipeImage.getOrginalImage().get().fileExtension();
 
 //        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));

@@ -15,7 +15,7 @@ public class RecipeSearchDto {
     private Collection<Integer> dietaryRequirementsID;
     private boolean searchForTrending;
 
-    
+
     public Collection<Integer> getMealTypesID() {
         return mealTypesID;
     }
@@ -30,8 +30,6 @@ public class RecipeSearchDto {
 
     public void setNutritionalBenefitID(Collection<Integer> nutritionalBenefitID) { this.nutritionalBenefitID = nutritionalBenefitID; }
 
-
-
     public Collection<String> getSearchStrings() { return searchStrings; }
 
     public void setSearchStrings(Collection<String> searchStrings) {
@@ -45,6 +43,10 @@ public class RecipeSearchDto {
     public boolean hasMealTypesSearch(){ return getMealTypesID() != null && getMealTypesID().size() > 0; }
 
     public boolean hasNutritionalBenefitSearch(){ return getNutritionalBenefitID() != null && getNutritionalBenefitID().size() > 0; }
+
+    public boolean hasCuisineSearch(){ return getCuisinesID() != null && getCuisinesID().size() > 0; }
+
+    public boolean hasDietaryRequirementSearch(){ return getDietaryRequirementsID() != null && getDietaryRequirementsID().size() > 0; }
 
     public boolean hasSearchStrings(){ return getSearchStrings() != null && getSearchStrings().size() > 0; }
 

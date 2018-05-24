@@ -66,6 +66,17 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
                     "left join nutritional_benefit n on (nbr.nutritional_benefitid = n.ID)\n");
         }
 
+        if(recipeSearchDto.hasDietaryRequirementSearch()){
+            joinTableStringBuffer.append("left join dietary_category_recipe dcr on (r.id = dcr.recipeID) " +
+                    "left join dietary_category dc on (dcr.dietary_categoryid = dc.ID)\n");
+        }
+
+        if(recipeSearchDto.hasCuisineSearch()){
+            joinTableStringBuffer.append("left join cuisine_recipe cr on (r.id = cr.recipeID) " +
+                    "left join cuisine c on (cr.cuisineid = c.ID)\n");
+        }
+
+
 
         return joinTableStringBuffer.toString();
     }
@@ -84,6 +95,19 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
             String mealTypeSearchString = " and n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
+
+        if(recipeSearchDto.hasDietaryRequirementSearch()){
+            String dietarySearchString = " and dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(dietarySearchString);
+
+        }
+
+        if(recipeSearchDto.hasCuisineSearch()){
+            String cuisineSearchString = " and c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(cuisineSearchString);
+
+        }
+
 
         return whereClauseStringBuffer.toString();
 

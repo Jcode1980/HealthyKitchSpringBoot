@@ -24,7 +24,7 @@ public class Recipe extends NamedEntity{
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date created;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipeImageID")
     private RecipeImage defaultImage;
 
@@ -49,6 +49,11 @@ public class Recipe extends NamedEntity{
         inverseJoinColumns = @JoinColumn(name = "dietaryCategoryID"))
     private Set<DietaryCategory> dietaryCategories;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "CuisineRecipe", joinColumns = @JoinColumn(name = "recipeID"),
+            inverseJoinColumns = @JoinColumn(name = "cuisineID"))
+    private Set<Cuisine> cuisines;
+
     @PrePersist
     protected void onCreate() {
         created = new Date();
@@ -68,6 +73,8 @@ public class Recipe extends NamedEntity{
 
 
     public Optional<RecipeImage> getDefaultImage() { return Optional.ofNullable(this.defaultImage); }
+
+    public void setDefaultImage(RecipeImage recipeImage) { this.defaultImage=recipeImage; }
 
 
     public boolean hasDefaultImage() {
@@ -197,10 +204,38 @@ public class Recipe extends NamedEntity{
         return getNutritionalBenefitInternal().contains(value);
     }
 
+    //Nutrional Benefits Area
+    protected Set<Cuisine> getCuisinesInternal() {
+        if (this.cuisines == null) {
+            this.cuisines = new HashSet<>();
+        }
+        return this.cuisines;
+    }
+
+    protected void setCuisinesInternal(Set<Cuisine> cuisines) {
+        this.nutritionalBenefits = nutritionalBenefits;
+    }
+
+    public List<Cuisine> sortedCuisines() {
+        List<Cuisine> sortedCuisines = new ArrayList<>(getCuisinesInternal());
+        PropertyComparator.sort(sortedCuisines, new MutableSortDefinition("name", true, true));
+        return Collections.unmodifiableList(sortedCuisines);
+    }
+
+    public void addCuisine(Cuisine cuisine) {
+        getCuisinesInternal().add(cuisine);
+    }
+
+    public boolean cuisineExistsInRecipe(Cuisine value) {
+        return getNutritionalBenefitInternal().contains(value);
+    }
+
     //used by RecipeDTO
     public Integer getDefaultImageID(){
         return getDefaultImage().map(RecipeImage::getId).orElse(null);
     }
+
+
 
 //    public RecipeImage createRecipeImage(HashMap<ImageQualityType, BufferedImage> imagesMap, String fileName) throws Exception{
 //        RecipeImage recipeImage = new RecipeImage();
@@ -231,7 +266,6 @@ public class Recipe extends NamedEntity{
         RecipeImage recipeImage = new RecipeImage();
         recipeImage.setRecipe(this);
         recipeImage.setName(fileName);
-
 
         RecipeFile orginalFile = new RecipeFile(fileName, ImageQualityType.ORIGINAL);
         RecipeFile previewFile = new RecipeFile(fileName, ImageQualityType.PREVIEW);

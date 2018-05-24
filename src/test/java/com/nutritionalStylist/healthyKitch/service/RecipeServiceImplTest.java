@@ -61,6 +61,8 @@ public class RecipeServiceImplTest {
         recipeSearchDTO.setSearchStrings(searchStrings);
         recipeSearchDTO.setMealTypesID(mealTypes);
         recipeSearchDTO.setNutritionalBenefitID(mealTypes);
+        recipeSearchDTO.setDietaryRequirementsID(mealTypes);
+        recipeSearchDTO.setCuisinesID(mealTypes);
         List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
         assertThat(recipes.size(), is(1));
     }
