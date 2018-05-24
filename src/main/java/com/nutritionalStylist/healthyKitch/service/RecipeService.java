@@ -1,9 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
-import com.nutritionalStylist.healthyKitch.model.Cuisine;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,8 @@ public interface RecipeService {
     Collection<NutritionalBenefit> findAllNutritionalBenefits();
 
     Collection<Cuisine> findAllCuisines();
+
+    Collection<DietaryCategory> findAllDietaryCategories();
 
     Optional<Recipe> findRecipeByID(int id);
 

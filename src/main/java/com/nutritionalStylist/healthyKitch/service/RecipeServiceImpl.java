@@ -1,15 +1,9 @@
 package com.nutritionalStylist.healthyKitch.service;
 
-import com.nutritionalStylist.healthyKitch.model.Cuisine;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
-import com.nutritionalStylist.healthyKitch.repository.CuisineRepository;
-import com.nutritionalStylist.healthyKitch.repository.MealTypeRepository;
-import com.nutritionalStylist.healthyKitch.repository.NutritionalBenefitRepository;
-import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
+import com.nutritionalStylist.healthyKitch.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -28,14 +22,17 @@ public class RecipeServiceImpl implements RecipeService {
     private MealTypeRepository mealTypeRepository;
     private NutritionalBenefitRepository nutritionalBenefitRepository;
     private CuisineRepository cuisineRepository;
+    private DietaryCategoryRepository dietaryCategoryRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,
-                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository){
+                             NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository,
+                             DietaryCategoryRepository dietaryCategoryRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
         this.cuisineRepository = cuisineRepository;
+        this.dietaryCategoryRepository = dietaryCategoryRepository;
     }
 
 
@@ -93,6 +90,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional(readOnly = true)
     public Collection<Cuisine> findAllCuisines() throws DataAccessException { return (Collection<Cuisine>) cuisineRepository.findAll(); }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<DietaryCategory> findAllDietaryCategories() throws DataAccessException { return (Collection<DietaryCategory>) dietaryCategoryRepository.findAll(); }
 
 
     @Override

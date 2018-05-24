@@ -10,7 +10,9 @@ import java.util.Collection;
 public class RecipeSearchDto {
     private Collection<String> searchStrings;
     private Collection<Integer> mealTypesID;
+    private Collection<Integer> cuisinesID;
     private Collection<Integer> nutritionalBenefitID;
+    private Collection<Integer> dietaryRequirementsID;
     private boolean searchForTrending;
 
 
@@ -46,5 +48,11 @@ public class RecipeSearchDto {
 
     public boolean hasSomeKindOfSearch(){return hasMealTypesSearch() || hasNutritionalBenefitSearch() || hasSearchStrings();};
 
+    public Collection<Integer> getCuisinesID() { return cuisinesID; }
 
+    public void setCuisinesID(Collection<Integer> cuisinesID) { this.cuisinesID = cuisinesID; }
+
+    public Collection<Integer> getDietaryRequirementsID() { return dietaryRequirementsID; }
+
+    public void setDietaryRequirementsID(Collection<Integer> dietaryRequirementsID) { this.dietaryRequirementsID = dietaryRequirementsID; }
 }
