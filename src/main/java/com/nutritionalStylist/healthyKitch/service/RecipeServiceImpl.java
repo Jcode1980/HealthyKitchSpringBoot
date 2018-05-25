@@ -114,7 +114,6 @@ public class RecipeServiceImpl implements RecipeService {
         RecipeImage recipeImage = theRecipe.createRecipeImage(fileName);
 
 
-
         recipeImageRepository.save(recipeImage);
 
         if(!theRecipe.getDefaultImage().isPresent() ){
