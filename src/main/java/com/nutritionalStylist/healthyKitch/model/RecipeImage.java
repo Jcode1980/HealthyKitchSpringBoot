@@ -1,11 +1,9 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Optional;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.boot.web.server.MimeMappings;
@@ -13,7 +11,9 @@ import org.springframework.boot.web.server.MimeMappings;
 @Entity
 public class RecipeImage extends NamedEntity {
 
-    @ManyToOne
+
+    @JsonIgnore
+    @OneToOne
     @JoinColumn(name = "recipeID")
     private Recipe recipe;
 

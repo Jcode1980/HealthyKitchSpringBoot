@@ -36,7 +36,7 @@ public class RecipeController {
             protected void configure() {
                 //map(source.getDefaultImage(, destination.getDefaultImageID());
                 map(source.sortedMeasuredIngredients(), destination.getMeasuredIngredients());
-                map(source.sortedInstructions(), destination.getInstructions());
+                map(source.getInstructions(), destination.getInstructions());
                 map(source.sortedDietaryCategories(), destination.getDietaryCategories());
             }
         };
@@ -60,14 +60,15 @@ public class RecipeController {
     }
 
     @GetMapping(value = "/{recipeID}")
-    public Recipe getRecipeById(@PathVariable("recipeID") int recipeID) {
-        return recipeService.findRecipeByID(recipeID).orElse(null);
+    public RecipeDto getRecipeById(@PathVariable("recipeID") int recipeID) {
+        Recipe recipe = recipeService.findRecipeByID(recipeID).orElseThrow(IllegalArgumentException::new);
+        return convertToDto(recipe);
     }
 
     /**
      * Update Recipe
      */
-    @PutMapping(value = "/recipe/{recipeID}")
+    @PutMapping(value = "/{recipeID}")
     @ResponseStatus(HttpStatus.OK)
     public void updateRecipe(@Valid @RequestBody RecipeDto recipeDto) {
         Recipe recipe;
@@ -91,8 +92,41 @@ public class RecipeController {
     }
 
 
+    /**
+     * Create Recipe
+     */
+    @PostMapping(value = "/{recipeID}")
+    @ResponseStatus(HttpStatus.OK)
+    public void createRecipe(@Valid @RequestBody RecipeDto recipeDto) {
+        Recipe recipe;
+        //TODO: investigate proper way of handling exceptions.
+        try{
+            recipe = convertToEntity(recipeDto);
+        }catch (Exception e){
+            System.out.println("something went wrong when converting dto to recipe");
+            return;
+        }
+
+        System.out.println("this is the recipe from mappedModel : " + recipe);
+        System.out.println("this is the instructions from mappedModel : " + recipe.getInstructions());
+        recipeService.saveRecipe(recipe);
+        //this.recipeService.saveRecipe(recipe);
+
+//        // This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
+//        recipeModel.get().setName(recipeRequest.getName());
+//
+//        this.recipeService.saveRecipe(recipeModel.get());
+//        return recipeModel.get();
+    }
+
+
+
     @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(){ return recipeService.findAllMealTypes(); }
+
+
+    @GetMapping("/allMetrics")
+    public Collection<Metric> getAllMetrics(){ return recipeService.findAllMetrics(); }
 
 
     @GetMapping("/allNutritionalBenefits")
@@ -103,6 +137,8 @@ public class RecipeController {
 
     @GetMapping("/recipes/allDietaryCategories")
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories();}
+
+
 
     @PostMapping("/UploadRecipeImage/{recipeID}")
     public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
@@ -122,9 +158,7 @@ public class RecipeController {
         return "redirect:/";
     }
 
-
     
-
 //     @RequestMapping(method = RequestMethod.GET)
 //    @ResponseBody
 //    public List<PostDto> getPosts(...) {

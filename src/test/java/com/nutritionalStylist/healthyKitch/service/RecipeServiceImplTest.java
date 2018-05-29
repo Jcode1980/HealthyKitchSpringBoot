@@ -2,12 +2,12 @@ package com.nutritionalStylist.healthyKitch.service;
 
 import com.google.common.base.Predicate;
 import com.nutritionalStylist.healthyKitch.Application;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.GreaterThan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.not;
@@ -37,14 +38,40 @@ public class RecipeServiceImplTest {
 
     @Test
     public void findMealTypes() {
+        Collection<MealType> mealTypes = recipeService.findAllMealTypes();
+        assertThat(mealTypes.size(), greaterThan(0));
+    }
 
+    @Test
+    public void findAllNutritionalBenefits() {
+        Collection<NutritionalBenefit> nutritionalBenefits = recipeService.findAllNutritionalBenefits();
+        assertThat(nutritionalBenefits.size(), greaterThan(0));
+    }
+
+    @Test
+    public void findAllDietaryCategories() {
+        Collection<DietaryCategory> dietaryCategories = recipeService.findAllDietaryCategories();
+        assertThat(dietaryCategories.size(), greaterThan(0));
+    }
+
+    @Test
+    public void findAllMetrics() {
+        Collection<Metric> metrics = recipeService.findAllMetrics();
+        assertThat(metrics.size(), greaterThan(0));
+    }
+
+
+    @Test
+    public void findAll() {
+        Collection<Cuisine> cuisines = recipeService.findAllCuisines();
+        assertThat(cuisines.size(), greaterThan(0));
     }
 
     @Test
     public void findRecipeByID() {
-        System.out.println("recipeRepository :" + recipeRepository);
-        System.out.println("NOt null?? " + (recipeRepository.findById(1)));
-        assertThat(recipeRepository.findById(1).get().getName(), is("Test"));
+        //System.out.println("recipeRepository :" + recipeRepository);
+        //System.out.println("NOt null?? " + (recipeRepository.findById(1)));
+        assertThat(recipeRepository.findById(1).get().getId(), is(1));
     }
 
     @Test
@@ -83,12 +110,12 @@ public class RecipeServiceImplTest {
     public void findAllRecipes() {
     }
 
-    @Test
-    public void regexTest(){
-        Predicate<String> regexER =  regex("api.*|/login|/logout");
-        assertThat(regexER.apply("api/"),is(true));
-        assertThat(regexER.apply("/login"),is(true));
-    }
+//    @Test
+//    public void regexTest(){
+//        Predicate<String> regexER =  regex("api.*|/login|/logout");
+//        assertThat(regexER.apply("api/"),is(true));
+//        assertThat(regexER.apply("/login"),is(true));
+//    }
 
 
     @Test

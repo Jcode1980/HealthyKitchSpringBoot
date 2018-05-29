@@ -30,9 +30,12 @@ public class RecipeServiceImpl implements RecipeService {
     private DietaryCategoryRepository dietaryCategoryRepository;
     private StorageService storageService ;
     private RecipeImageRepository recipeImageRepository;
+    private MetricRepository metricRepository;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository, CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository, StorageService storageService, RecipeImageRepository recipeImageRepository){
+    public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository,
+                             CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository,
+                             StorageService storageService, RecipeImageRepository recipeImageRepository, MetricRepository metricRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
@@ -40,6 +43,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.dietaryCategoryRepository = dietaryCategoryRepository;
         this.storageService = storageService;
         this.recipeImageRepository = recipeImageRepository;
+        this.metricRepository = metricRepository;
     }
 
 
@@ -97,6 +101,9 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional(readOnly = true)
     public Collection<Cuisine> findAllCuisines() throws DataAccessException { return (Collection<Cuisine>) cuisineRepository.findAll(); }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Metric> findAllMetrics() throws DataAccessException { return (Collection<Metric>) metricRepository.findAll(); }
 
 
     @Override

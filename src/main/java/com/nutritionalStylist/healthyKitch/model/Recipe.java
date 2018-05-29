@@ -24,14 +24,14 @@ public class Recipe extends NamedEntity{
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date created;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipeImageID")
     private RecipeImage defaultImage;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<MeasuredIngredient> measuredIngredients;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "recipe")
     private List<Instruction> instructions;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -104,27 +104,27 @@ public class Recipe extends NamedEntity{
     }
 
 
-    //Instructions Area
-    protected List<Instruction> getInstructionsInternal() {
-        if (this.instructions == null) {
-            this.instructions = new ArrayList<>();
-        }
-        return this.instructions;
-    }
+//    //Instructions Area
+//    protected List<Instruction> getInstructionsInternal() {
+//        if (this.instructions == null) {
+//            this.instructions = new ArrayList<>();
+//        }
+//        return this.instructions;
+//    }
 
-    protected void setInstructionsInternal(List<Instruction> instructions) {
-        this.instructions = instructions;
-    }
+//    protected void setInstructionsInternal(List<Instruction> instructions) {
+//        this.instructions = instructions;
+//    }
 
-    public List<Instruction> sortedInstructions() {
-        List<Instruction> sortedInstructions = new ArrayList<>(getInstructionsInternal());
-        PropertyComparator.sort(sortedInstructions, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedInstructions);
-    }
+//    public List<Instruction> sortedInstructions() {
+//        List<Instruction> sortedInstructions = new ArrayList<>(getInstructionsInternal());
+//        PropertyComparator.sort(sortedInstructions, new MutableSortDefinition("name", true, true));
+//        return Collections.unmodifiableList(sortedInstructions);
+//    }
 
-    public void addInstruction(Instruction instruction) {
-        getInstructionsInternal().add(instruction);
-    }
+//    public void addInstruction(Instruction instruction) {
+//        getInstructionsInternal().add(instruction);
+//    }
 
 
 
@@ -133,9 +133,9 @@ public class Recipe extends NamedEntity{
 
     }
 
-    public Optional<Instruction> lastInstruction(){
-        return sortedInstructions().stream().reduce((first, second) -> second);
-    }
+//    public Optional<Instruction> lastInstruction(){
+//        return sortedInstructions().stream().reduce((first, second) -> second);
+//    }
 
 
     public  Optional<MeasuredIngredient> lastMesauredIngredient(){
@@ -277,8 +277,15 @@ public class Recipe extends NamedEntity{
         return recipeImage;
     }
 
+    public List<Instruction> getInstructions() {
+        return instructions;
+    }
 
-//    public function removeMealType($mealType){
+    public void setInstructions(List<Instruction> instructions) {
+        this.instructions = instructions;
+    }
+
+    //    public function removeMealType($mealType){
 //        $this->removeObjectFromManyToManytRelationship($mealType, "MealTypeRecipe", "mealTypeID");
 //    }
 //

@@ -6,6 +6,7 @@ import com.nutritionalStylist.healthyKitch.model.MealType;
 import com.nutritionalStylist.healthyKitch.model.MeasuredIngredient;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class RecipeDto {
    // private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -13,10 +14,10 @@ public class RecipeDto {
     private Integer id;
     private String name;
     private Integer defaultImageID;
-    private ArrayList<Instruction> instructions;
-    private ArrayList<MealType> mealTypes;
-    private ArrayList<MeasuredIngredient> measuredIngredients;
-    private ArrayList<DietaryCategory> dietaryCategories;
+    private Collection<Instruction> instructions;
+    private Collection<MealType> mealTypes;
+    private Collection<MeasuredIngredient> measuredIngredients;
+    private Collection<DietaryCategory> dietaryCategories;
 
     public Integer getId() {
         return id;
@@ -34,35 +35,35 @@ public class RecipeDto {
         this.name = name;
     }
 
-    public ArrayList<Instruction> getInstructions() {
+    public Collection<Instruction> getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(ArrayList<Instruction> instructions) {
+    public void setInstructions(Collection<Instruction> instructions) {
         this.instructions = instructions;
     }
 
-    public ArrayList<MealType> getMealTypes() {
+    public Collection<MealType> getMealTypes() {
         return mealTypes;
     }
 
-    public void setMealTypes(ArrayList<MealType> mealTypes) {
+    public void setMealTypes(Collection<MealType> mealTypes) {
         this.mealTypes = mealTypes;
     }
 
-    public ArrayList<MeasuredIngredient> getMeasuredIngredients() {
+    public Collection<MeasuredIngredient> getMeasuredIngredients() {
         return measuredIngredients;
     }
 
-    public void setMeasuredIngredients(ArrayList<MeasuredIngredient> measuredIngredients) {
+    public void setMeasuredIngredients(Collection<MeasuredIngredient> measuredIngredients) {
         this.measuredIngredients = measuredIngredients;
     }
 
-    public ArrayList<DietaryCategory> getDietaryCategories() {
+    public Collection<DietaryCategory> getDietaryCategories() {
         return dietaryCategories;
     }
 
-    public void setDietaryCategories(ArrayList<DietaryCategory> dietaryCategories) {
+    public void setDietaryCategories(Collection<DietaryCategory> dietaryCategories) {
         this.dietaryCategories = dietaryCategories;
     }
 

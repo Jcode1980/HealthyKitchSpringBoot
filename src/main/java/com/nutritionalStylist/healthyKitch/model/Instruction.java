@@ -15,5 +15,19 @@ public class Instruction extends BaseEntity{
     @Column
     protected String sortID;
 
+    public String getDescText() {
+        return descText;
+    }
 
+    public void setDescText(String descText) {
+        this.descText = descText;
+    }
+
+    public String getSortID() {
+        return sortID;
+    }
+
+    public void setSortID(String sortID) {
+        this.sortID = sortID;
+    }
 }
