@@ -91,7 +91,7 @@ public class RecipeServiceImplTest {
         recipeSearchDTO.setDietaryRequirementsID(mealTypes);
         recipeSearchDTO.setCuisinesID(mealTypes);
         List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
-        assertThat(recipes.size(), is(1));
+        assertThat(recipes.size(), greaterThan(0));
     }
 
     @Test

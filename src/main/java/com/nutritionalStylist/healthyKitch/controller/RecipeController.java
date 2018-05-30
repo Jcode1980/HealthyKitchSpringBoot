@@ -158,7 +158,7 @@ public class RecipeController {
         return "redirect:/";
     }
 
-    
+
 //     @RequestMapping(method = RequestMethod.GET)
 //    @ResponseBody
 //    public List<PostDto> getPosts(...) {
