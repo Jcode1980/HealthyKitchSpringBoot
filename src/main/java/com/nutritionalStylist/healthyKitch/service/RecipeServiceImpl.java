@@ -120,7 +120,6 @@ public class RecipeServiceImpl implements RecipeService {
         HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processAndStoreImage(theRecipe, file);
         RecipeImage recipeImage = theRecipe.createRecipeImage(fileName);
 
-
         recipeImageRepository.save(recipeImage);
 
         if(!theRecipe.getDefaultImage().isPresent() ){

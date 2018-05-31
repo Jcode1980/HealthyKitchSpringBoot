@@ -135,7 +135,7 @@ public class RecipeController {
     @GetMapping("/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
-    @GetMapping("/recipes/allDietaryCategories")
+    @GetMapping("/allDietaryCategories")
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories();}
 
 
