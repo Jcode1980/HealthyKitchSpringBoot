@@ -83,27 +83,58 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
     private String createWherePartOfQuery(RecipeSearchDto recipeSearchDto){
         StringBuilder whereClauseStringBuffer = new StringBuilder(" where ");
-
-        whereClauseStringBuffer.append(queryQualsForSearchStrings(recipeSearchDto.getSearchStrings()));
+        boolean isFirstCriteria = true;
+        if(recipeSearchDto.hasSearchStrings()) {
+            whereClauseStringBuffer.append(queryQualsForSearchStrings(recipeSearchDto.getSearchStrings()));
+            isFirstCriteria = false;
+        }
 
         if(recipeSearchDto.hasMealTypesSearch()){
-            String mealTypeSearchString = " and m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            if(!isFirstCriteria)
+            {
+                whereClauseStringBuffer.append(" and ");
+            }
+            else{
+                isFirstCriteria = true;
+            }
+            String mealTypeSearchString = " m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasNutritionalBenefitSearch()){
-            String mealTypeSearchString = " and n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            if(!isFirstCriteria)
+            {
+                whereClauseStringBuffer.append(" and ");
+            }
+            else{
+                isFirstCriteria = true;
+            }
+            String mealTypeSearchString = " n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasDietaryRequirementSearch()){
-            String dietarySearchString = " and dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            if(!isFirstCriteria)
+            {
+                whereClauseStringBuffer.append(" and ");
+            }
+            else{
+                isFirstCriteria = true;
+            }
+            String dietarySearchString = " dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(dietarySearchString);
 
         }
 
         if(recipeSearchDto.hasCuisineSearch()){
-            String cuisineSearchString = " and c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            if(!isFirstCriteria)
+            {
+                whereClauseStringBuffer.append(" and ");
+            }
+            else{
+                isFirstCriteria = true;
+            }
+            String cuisineSearchString = " c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(cuisineSearchString);
 
         }

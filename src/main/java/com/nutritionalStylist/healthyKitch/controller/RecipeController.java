@@ -80,9 +80,9 @@ public class RecipeController {
             return;
         }
 
-        System.out.println("this is the recipe from mappedModel : " + recipe);
+        System.out.println("thisssss is the recipe from mappedModel : " + recipe);
 
-        //this.recipeService.saveRecipe(recipe);
+        this.recipeService.saveRecipe(recipe);
 
 //        // This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
 //        recipeModel.get().setName(recipeRequest.getName());
