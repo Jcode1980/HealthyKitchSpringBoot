@@ -16,6 +16,8 @@ public class MealType extends NamedEntity {
     @JoinColumn(name = "imageID")
     private MealTypeFile image;
 
+    private Integer sortID;
+
     public MealTypeFile getImage() {
         return image;
     }
@@ -24,6 +26,11 @@ public class MealType extends NamedEntity {
         this.image = image;
     }
 
+    public Integer getSortID() {
+        return sortID;
+    }
 
-
+    public void setSortID(Integer sortID) {
+        this.sortID = sortID;
+    }
 }
