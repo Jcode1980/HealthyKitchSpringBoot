@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+
+@CrossOrigin(origins = "http://adolfotrove.ddns.net:4010")
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
@@ -118,7 +120,6 @@ public class RecipeController {
 //        this.recipeService.saveRecipe(recipeModel.get());
 //        return recipeModel.get();
     }
-
 
 
     @GetMapping("/allMealTypes")

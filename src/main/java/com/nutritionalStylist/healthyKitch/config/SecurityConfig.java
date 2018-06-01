@@ -56,18 +56,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-    // this configuration allow the client app to access the this api
-    // all the domain that consume this api must be included in the allowed o'rings
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:8085");
+//    // this configuration allow the client app to access the this api
+//    // all the domain that consume this api must be included in the allowed o'rings
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**").allowedOrigins("http://localhost:8085");
+//
+//            }
+//        };
+//    }
 
-            }
-        };
-    }
+
+
 //    // This method is for overriding some configuration of the WebSecurity
 //    // If you want to ignore some request or request patterns then you can
 //    // specify that inside this method
@@ -102,6 +105,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 //
 //
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors();
+    }
 
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/**");
