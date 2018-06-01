@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Optional;
@@ -155,6 +156,29 @@ public class RecipeController {
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/";
+    }
+
+
+    @PostMapping(value = "/UploadRecipeImages/{recipeID}", consumes="multipart/form-data")
+    public String handleMultipfileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile[] file,
+                                RedirectAttributes redirectAttributes) throws IOException {
+
+
+        System.out.println("got here UploadRecipeImage: " + file);
+        System.out.println("got here UploadRecipeImage: " + file.length);
+        try{
+            for(MultipartFile uploadedFile : file) {
+                recipeService.addImageToRecipe(recipeID, uploadedFile);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded recipe image files!");
 
         return "redirect:/";
     }

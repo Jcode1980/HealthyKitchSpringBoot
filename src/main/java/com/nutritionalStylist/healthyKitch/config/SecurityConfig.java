@@ -115,11 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors();
-<<<<<<< HEAD
-    }
 
-=======
-        http.csrf().disable();
     }
 
     @Bean
@@ -135,7 +131,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
->>>>>>> a2267a24c033359dd2dd12eede4ae01bfa846cf0
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/**");
 

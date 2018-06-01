@@ -29,8 +29,10 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         StringBuilder searchQuery= new StringBuilder("Select r.* FROM recipe as r " );
 
         searchQuery.append(createJoinPartOfQuery(searchDto));
-        searchQuery.append(createWherePartOfQuery(searchDto));
 
+        if(!searchDto.hasNoSearchCriteria()) {
+            searchQuery.append(createWherePartOfQuery(searchDto));
+        }
         System.out.println("goat here getRecipeUsingSearchDTO " +  searchQuery.toString());
 //        Query query = entityManager.createNativeQuery("SELECT em.* FROM spring_data_jpa_example.employee as em " +
 //                "WHERE em.firstname LIKE ?", Employee.class);
