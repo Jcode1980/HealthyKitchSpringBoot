@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+
 //    // This method is for overriding some configuration of the WebSecurity
 //    // If you want to ignore some request or request patterns then you can
 //    // specify that inside this method
