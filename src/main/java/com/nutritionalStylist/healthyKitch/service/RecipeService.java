@@ -32,4 +32,6 @@ public interface RecipeService {
     void addImageToRecipe(int recipeID, MultipartFile file) throws Exception;
 
     void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception;
+
+     Collection<RecipeReview> reviewsForRecipe(int recipeID) throws Exception;
 }

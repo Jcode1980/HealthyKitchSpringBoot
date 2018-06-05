@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.model.DietaryCategory;
 import com.nutritionalStylist.healthyKitch.model.Instruction;
 import com.nutritionalStylist.healthyKitch.model.MealType;
@@ -11,13 +12,21 @@ import java.util.Collection;
 public class RecipeDto {
    // private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    @JsonView({Views.ListView.class})
     private Integer id;
+    @JsonView({Views.ListView.class})
     private String name;
+    @JsonView({Views.ListView.class})
     private Integer defaultImageID;
+    @JsonView({Views.DetailedView.class})
     private Collection<Instruction> instructions;
+    @JsonView({Views.DetailedView.class})
     private Collection<MealType> mealTypes;
+    @JsonView({Views.DetailedView.class})
     private Collection<MeasuredIngredient> measuredIngredients;
+    @JsonView({Views.DetailedView.class})
     private Collection<DietaryCategory> dietaryCategories;
+
 
     public Integer getId() {
         return id;
@@ -74,5 +83,7 @@ public class RecipeDto {
     public void setDefaultImageID(Integer defaultImageID) {
         this.defaultImageID = defaultImageID;
     }
+
+
 
 }

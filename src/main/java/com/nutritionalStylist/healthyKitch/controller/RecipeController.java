@@ -5,9 +5,12 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
 import org.modelmapper.ModelMapper;
@@ -44,6 +47,7 @@ public class RecipeController {
             }
         };
 
+
         modelMapper.addMappings(recipeMap);
     }
 
@@ -55,6 +59,7 @@ public class RecipeController {
                 collect(Collectors.toList());
     }
 
+    @JsonView(Views.ListView.class)
     @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
         Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
@@ -67,6 +72,13 @@ public class RecipeController {
         Recipe recipe = recipeService.findRecipeByID(recipeID).orElseThrow(IllegalArgumentException::new);
         return convertToDto(recipe);
     }
+
+    @GetMapping(value = "/reviews/{recipeID}")
+    public Collection<RecipeReview> recipeReviewsForRecipe(@PathVariable("recipeID") int recipeID) throws Exception{
+        Collection<RecipeReview> recipeReviews = recipeService.reviewsForRecipe(recipeID);
+        return recipeReviews;
+    }
+
 
     /**
      * Update Recipe
@@ -165,7 +177,6 @@ public class RecipeController {
     public String handleMultipfileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile[] file,
                                 RedirectAttributes redirectAttributes) throws IOException {
 
-
         System.out.println("got here UploadRecipeImage: " + file);
         System.out.println("got here UploadRecipeImage: " + file.length);
         try{
@@ -212,7 +223,6 @@ public class RecipeController {
 
     private RecipeDto convertToDto(Recipe recipe) {
         RecipeDto recipeDto = modelMapper.map(recipe, RecipeDto.class);
-
         return recipeDto;
     }
 

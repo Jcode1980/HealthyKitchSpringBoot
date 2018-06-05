@@ -54,9 +54,23 @@ public class Recipe extends NamedEntity{
             inverseJoinColumns = @JoinColumn(name = "cuisineID"))
     private Set<Cuisine> cuisines;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<RecipeReview> reviews;
+
     @PrePersist
     protected void onCreate() {
         created = new Date();
+    }
+
+    @Column(name="viewCount")
+    private Integer viewCount;
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
     public String displayPreviewImagePath() {
@@ -284,6 +298,15 @@ public class Recipe extends NamedEntity{
     public void setInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
     }
+
+    public Set<RecipeReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<RecipeReview> reviews) {
+        this.reviews = reviews;
+    }
+
 
     //    public function removeMealType($mealType){
 //        $this->removeObjectFromManyToManytRelationship($mealType, "MealTypeRecipe", "mealTypeID");
