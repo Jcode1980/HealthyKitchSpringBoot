@@ -352,5 +352,12 @@ public class Recipe extends NamedEntity{
 //    }
 
 
+    public Set<DietaryCategory> getDietaryCategories() {
+        return dietaryCategories;
+    }
+
+    public void setDietaryCategories(Set<DietaryCategory> dietaryCategories) {
+        this.dietaryCategories = dietaryCategories;
+    }
 }
 

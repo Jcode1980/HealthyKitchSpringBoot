@@ -17,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -136,7 +138,10 @@ public class RecipeController {
 
 
     @GetMapping("/allMealTypes")
-    public Collection<MealType> getAllMealtypes(){ return recipeService.findAllMealTypes(); }
+    public Collection<MealType> getAllMealtypes(Authentication authentication){
+        Object user = authentication.getPrincipal();
+        System.out.println("user is : " + user);
+        return recipeService.findAllMealTypes(); }
 
 
     @GetMapping("/allMetrics")

@@ -28,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @Table(name="User")
 @Scope("session")
 public  class User implements UserDetails {
-    public static enum Role {USER}
-
     /**
      * Description of the property id.
      */
@@ -49,20 +47,24 @@ public  class User implements UserDetails {
     /**
      * Description of the property role , to grant authority to the user .
      */
+
+    @Column(name = "role")
     private String role;
-    /**
-     * Description of the property full name.
-     */
-    private String fullName;
+
+    @Column(name = "given")
+    private String given;
+
+    @Column(name = "surname")
+    private String surname;
 
     public User() {
 
     }
 
-    public User(String username, String password, String fullName) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
-        this.fullName = fullName;
+        this.role = role;
     }
 
     @JsonIgnore
@@ -93,7 +95,9 @@ public  class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        System.out.println("which user am i?? " + this.getFullName());
+        System.out.println("setting role: " + getRole());
+        authorities.add(new SimpleGrantedAuthority(getRole()));
         return authorities;
     }
 
@@ -133,14 +137,18 @@ public  class User implements UserDetails {
     }
 
     public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+        return getGiven() + getSurname();
     }
 
     public Long getId() {
         return id;
     }
+
+    public String getGiven() { return given; }
+
+    public void setGiven(String given) { this.given = given; }
+
+    public String getSurname() {return surname; }
+
+    public void setSurname(String surname) { this.surname = surname; }
 }

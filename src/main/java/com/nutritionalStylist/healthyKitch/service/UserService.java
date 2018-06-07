@@ -42,7 +42,8 @@ public class UserService {
     //public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException {
     public User registerNewUserAccount(User accountDto) {
         User user = new User();
-        user.setFullName(accountDto.getFullName());
+        user.setGiven(accountDto.getGiven());
+        user.setSurname(accountDto.getSurname());
         user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setRole("Standard User");
         return userRepository.save(user);

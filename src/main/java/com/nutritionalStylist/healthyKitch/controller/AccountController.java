@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/account")
+@CrossOrigin(origins = "http://localhost:4010", maxAge = 3600)
 public class AccountController {
 
 
@@ -24,7 +25,6 @@ public class AccountController {
     private UserService userService;
 
     // request method to create a new account by a guest
-    @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody User newUser) {
         if (userService.find(newUser.getUsername()) != null) {
@@ -38,14 +38,13 @@ public class AccountController {
         return new ResponseEntity<User>(userService.save(newUser), HttpStatus.CREATED);
     }
 
-    // this is the login api/service
-    @CrossOrigin
-    @RequestMapping("/login")
-    public Principal user(Principal principal) {
-        System.out.println("user logged "+principal);
-        return principal;
-    }
-
+//    // this is the login api/service
+//    @CrossOrigin
+//    @RequestMapping("/login")
+//    public Principal user(Principal principal) {
+//        System.out.println("user logged "+principal);
+//        return principal;
+//    }
 
 //    @PostMapping("/login")
 //    String login(

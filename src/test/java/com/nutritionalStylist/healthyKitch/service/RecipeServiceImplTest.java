@@ -15,10 +15,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
@@ -130,5 +127,35 @@ public class RecipeServiceImplTest {
             e.printStackTrace();
         }
 
+    }
+
+
+    @Test
+    public void removeDietaryCartegoryTest(){
+        Optional<Recipe> recipeOpt = recipeRepository.findById(1);
+        Recipe recipe = recipeOpt.get();
+        Set<DietaryCategory> dietaryCategories  = recipe.getDietaryCategories();
+
+        System.out.println("found dietary categories : " + dietaryCategories.size());
+        System.out.println("found dietary categories objects : " + dietaryCategories);
+
+        for(DietaryCategory dietaryCategory : dietaryCategories){
+            System.out.println("found category: " + dietaryCategory.getId() + " " + dietaryCategory.getName());
+        }
+
+        ArrayList<DietaryCategory> dietaryCategoriesList = new ArrayList<>();
+        dietaryCategoriesList.addAll(dietaryCategories);
+        dietaryCategoriesList.remove(dietaryCategoriesList.get(0));
+
+        System.out.println("numbers in List: " + dietaryCategoriesList.size());
+
+        Set<DietaryCategory> lSet = new HashSet<DietaryCategory>();
+        lSet.addAll(dietaryCategoriesList);
+
+        System.out.println("numbers in set: " + lSet.size());
+
+        recipe.setDietaryCategories(lSet);
+        recipeService.saveRecipe(recipe);
+        assertThat(recipe.getDietaryCategories().size(), is(1));
     }
 }
