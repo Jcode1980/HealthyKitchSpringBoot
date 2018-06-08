@@ -2,15 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="663e2f19-c9b0-4224-8a06-05041eb11265" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/CORSFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JwtAuthenticationEntryPoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/TokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/controller/AuthenticationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/model/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/model/dto/UserDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_11.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_11.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_8_0.xml" beforeDir="false" />
@@ -82,18 +73,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring4_2_1_6_RELEASE.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_0_RELEASE.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_17.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/healthykitch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/healthykitch.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JWTAuthorizationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/SecurityConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/SecurityConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/controller/AccountController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JWTAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/WebSecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/Application.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/config/SecurityConfig.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/controller/RecipeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/controller/RecipeController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/model/File.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/model/File.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/model/Instruction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/nutritionalStylist/healthyKitch/model/Instruction.class" afterDir="false" />
@@ -173,7 +157,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/controller/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
@@ -197,11 +181,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserServiceImpl.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserServiceImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+            <state relative-caret-position="360">
+              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2038#2039#0" expanded="true" />
@@ -262,32 +246,32 @@
       <find>DTO</find>
       <find>searc</find>
       <find>bean</find>
-      <find />
+      <find>t's inspect the beans provided by Spring Bo</find>
       <find>jdbc</find>
       <find>databasesource</find>
-      <find />
+      <find>HttpSecurity htt</find>
       <find>authen</find>
       <find>secuirt</find>
-      <find />
-      <find />
-      <find />
+      <find>his is the autowired data</find>
+      <find>this is the</find>
+      <find>this is the autowired datasou</find>
       <find>HikariDataSourc</find>
-      <find />
+      <find>is is the autowired datasou</find>
       <find>nutiri</find>
       <find>dietaryCategories</find>
       <find>save</find>
       <find>@Bean</find>
-      <find />
-      <find />
-      <find />
-      <find />
-      <find />
-      <find />
-      <find />
-      <find />
+      <find>umbers in set</find>
+      <find>umbers in List:</find>
+      <find>found dietary categori</find>
+      <find>ound dietary categories :</find>
+      <find>ound dietary categorie</find>
+      <find>und dietary categori</find>
+      <find>ound dietary categori</find>
+      <find>und dietary categorie</find>
       <find>manyToMany</find>
-      <find />
-      <find />
+      <find>setting role</find>
+      <find>user is</find>
       <find>sonwebto</find>
     </findStrings>
     <replaceStrings>
@@ -777,9 +761,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="RecipeServiceImplTest_removeDietaryCartegoryTest - 2018.06.06 at 14h 37m 34s.xml">
-      <configuration name="RecipeServiceImplTest.removeDietaryCartegoryTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="RecipeServiceImplTest_removeDietaryCartegoryTest - 2018.06.06 at 14h 39m 06s.xml">
       <configuration name="RecipeServiceImplTest.removeDietaryCartegoryTest" configurationId="JUnit" />
     </history-entry>
@@ -807,34 +788,36 @@
     <history-entry file="All_in_healthykitch - 2018.06.07 at 16h 07m 08s.xml">
       <configuration name="All in healthykitch" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="All_in_healthykitch_(1) - 2018.06.08 at 17h 01m 52s.xml">
+      <configuration name="All in healthykitch (1)" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="50278000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="114" y="162" width="1941" height="1350" extended-state="0" />
-    <editor active="true" />
+    <frame x="329" y="23" width="1813" height="1266" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Messages" order="7" sideWeight="0.47308934" visible="true" weight="0.3221003" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.47308934" weight="0.3221003" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.40258342" side_tool="true" weight="0.32149363" />
       <window_info anchor="right" id="Maven Projects" order="3" sideWeight="0.49878934" weight="0.2771767" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5974166" weight="0.32288402" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5974166" visible="true" weight="0.3456376" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21483772" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23000552" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49066666" weight="0.3526646" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49066666" weight="0.35234898" />
       <window_info anchor="bottom" id="Spring" order="8" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Database" order="3" />
@@ -1085,16 +1068,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserDetailsServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="24" column="64" selection-start-line="24" selection-start-column="64" selection-end-line="24" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/RecipeServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="585">
@@ -1201,7 +1174,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JwtAuthenticationFilter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/config/security/JWTAuthenticationFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
@@ -1251,28 +1224,6 @@
           <caret line="122" column="25" selection-start-line="122" selection-start-column="18" selection-end-line="122" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2038#2039#0" expanded="true" />
-            <element signature="e#2078#2079#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1336,6 +1287,38 @@
           <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserDetailsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="24" column="64" selection-start-line="24" selection-start-column="64" selection-end-line="24" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nutritionalStylist/healthyKitch/service/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2038#2039#0" expanded="true" />
+            <element signature="e#2078#2079#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -19,7 +19,7 @@ import static com.nutritionalStylist.healthyKitch.config.security.SecurityConsta
 import static com.nutritionalStylist.healthyKitch.config.security.SecurityConstants.TOKEN_PREFIX;
 
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
