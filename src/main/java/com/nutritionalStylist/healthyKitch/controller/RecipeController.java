@@ -26,7 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 
-@CrossOrigin(origins = "http://adolfotrove.ddns.net:4010")
+//@CrossOrigin(origins = "http://adolfotrove.ddns.net:4010")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
@@ -139,8 +140,8 @@ public class RecipeController {
 
     @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(Authentication authentication){
-        Object user = authentication.getPrincipal();
-        System.out.println("user is : " + user);
+        //Object user = authentication.getPrincipal();
+        //System.out.println("user is : " + user);
         return recipeService.findAllMealTypes(); }
 
 

@@ -50,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().
                 authorizeRequests()
-                .antMatchers("/token/*", "/signup").permitAll()
+                .antMatchers("/token/*", "/signup", "/api/recipes/*").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -58,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
 
     @Bean
     public BCryptPasswordEncoder encoder(){
