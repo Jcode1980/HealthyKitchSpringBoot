@@ -44,6 +44,7 @@ public class TokenProvider implements Serializable {
                 .getBody();
     }
 
+
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
@@ -65,8 +66,7 @@ public class TokenProvider implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (
-                username.equals(userDetails.getUsername())
-                        && !isTokenExpired(token));
+                username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     UsernamePasswordAuthenticationToken getAuthentication(final String token, final Authentication existingAuth, final UserDetails userDetails) {
@@ -82,7 +82,7 @@ public class TokenProvider implements Serializable {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), authorities);
     }
 
 }

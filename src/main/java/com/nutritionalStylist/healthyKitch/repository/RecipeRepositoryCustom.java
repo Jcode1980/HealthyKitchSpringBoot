@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RecipeRepositoryCustom {
     List<Recipe> getRecipeUsingSearchDTO(RecipeSearchDto searchDto);
+    //void getRecipesUsingPagination();
 }

@@ -32,6 +32,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String header = req.getHeader(HEADER_STRING);
         String username = null;
         String authToken = null;
+        System.out.println("Request: " + req.getRequestURI());
+        System.out.println("header is: " + header);
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
             authToken = header.replace(TOKEN_PREFIX,"");
             try {

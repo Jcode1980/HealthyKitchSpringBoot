@@ -22,6 +22,17 @@ import javax.annotation.Resource;
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] AUTH_WHITELIST = {
+
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/session/**",
+            "/token/**",
+            "/api/**"
+    };
 
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
@@ -50,7 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().
                 authorizeRequests()
-                .antMatchers("/token/*", "/signup", "/api/recipes/*").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                //.antMatchers("/token/*", "/signup").permitAll()
+                //.antMatchers("/token/*", "/signup", "/api/recipes/*").permitAll()
 
                 .anyRequest().authenticated()
                 .and()
@@ -62,9 +75,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+//    @Bean
+//    public BCryptPasswordEncoder encoder(){
+//        return new BCryptPasswordEncoder();
+//    }
+
     @Bean
-    public BCryptPasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
+    public NoEncoder encoder(){
+        return new NoEncoder();
     }
 
 }

@@ -28,10 +28,21 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/generate-token", method = RequestMethod.POST)
+    //@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
+    @PostMapping(value = "/generate-token")
     public ResponseEntity<?> register(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
+        System.out.println("got here generate");
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = null;
+        try{
+                //System.out.println("Username: " + usernamePasswordAuthenticationToken.get() +"Credentials:" + usernamePasswordAuthenticationToken.getCredentials());
+            authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            System.out.println("Do i have authentication?? " + authentication);
+            //System.out.println("these are the auth cred: " + authentication.getCredentials().toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(authentication);
         return ResponseEntity.ok(new AuthToken(token));

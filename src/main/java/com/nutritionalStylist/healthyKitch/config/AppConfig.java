@@ -1,7 +1,7 @@
 package com.nutritionalStylist.healthyKitch.config;
 
 
-import com.nutritionalStylist.healthyKitch.service.NoEncoder;
+import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -20,9 +20,5 @@ public class AppConfig {
         return driverManagerDataSource;
     }
 
-    @Bean
-    public NoEncoder noEncoder(){
-        return new NoEncoder();
-    }
 
 }

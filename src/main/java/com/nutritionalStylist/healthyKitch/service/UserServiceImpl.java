@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import com.nutritionalStylist.healthyKitch.model.User;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.repository.UserRepository;
@@ -21,9 +22,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bcryptEncoder;
+    private NoEncoder bcryptEncoder;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        System.out.println("loadUserByUsername : gotss here: " + username);
+        //Thread.dumpStack();
         User user = userRepository.findByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");

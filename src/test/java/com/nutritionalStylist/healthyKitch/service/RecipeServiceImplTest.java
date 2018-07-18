@@ -91,6 +91,11 @@ public class RecipeServiceImplTest {
         assertThat(recipes.size(), greaterThan(0));
     }
 
+//    @Test
+//    public void getRecipeUsingPagination(){
+//        recipeRepository.getRecipesUsingPagination();
+//    }
+
     @Test
     public void getRecipeUsingSearchDTO_TestTrendingFlag_Should_Return_Six_Recipes(){
         RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
