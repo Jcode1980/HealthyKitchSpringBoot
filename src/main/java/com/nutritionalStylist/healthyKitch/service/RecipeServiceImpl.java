@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.google.common.collect.Lists;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -91,7 +93,12 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<MealType> findAllMealTypes() throws DataAccessException { return (Collection<MealType>) mealTypeRepository.findAll(); }
+    public Collection<MealType> findAllMealTypes() throws DataAccessException {
+
+        Collection<MealType> mealTypes = Lists.newArrayList(mealTypeRepository.findAll());
+        return  mealTypes.stream().sorted(Comparator.comparing(MealType::getSortID)).collect(Collectors.toList());
+
+    }
 
     @Override
     @Transactional(readOnly = true)
