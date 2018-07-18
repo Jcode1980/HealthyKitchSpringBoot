@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 
-@CrossOrigin(origins = "http://adolfotrove.ddns.net:4010")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
