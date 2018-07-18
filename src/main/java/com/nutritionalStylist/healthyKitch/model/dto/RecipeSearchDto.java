@@ -50,8 +50,6 @@ public class RecipeSearchDto {
 
     public boolean hasSearchStrings(){ return getSearchStrings() != null && getSearchStrings().size() > 0; }
 
-    public boolean hasSomeKindOfSearch(){return hasMealTypesSearch() || hasNutritionalBenefitSearch() || hasSearchStrings();};
-
     public Collection<Integer> getCuisinesID() { return cuisinesID; }
 
     public void setCuisinesID(Collection<Integer> cuisinesID) { this.cuisinesID = cuisinesID; }
@@ -59,4 +57,9 @@ public class RecipeSearchDto {
     public Collection<Integer> getDietaryRequirementsID() { return dietaryRequirementsID; }
 
     public void setDietaryRequirementsID(Collection<Integer> dietaryRequirementsID) { this.dietaryRequirementsID = dietaryRequirementsID; }
+
+    public boolean hasNoSearchCriteria(){
+        return !hasMealTypesSearch() && !hasNutritionalBenefitSearch() && !hasCuisineSearch() && !hasDietaryRequirementSearch() &&
+                !hasDietaryRequirementSearch() && !hasSearchStrings() && !isSearchForTrending();
+    }
 }

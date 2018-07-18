@@ -24,15 +24,24 @@ public class Recipe extends NamedEntity{
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date created;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "recipeImageID")
     private RecipeImage defaultImage;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<MeasuredIngredient> measuredIngredients;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "recipe")
-    private List<Instruction> instructions;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipeid")
+    private Set<RecipeImage> recipeImages;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "recipeid")
+    private List<MeasuredIngredient> measuredIngredients;
+
+    //NOTUS BETAS: mappedby annotation will not set the FK relationship whilst join column annotation will.
+    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "recipe")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "recipeid")
+    private Set<Instruction> instructions;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "NutritionalBenefitRecipe", joinColumns = @JoinColumn(name = "recipeID"),
@@ -59,6 +68,21 @@ public class Recipe extends NamedEntity{
         created = new Date();
     }
 
+    @Column(name="viewCount")
+    private Integer viewCount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="createdByID")
+    private User createdby;
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
     public String displayPreviewImagePath() {
         return getDefaultImage().map(RecipeImage::displayPreviewImagePath).orElse("images/NoImage.jpg");
     }
@@ -71,6 +95,13 @@ public class Recipe extends NamedEntity{
         return getDefaultImage().map(RecipeImage::displayOriginalImagePath).orElse("images/NoImage.jpg");
     }
 
+    public User getCreatedby() {
+        return createdby;
+    }
+
+    public void setCreatedby(User createdby) {
+        this.createdby = createdby;
+    }
 
     public Optional<RecipeImage> getDefaultImage() { return Optional.ofNullable(this.defaultImage); }
 
@@ -82,26 +113,63 @@ public class Recipe extends NamedEntity{
     }
 
 
-    protected Set<MeasuredIngredient> getMesauredIngredientsInternal() {
-        if (this.measuredIngredients == null) {
-            this.measuredIngredients = new HashSet<>();
-        }
-        return this.measuredIngredients;
+    public List<MeasuredIngredient> getMeasuredIngredients(){ return measuredIngredients;}
+
+    public void setMeasuredIngredients(List<MeasuredIngredient> measuredIngredients){ this.measuredIngredients = measuredIngredients;}
+
+    public Set<MealType> getMealTypes() {
+        return mealTypes;
     }
 
-    protected void setMeasuredIngredientsInternal(Set<MeasuredIngredient> measuredIngredients) {
-        this.measuredIngredients = measuredIngredients;
+    public void setMealTypes(Set<MealType> mealTypes) {
+        this.mealTypes = mealTypes;
     }
 
-    public List<MeasuredIngredient> sortedMeasuredIngredients() {
-        List<MeasuredIngredient> sortedMeasuredIngredients = new ArrayList<>(getMesauredIngredientsInternal());
-        PropertyComparator.sort(sortedMeasuredIngredients, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedMeasuredIngredients);
+    public Set<NutritionalBenefit> getNutritionalBenefits() {
+        return nutritionalBenefits;
     }
 
-    public void addMeasuredIngredient(MeasuredIngredient ingredient) {
-        getMesauredIngredientsInternal().add(ingredient);
+    public void setNutritionalBenefits(Set<NutritionalBenefit> nutritionalBenefits) {
+        this.nutritionalBenefits = nutritionalBenefits;
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        if(created != null)
+            this.created = created;
+    }
+
+    public Set<RecipeImage> getRecipeImages() {
+        return recipeImages;
+    }
+
+    public void setRecipeImages(Set<RecipeImage> recipeImages) {
+        this.recipeImages = recipeImages;
+    }
+
+    //    protected List<MeasuredIngredient> getMesauredIngredientsInternal() {
+//        if (this.measuredIngredients == null) {
+//            this.measuredIngredients = new HashSet<>();
+//        }
+//        return this.measuredIngredients;
+//    }
+
+//    protected void setMeasuredIngredientsInternal(Set<MeasuredIngredient> measuredIngredients) {
+//        this.measuredIngredients = measuredIngredients;
+//    }
+
+//    public List<MeasuredIngredient> sortedMeasuredIngredients() {
+//        List<MeasuredIngredient> sortedMeasuredIngredients = new ArrayList<>(getMesauredIngredientsInternal());
+//        PropertyComparator.sort(sortedMeasuredIngredients, new MutableSortDefinition("name", true, true));
+//        return Collections.unmodifiableList(sortedMeasuredIngredients);
+//    }
+
+//    public void addMeasuredIngredient(MeasuredIngredient ingredient) {
+//        getMesauredIngredientsInternal().add(ingredient);
+//    }
 
 
 //    //Instructions Area
@@ -138,9 +206,9 @@ public class Recipe extends NamedEntity{
 //    }
 
 
-    public  Optional<MeasuredIngredient> lastMesauredIngredient(){
-        return sortedMeasuredIngredients().stream().reduce((first, second) -> second);
-    }
+//    public  Optional<MeasuredIngredient> lastMesauredIngredient(){
+//        return sortedMeasuredIngredients().stream().reduce((first, second) -> second);
+//    }
 
     public boolean mealTypeExistsInRecipe(MealType mealType){
         return getMealTypesInternal().contains(mealType);
@@ -264,7 +332,7 @@ public class Recipe extends NamedEntity{
     public RecipeImage createRecipeImage( String fileName) throws Exception{
         MimeMappings mimeMappings = new MimeMappings();
         RecipeImage recipeImage = new RecipeImage();
-        recipeImage.setRecipe(this);
+        //recipeImage.setRecipe(this);
         recipeImage.setName(fileName);
 
         RecipeFile orginalFile = new RecipeFile(fileName, ImageQualityType.ORIGINAL);
@@ -274,16 +342,32 @@ public class Recipe extends NamedEntity{
         recipeImage.setPreviewImage(previewFile);
         recipeImage.setThumbnailImage(thumbnailFile);
 
+        getRecipeImages().add(recipeImage);
+
         return recipeImage;
     }
 
+
+
     public List<Instruction> getInstructions() {
-        return instructions;
+        return new ArrayList<>(instructions);
     }
 
     public void setInstructions(List<Instruction> instructions) {
-        this.instructions = instructions;
+        this.instructions = new HashSet<>(instructions);
     }
+
+    public Set<DietaryCategory> getDietaryCategories() {
+        return dietaryCategories;
+    }
+
+    public void setDietaryCategories(Set<DietaryCategory> dietaryCategories) {
+        this.dietaryCategories = dietaryCategories;
+    }
+
+    public Set<Cuisine> getCuisines() { return cuisines; }
+
+    public void setCuisines(Set<Cuisine> cuisines) { this.cuisines = cuisines; }
 
     //    public function removeMealType($mealType){
 //        $this->removeObjectFromManyToManytRelationship($mealType, "MealTypeRecipe", "mealTypeID");
@@ -327,6 +411,7 @@ public class Recipe extends NamedEntity{
 //
 //        return $readyInString;
 //    }
+
 
 
 }

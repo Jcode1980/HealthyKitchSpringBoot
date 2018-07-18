@@ -2,18 +2,12 @@ package com.nutritionalStylist.healthyKitch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Optional;
 
 @Entity
 @Table(name = "MeasuredIngredient")
 public class MeasuredIngredient extends NamedEntity{
-    @ManyToOne
-    @JoinColumn(name = "recipeID")
-    private Recipe recipe;
 
     @ManyToOne
     @JoinColumn(name = "metricID")

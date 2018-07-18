@@ -12,10 +12,9 @@ import org.springframework.boot.web.server.MimeMappings;
 public class RecipeImage extends NamedEntity {
 
 
-    @JsonIgnore
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipeID")
-    private Recipe recipe;
+    protected Recipe recipe;
 
 
     @ManyToOne(cascade = CascadeType.ALL)

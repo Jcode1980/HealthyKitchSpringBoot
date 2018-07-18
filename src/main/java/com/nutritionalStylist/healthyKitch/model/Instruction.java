@@ -8,9 +8,9 @@ public class Instruction extends BaseEntity{
     @Column(name = "descText")
     protected  String descText;
 
-    @ManyToOne
-    @JoinColumn(name = "recipeID")
-    protected Recipe recipe;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "recipeID")
+//    protected Recipe recipe;
 
     @Column
     protected String sortID;

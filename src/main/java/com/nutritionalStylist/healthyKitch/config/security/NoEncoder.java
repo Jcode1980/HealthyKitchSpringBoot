@@ -1,4 +1,4 @@
-package com.nutritionalStylist.healthyKitch.service;
+package com.nutritionalStylist.healthyKitch.config.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

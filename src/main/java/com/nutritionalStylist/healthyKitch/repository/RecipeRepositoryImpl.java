@@ -6,13 +6,14 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
-
-
-
     @PersistenceContext
     EntityManager entityManager;
 
@@ -23,14 +24,42 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         Query query = entityManager.createNativeQuery(searchQuery.toString(), Recipe.class);
         return query.getResultList();
 
+
     }
+
+//    public void baseGetRecipeUsingSearchDTO(RecipeSearchDto searchDto, Integer pageNumber, Integer pageSize){
+//        String searchQuery = searchDto.isSearchForTrending() ? queryForTrendingRecipes() : standardQuerySearch(searchDto);
+//
+//        Query query = entityManager.createNativeQuery(searchQuery.toString(), Recipe.class);
+//        query.setFirstResult();
+//        //return query.getResultList();
+//
+//        Query query = entityManager.createQuery("From Foo");
+//        int pageNumber = 1;
+//        int pageSize = 10;
+//        query.setFirstResult((pageNumber-1) * pageSize);
+//        query.setMaxResults(pageSize);
+//
+//        List <Foo> fooList = query.getResultList();
+//
+//
+//        Query queryTotal = entityManager.createQuery
+//                ("Select count(f.id) from Foo f");
+//        long countResult = (long)queryTotal.getSingleResult();
+//
+//
+//        int pageSize = 10;
+//        int pageNumber = (int) ((countResult / pageSize) + 1);
+//    }
 
     private String standardQuerySearch(RecipeSearchDto searchDto){
         StringBuilder searchQuery= new StringBuilder("Select r.* FROM recipe as r " );
 
         searchQuery.append(createJoinPartOfQuery(searchDto));
-        searchQuery.append(createWherePartOfQuery(searchDto));
 
+        if(!searchDto.hasNoSearchCriteria()) {
+            searchQuery.append(createWherePartOfQuery(searchDto));
+        }
         System.out.println("goat here getRecipeUsingSearchDTO " +  searchQuery.toString());
 //        Query query = entityManager.createNativeQuery("SELECT em.* FROM spring_data_jpa_example.employee as em " +
 //                "WHERE em.firstname LIKE ?", Employee.class);
@@ -46,7 +75,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
 
     private String queryQualsForSearchStrings(Collection<String> searchStrings){
-        String searchString = searchStrings.stream().map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
+        String searchString = searchStrings.stream().filter(s->(s!=null && s.length() > 0)).map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
         //searchString = searchString.substring(0, searchString.lastIndexOf(" and "));
         System.out.println("returning search String : " + searchString);
         return searchString;
@@ -76,10 +105,9 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
                     "left join cuisine c on (cr.cuisineid = c.ID)\n");
         }
 
-
-
         return joinTableStringBuffer.toString();
     }
+
 
     private String createWherePartOfQuery(RecipeSearchDto recipeSearchDto){
         StringBuilder whereClauseStringBuffer = new StringBuilder(" where ");
@@ -90,12 +118,12 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         }
 
         if(recipeSearchDto.hasMealTypesSearch()){
-            if(!isFirstCriteria)
-            {
+
+            if(!isFirstCriteria) {
                 whereClauseStringBuffer.append(" and ");
             }
             else{
-                isFirstCriteria = true;
+                isFirstCriteria = false;
             }
             String mealTypeSearchString = " m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
@@ -107,7 +135,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
                 whereClauseStringBuffer.append(" and ");
             }
             else{
-                isFirstCriteria = true;
+                isFirstCriteria = false;
             }
             String mealTypeSearchString = " n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
@@ -119,7 +147,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
                 whereClauseStringBuffer.append(" and ");
             }
             else{
-                isFirstCriteria = true;
+                isFirstCriteria = false;
             }
             String dietarySearchString = " dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(dietarySearchString);
@@ -132,12 +160,13 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
                 whereClauseStringBuffer.append(" and ");
             }
             else{
-                isFirstCriteria = true;
+                isFirstCriteria = false;
             }
             String cuisineSearchString = " c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(cuisineSearchString);
 
         }
+
 
 
         return whereClauseStringBuffer.toString();

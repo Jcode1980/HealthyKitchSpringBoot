@@ -1,14 +1,8 @@
 package com.nutritionalStylist.healthyKitch.model;
 
-import com.nutritionalStylist.healthyKitch.config.AppConfig;
-import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
-import com.nutritionalStylist.healthyKitch.service.RecipeServiceImpl;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.server.MimeMappings;
-import org.springframework.context.annotation.PropertySource;
 
+import org.apache.log4j.Logger;
+import org.springframework.boot.web.server.MimeMappings;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 import java.awt.image.BufferedImage;

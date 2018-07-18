@@ -33,11 +33,13 @@ public class RecipeServiceImpl implements RecipeService {
     private StorageService storageService ;
     private RecipeImageRepository recipeImageRepository;
     private MetricRepository metricRepository;
+    private RecipeReviewRepository recipeReviewRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository,
                              CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository,
-                             StorageService storageService, RecipeImageRepository recipeImageRepository, MetricRepository metricRepository){
+                             StorageService storageService, RecipeImageRepository recipeImageRepository, MetricRepository metricRepository,
+                            RecipeReviewRepository recipeReviewRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
@@ -46,6 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.storageService = storageService;
         this.recipeImageRepository = recipeImageRepository;
         this.metricRepository = metricRepository;
+        this.recipeReviewRepository = recipeReviewRepository;
     }
 
 
@@ -166,6 +169,12 @@ public class RecipeServiceImpl implements RecipeService {
         mealType.setImage(mealTypeFile);
         mealTypeRepository.save(mealType);
 
+    }
+
+    @Override
+    public Collection<RecipeReview> reviewsForRecipe(int recipeID){
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
+        return recipeReviewRepository.findByRecipeOrderByCreatedDateDesc(recipeOptional.orElseThrow(IllegalArgumentException::new));
     }
 
 //    public static <E> Collection<E> makeCollection(Iterable<E> iter) {

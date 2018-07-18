@@ -1,24 +1,24 @@
 package com.nutritionalStylist.healthyKitch.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
+import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@PropertySource("application.properties")
+
+@Configuration
 public class AppConfig {
 
-    @Value("${com.nutritionalStylist.FILES_PRODUCTION_FOLDER}")
-    private String productionFolder;
-    @Value("${com.nutritionalStylist.ROOT_FOLDER}")
-    private String rootFolder;
-    @Value("${com.nutritionalStylist.TEMP_FOLDER}")
-    private String tmpFolder;
-
     @Bean
-    public AppConfig appConfig(){
-      return appConfig();
+    public DriverManagerDataSource dataSource() {
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+        driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/HealthyKitch?useSSL=false");
+        driverManagerDataSource.setUsername("root");
+        driverManagerDataSource.setPassword("games");
+        return driverManagerDataSource;
     }
+
 
 }
