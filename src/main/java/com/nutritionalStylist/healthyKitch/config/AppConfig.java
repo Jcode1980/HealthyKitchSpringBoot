@@ -16,7 +16,7 @@ public class AppConfig {
         driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
         driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/HealthyKitch?useSSL=false");
         driverManagerDataSource.setUsername("root");
-        driverManagerDataSource.setPassword("games");
+        driverManagerDataSource.setPassword("");
         return driverManagerDataSource;
     }
 

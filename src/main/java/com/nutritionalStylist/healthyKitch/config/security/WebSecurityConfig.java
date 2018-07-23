@@ -31,7 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             "/session/**",
             "/token/**",
-            "/api/**"
+            "/api/**",
+            "/files/**"
     };
 
     @Resource(name = "userService")
