@@ -2,6 +2,7 @@ package com.nutritionalStylist.healthyKitch.service;
 
 import com.google.common.collect.Lists;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -21,9 +22,15 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Service
+@Transactional
 public class RecipeServiceImpl implements RecipeService {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private Logger log = Logger.getLogger(RecipeServiceImpl.class);
     private RecipeRepository recipeRepository;
     private MealTypeRepository mealTypeRepository;
@@ -177,6 +184,21 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeReviewRepository.findByRecipeOrderByCreatedDateDesc(recipeOptional.orElseThrow(IllegalArgumentException::new));
     }
 
+    @Override
+    public Integer addReviewForRecipe(Integer recipeID, RecipeReview review) throws ResourceNotFoundException{
+        Optional<Recipe> recipeOpt = recipeRepository.findById(recipeID);
+
+        if(!recipeOpt.isPresent()){
+            throw new ResourceNotFoundException("Recipe with id-" + recipeID);
+        }
+
+        Recipe recipe = recipeOpt.get();
+        review.setRecipe(recipe);
+
+        recipeReviewRepository.save(review);
+        return review.getId();
+    }
+
 //    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
 //        Collection<E> list = new ArrayList<E>();
 //        for (E item : iter) {
@@ -185,6 +207,11 @@ public class RecipeServiceImpl implements RecipeService {
 //        return list;
 //    }
 
+    @Override
+    public void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException{
+        System.out.println("Going to do an update review  using merge");
+        entityManager.merge(reviewDTO);
+    }
 
 
 }

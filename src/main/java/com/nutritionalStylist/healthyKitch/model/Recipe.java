@@ -37,11 +37,11 @@ public class Recipe extends NamedEntity{
     @JoinColumn(name = "recipeid")
     private List<MeasuredIngredient> measuredIngredients;
 
-    //NOTUS BETAS: mappedby annotation will not set the FK relationship whilst join column annotation will.
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "recipe")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "recipeid")
-    private Set<Instruction> instructions;
+//    //NOTUS BETAS: mappedby annotation will not set the FK relationship whilst join column annotation will.
+//    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "recipe")
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "recipeid")
+//    private Set<Instruction> instructions;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "NutritionalBenefitRecipe", joinColumns = @JoinColumn(name = "recipeID"),
@@ -70,6 +70,9 @@ public class Recipe extends NamedEntity{
 
     @Column(name="viewCount")
     private Integer viewCount;
+
+    @Column(name="instructions")
+    private String instructions;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="createdByID")
@@ -141,6 +144,10 @@ public class Recipe extends NamedEntity{
         if(created != null)
             this.created = created;
     }
+
+    public void setInstructions(String instructions) { this.instructions = instructions; }
+
+    public String getInstructions() { return instructions; }
 
     public Set<RecipeImage> getRecipeImages() {
         return recipeImages;
@@ -349,13 +356,13 @@ public class Recipe extends NamedEntity{
 
 
 
-    public List<Instruction> getInstructions() {
-        return new ArrayList<>(instructions);
-    }
+    //public List<Instruction> getInstructions() {
+    //    return new ArrayList<>(instructions);
+    //}
 
-    public void setInstructions(List<Instruction> instructions) {
-        this.instructions = new HashSet<>(instructions);
-    }
+//   // public void setInstructions(List<Instruction> instructions) {
+//        this.instructions = new HashSet<>(instructions);
+//    }
 
     public Set<DietaryCategory> getDietaryCategories() {
         return dietaryCategories;

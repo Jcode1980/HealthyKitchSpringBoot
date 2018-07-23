@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.service;
 
+import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -34,4 +35,8 @@ public interface RecipeService {
     void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception;
 
      Collection<RecipeReview> reviewsForRecipe(int recipeID) throws Exception;
+
+    Integer addReviewForRecipe(Integer recipeID, RecipeReview review) throws Exception;
+
+    void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException;
 }

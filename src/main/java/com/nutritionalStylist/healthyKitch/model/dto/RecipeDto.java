@@ -21,7 +21,7 @@ public class RecipeDto {
     @JsonView({Views.ListView.class})
     private Integer defaultImageID;
     @JsonView({Views.DetailedView.class})
-    private List<Instruction> instructions;
+    private String instructions;
     @JsonView({Views.DetailedView.class})
     private Collection<MealType> mealTypes;
     @JsonView({Views.DetailedView.class})
@@ -66,11 +66,11 @@ public class RecipeDto {
         this.name = name;
     }
 
-    public List<Instruction> getInstructions() {
+    public String getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(List<Instruction> instructions) {
+    public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
 
