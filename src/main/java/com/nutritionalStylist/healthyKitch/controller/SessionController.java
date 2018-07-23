@@ -1,7 +1,9 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
+import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.RecipeReview;
 import com.nutritionalStylist.healthyKitch.model.User;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
@@ -10,8 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +24,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -30,7 +35,6 @@ public class SessionController {
 
     private final RecipeService recipeService;
     private final StorageService storageService;
-
     @Autowired
     public SessionController(RecipeService recipeService, StorageService storageService) {
         this.storageService = storageService;
@@ -108,4 +112,48 @@ public class SessionController {
 //        this.recipeService.saveRecipe(recipeModel.get());
 //        return recipeModel.get();
     }
+
+
+
+    /*
+     {
+        "comment": "string",
+        "id": 0,
+        "new": true,
+        "rating": 0,
+        "user": {
+            "id"
+        }
+    }
+
+     */
+
+
+    /**
+     * Post Review
+     */
+    @PostMapping(value = "/review/{recipeID}")
+    @ResponseStatus(HttpStatus.OK)
+    public void createReview(@PathVariable("recipeID") Integer recipeID, @Valid @RequestBody RecipeReview recipeReview) throws Exception {
+
+        recipeService.addReviewForRecipe(recipeID, recipeReview);
+
+        System.out.println("this is the recipeReview: " + recipeReview);
+        System.out.println("this is the recipeReviews user: " + recipeReview.getUser().getFullName());
+
+
+
+    }
+
+    /**
+     * Update Review
+     */
+    @PutMapping(value = "/review/{reviewID}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateReview(@PathVariable("reviewID") Integer reviewID, @Valid @RequestBody RecipeReview recipeReviewDTO){
+        recipeService.updateReview(recipeReviewDTO);
+    }
+
+
+
 }
