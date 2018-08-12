@@ -93,8 +93,8 @@ public class SessionController {
         }
 
         System.out.println("this is the recipe from mappedModel : " + recipe);
-//        System.out.println("this is the instructions from mappedModel : " + recipe.getInstructions().size());
-//        System.out.println("this is the measuredIngredients : " + recipe.getMeasuredIngredients().size());
+        //System.out.println("this is the instructions from mappedModel : " + recipe.getInstructions().size());
+        //System.out.println("this is the measuredIngredients : " + recipe.getMeasuredIngredients().size());
         //List<NutritionalBenefit> nutritionBenefits = new ArrayList<>(recipe.getNutritionalBenefits());
         //nutritionBenefits.stream().forEach(nutritionalBenefit -> {entityManager.persist(nutritionalBenefit);});
 

@@ -131,6 +131,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public void addImageToRecipe(int recipeID, MultipartFile file) throws Exception {
         String fileName = file.getOriginalFilename();
+        log.info("file name being uploaded: " + fileName);
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
         Recipe theRecipe = recipeOptional.get();
 

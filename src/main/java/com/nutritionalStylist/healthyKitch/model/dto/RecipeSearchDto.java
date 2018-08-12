@@ -14,6 +14,7 @@ public class RecipeSearchDto {
     private Collection<Integer> nutritionalBenefitID;
     private Collection<Integer> dietaryRequirementsID;
     private boolean searchForTrending;
+    private Integer createdByUser;
 
 
     public Collection<Integer> getMealTypesID() {
@@ -58,8 +59,12 @@ public class RecipeSearchDto {
 
     public void setDietaryRequirementsID(Collection<Integer> dietaryRequirementsID) { this.dietaryRequirementsID = dietaryRequirementsID; }
 
+    public Integer getCreatedByUserID() { return createdByUser; }
+
+    public void setCreatedByUserID(Integer createdByUser) { this.createdByUser = createdByUser; }
+
     public boolean hasNoSearchCriteria(){
         return !hasMealTypesSearch() && !hasNutritionalBenefitSearch() && !hasCuisineSearch() && !hasDietaryRequirementSearch() &&
-                !hasDietaryRequirementSearch() && !hasSearchStrings() && !isSearchForTrending();
+                !hasDietaryRequirementSearch() && !hasSearchStrings() && !isSearchForTrending() && getCreatedByUserID() == null;
     }
 }

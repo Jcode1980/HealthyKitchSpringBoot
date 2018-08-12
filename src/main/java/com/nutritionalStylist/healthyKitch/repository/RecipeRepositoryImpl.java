@@ -119,58 +119,78 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
         if(recipeSearchDto.hasMealTypesSearch()){
 
-            if(!isFirstCriteria) {
-                whereClauseStringBuffer.append(" and ");
-            }
-            else{
-                isFirstCriteria = false;
-            }
+//            if(!isFirstCriteria) {
+//                whereClauseStringBuffer.append(" and ");
+//            }
+//            else{
+//                isFirstCriteria = false;
+//            }
+            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String mealTypeSearchString = " m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasNutritionalBenefitSearch()){
             if(!isFirstCriteria)
-            {
-                whereClauseStringBuffer.append(" and ");
-            }
-            else{
-                isFirstCriteria = false;
-            }
+//            {
+//                whereClauseStringBuffer.append(" and ");
+//            }
+//            else{
+//                isFirstCriteria = false;
+//            }
+            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String mealTypeSearchString = " n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasDietaryRequirementSearch()){
-            if(!isFirstCriteria)
-            {
-                whereClauseStringBuffer.append(" and ");
-            }
-            else{
-                isFirstCriteria = false;
-            }
+//            if(!isFirstCriteria)
+//            {
+//                whereClauseStringBuffer.append(" and ");
+//            }
+//            else{
+//                isFirstCriteria = false;
+//            }
+            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String dietarySearchString = " dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(dietarySearchString);
 
         }
 
         if(recipeSearchDto.hasCuisineSearch()){
-            if(!isFirstCriteria)
-            {
-                whereClauseStringBuffer.append(" and ");
-            }
-            else{
-                isFirstCriteria = false;
-            }
+//            if(!isFirstCriteria)
+//            {
+//                whereClauseStringBuffer.append(" and ");
+//            }
+//            else{
+//                isFirstCriteria = false;
+//            }
+            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String cuisineSearchString = " c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
             whereClauseStringBuffer.append(cuisineSearchString);
 
         }
 
+        if(recipeSearchDto.getCreatedByUserID() != null){
+            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
+            String createdBySearchString = " r.created_byid = " +  recipeSearchDto.getCreatedByUserID();
+            whereClauseStringBuffer.append(createdBySearchString);
+        }
 
 
         return whereClauseStringBuffer.toString();
 
+    }
+
+    private boolean appendAndString(StringBuilder theQuery, boolean isFirstCriteria){
+        if(!isFirstCriteria)
+        {
+            theQuery.append(" and ");
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //TODO: Figure out logic to this.. but for now it returns the newest recipes.

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/token")
+@RequestMapping("/authenticator")
 public class AuthenticationController {
 
     @Autowired
@@ -29,23 +29,46 @@ public class AuthenticationController {
     private UserService userService;
 
     //@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    @PostMapping(value = "/generate-token")
-    public ResponseEntity<?> register(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
-        System.out.println("got here generate");
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = null;
-        try{
-                //System.out.println("Username: " + usernamePasswordAuthenticationToken.get() +"Credentials:" + usernamePasswordAuthenticationToken.getCredentials());
-            authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-            System.out.println("Do i have authentication?? " + authentication);
+            @PostMapping(value = "/signIn")
+            public ResponseEntity<?> signIn(@RequestParam String email, @RequestParam String password) throws AuthenticationException {
+                System.out.println("got here generate");
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(email, password);
+                Authentication authentication = null;
+                try{
+                    //System.out.println("Username: " + usernamePasswordAuthenticationToken.get() +"Credentials:" + usernamePasswordAuthenticationToken.getCredentials());
+                    authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+                    System.out.println("Do i have authentication?? " + authentication);
             //System.out.println("these are the auth cred: " + authentication.getCredentials().toString());
         }catch(Exception e){
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(authentication);
         return ResponseEntity.ok(new AuthToken(token));
     }
+
+    //@RequestMapping(value = "/generate-token", method = RequestMethod.POST)
+    @PostMapping(value = "/signInn")
+    public ResponseEntity<?> signIn() throws AuthenticationException {
+        System.out.println("got here generate");
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken("john@sqonk.com.au", "games");
+        Authentication authentication = null;
+        try{
+            //System.out.println("Username: " + usernamePasswordAuthenticationToken.get() +"Credentials:" + usernamePasswordAuthenticationToken.getCredentials());
+            authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            System.out.println("Do i have authentication?? " + authentication);
+            //System.out.println("these are the auth cred: " + authentication.getCredentials().toString());
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = jwtTokenUtil.generateToken(authentication);
+        return ResponseEntity.ok(new AuthToken(token));
+    }
+
 
 }

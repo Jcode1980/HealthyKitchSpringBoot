@@ -12,6 +12,5 @@ public interface UserService {
     List<User> findAll();
     void delete(Integer id);
     User findOne(String username);
-
     User findById(Integer id);
 }

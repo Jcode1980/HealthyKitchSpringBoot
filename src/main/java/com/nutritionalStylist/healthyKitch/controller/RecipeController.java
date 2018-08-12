@@ -99,10 +99,8 @@ public class RecipeController {
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories(); }
 
 
-
     @PostMapping("/UploadRecipeImage/{recipeID}")
-    public String handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    public void handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file) {
 
         System.out.println("got here UploadRecipeImage");
         try{
@@ -112,32 +110,22 @@ public class RecipeController {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-        return "redirect:/";
     }
 
 
     @PostMapping(value = "/UploadRecipeImages/{recipeID}", consumes="multipart/form-data")
-    public String handleMultipfileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile[] file,
-                                RedirectAttributes redirectAttributes) throws IOException {
+    public void handleMultipfileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile[] file,
+                                RedirectAttributes redirectAttributes) throws Exception {
 
         System.out.println("got here UploadRecipeImage: " + file);
         System.out.println("got here UploadRecipeImage: " + file.length);
-        try{
+
             for(MultipartFile uploadedFile : file) {
                 recipeService.addImageToRecipe(recipeID, uploadedFile);
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded recipe image files!");
 
-        return "redirect:/";
     }
 
 
@@ -151,10 +139,6 @@ public class RecipeController {
 //
 //        return recipe;
 //    }
-
-
-
-
 
 
 }
