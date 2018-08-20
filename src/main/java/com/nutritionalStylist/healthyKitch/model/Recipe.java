@@ -43,6 +43,7 @@ public class Recipe extends NamedEntity{
 //    @JoinColumn(name = "recipeid")
 //    private Set<Instruction> instructions;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "NutritionalBenefitRecipe", joinColumns = @JoinColumn(name = "recipeID"),
         inverseJoinColumns = @JoinColumn(name = "nutritionalBenefitID"))
