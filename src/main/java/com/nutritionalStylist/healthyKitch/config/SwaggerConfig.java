@@ -19,7 +19,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()                 .apis(RequestHandlerSelectors.basePackage("com.nutritionalStylist.healthyKitch.controller"))
-                .paths(regex("/api.*|/account.*|/files.*|/token.*|/session.*"))
+                .paths(regex("/api.*|/account.*|/files.*|/token.*|/session.*|/authenticator.*"))
 //                .paths(x->{
 //                    boolean bool =  x.matches("/api.*|/account.*|/files.*");
 //                    System.out.println("path being passed in :  " + x + " is ok? " + bool);

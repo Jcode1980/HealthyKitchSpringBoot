@@ -28,7 +28,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         System.out.println("loadUserByUsername : gotss here: " + username);
         //Thread.dumpStack();
+
+
         User user = userRepository.findByUsername(username);
+        //Email is used to log in user
+        //User user = userRepository.findByEmail(username);
+
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }

@@ -57,6 +57,9 @@ public  class User implements UserDetails {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "email")
+    private String email;
+
     public User() {
 
     }
@@ -151,4 +154,8 @@ public  class User implements UserDetails {
     public String getSurname() {return surname; }
 
     public void setSurname(String surname) { this.surname = surname; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 }

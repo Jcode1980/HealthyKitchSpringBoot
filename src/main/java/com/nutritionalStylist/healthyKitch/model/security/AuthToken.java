@@ -20,4 +20,6 @@ public class AuthToken {
         this.token = token;
     }
 
+
+
 }
