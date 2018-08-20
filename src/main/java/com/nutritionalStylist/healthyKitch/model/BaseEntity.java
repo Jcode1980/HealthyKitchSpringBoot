@@ -17,7 +17,9 @@ package com.nutritionalStylist.healthyKitch.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +34,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseEntity {
+    @JsonView({Views.DetailedView.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;

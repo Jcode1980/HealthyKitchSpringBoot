@@ -56,6 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.recipeImageRepository = recipeImageRepository;
         this.metricRepository = metricRepository;
         this.recipeReviewRepository = recipeReviewRepository;
+
     }
 
 
@@ -213,5 +214,11 @@ public class RecipeServiceImpl implements RecipeService {
         entityManager.merge(reviewDTO);
     }
 
+    @Override
+    public void updateRecipe(Recipe recipeDto) throws ResourceNotFoundException{
+        System.out.println("Going to do an update review  using merge");
+        entityManager.merge(recipeDto);
+
+    }
 
 }

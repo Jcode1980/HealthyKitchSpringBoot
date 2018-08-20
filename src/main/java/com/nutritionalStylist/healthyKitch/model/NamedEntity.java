@@ -15,6 +15,9 @@
  */
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -28,7 +31,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
-
+    @JsonView({Views.DetailedView.class})
     @Column(name = "name")
     private String name;
 

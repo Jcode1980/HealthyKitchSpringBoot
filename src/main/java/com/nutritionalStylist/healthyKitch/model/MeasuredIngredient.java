@@ -1,6 +1,8 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -9,10 +11,12 @@ import java.util.Optional;
 @Table(name = "MeasuredIngredient")
 public class MeasuredIngredient extends NamedEntity{
 
+    @JsonView({Views.DetailedView.class})
     @ManyToOne
     @JoinColumn(name = "metricID")
     private Metric metric;
 
+    @JsonView({Views.DetailedView.class})
     private String amount;
 
     public String amount(){
@@ -42,7 +46,8 @@ public class MeasuredIngredient extends NamedEntity{
         sb.append(Optional.ofNullable(amount).orElse(""));
         sb.append("  ");
         sb.append(Optional.ofNullable(getName()).orElse(""));
-
+        sb.append("  ");
+        sb.append(metricDisplay());
         return sb.toString();
     }
 

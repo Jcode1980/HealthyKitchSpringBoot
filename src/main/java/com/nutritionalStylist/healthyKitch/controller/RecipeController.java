@@ -66,9 +66,11 @@ public class RecipeController {
         return recipes.stream().map(recipe -> RecipeDto.convertToDto(recipe)).collect(Collectors.toList());
     }
 
+    @JsonView(Views.DetailedView.class)
     @GetMapping(value = "/{recipeID}")
     public RecipeDto getRecipeById(@PathVariable("recipeID") int recipeID) {
         Recipe recipe = recipeService.findRecipeByID(recipeID).orElseThrow(IllegalArgumentException::new);
+        System.out.println("how many ingredients??" + recipe.getMeasuredIngredients().size());
         return RecipeDto.convertToDto(recipe);
     }
 

@@ -35,7 +35,7 @@ public class Recipe extends NamedEntity{
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipeid")
-    private List<MeasuredIngredient> measuredIngredients;
+    private Set<MeasuredIngredient> measuredIngredients;
 
 //    //NOTUS BETAS: mappedby annotation will not set the FK relationship whilst join column annotation will.
 //    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "recipe")
@@ -116,9 +116,9 @@ public class Recipe extends NamedEntity{
     }
 
 
-    public List<MeasuredIngredient> getMeasuredIngredients(){ return measuredIngredients;}
+    public Set<MeasuredIngredient> getMeasuredIngredients(){ return measuredIngredients;}
 
-    public void setMeasuredIngredients(List<MeasuredIngredient> measuredIngredients){ this.measuredIngredients = measuredIngredients;}
+    public void setMeasuredIngredients(Set<MeasuredIngredient> measuredIngredients){ this.measuredIngredients = measuredIngredients;}
 
     public Set<MealType> getMealTypes() {
         return mealTypes;
@@ -341,6 +341,7 @@ public class Recipe extends NamedEntity{
         RecipeImage recipeImage = new RecipeImage();
         //recipeImage.setRecipe(this);
         recipeImage.setName(fileName);
+        recipeImage.setRecipe(this);
 
         RecipeFile orginalFile = new RecipeFile(fileName, ImageQualityType.ORIGINAL);
         RecipeFile previewFile = new RecipeFile(fileName, ImageQualityType.PREVIEW);
@@ -418,8 +419,6 @@ public class Recipe extends NamedEntity{
 //
 //        return $readyInString;
 //    }
-
-
 
 }
 

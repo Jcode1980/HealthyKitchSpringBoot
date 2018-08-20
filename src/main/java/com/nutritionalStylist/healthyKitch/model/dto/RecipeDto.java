@@ -74,6 +74,8 @@ public class RecipeDto {
         this.instructions = instructions;
     }
 
+
+
     public Collection<MealType> getMealTypes() {
         return mealTypes;
     }

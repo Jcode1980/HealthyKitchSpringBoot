@@ -39,4 +39,6 @@ public interface RecipeService {
     Integer addReviewForRecipe(Integer recipeID, RecipeReview review) throws Exception;
 
     void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException;
+
+    void updateRecipe(Recipe recipeDto) throws ResourceNotFoundException;
 }

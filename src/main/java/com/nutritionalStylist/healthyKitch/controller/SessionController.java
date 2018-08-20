@@ -1,10 +1,7 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
 import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
-import com.nutritionalStylist.healthyKitch.model.NutritionalBenefit;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
-import com.nutritionalStylist.healthyKitch.model.RecipeReview;
-import com.nutritionalStylist.healthyKitch.model.User;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
@@ -26,7 +23,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/session/")
+@RequestMapping("/session/recipe")
 public class SessionController {
     @PersistenceContext
     private EntityManager entityManager;
@@ -44,19 +41,32 @@ public class SessionController {
      */
     @PutMapping(value = "/{recipeID}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateRecipe(@Valid @RequestBody RecipeDto recipeDto) {
+    public void updateRecipe(@Valid @RequestBody RecipeDto recipeDto ) {
         Recipe recipe;
         //TODO: investigate proper way of handling exceptions.
         try{
+            Optional<Recipe> foundRecipeOpt = recipeService.findRecipeByID(recipeDto.getId());
+            Recipe foundRecipe = foundRecipeOpt.get();
             recipe = RecipeDto.convertToEntity(recipeDto);
+
+            System.out.println("how many ingredients: " + recipeDto.getMeasuredIngredients().toArray().length);
+            if(recipeDto.getMeasuredIngredients().toArray().length > 0) {
+
+                System.out.println("thisssss is the recipe from mappedModel DTO : " + ((MeasuredIngredient) recipeDto.getMeasuredIngredients().toArray()[0]).metric());
+            }
+            else{
+                System.out.println("No ingredients found");
+            }
         }catch (Exception e){
             System.out.println("something went wrong when converting dto to recipe");
+            e.printStackTrace();
             return;
         }
 
-        System.out.println("thisssss is the recipe from mappedModel : " + recipe);
+        //System.out.println("thisssss is the recipe from mappedModel : " + ((MeasuredIngredient)recipe.getMeasuredIngredients().toArray()[0]).metric());
 
-        this.recipeService.saveRecipe(recipe);
+        this.recipeService.updateRecipe(recipe);
+        //this.recipeService.saveRecipe(recipe);
 
 //        // This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
 //        recipeModel.get().setName(recipeRequest.getName());
