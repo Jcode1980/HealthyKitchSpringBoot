@@ -43,9 +43,8 @@ public class RecipeFile extends File {
     public  String fileFolder(){ return "RecipeImage/"; }
 
     public String filePath(){
-        String filePath = productionFolder() + fileFolder() + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
+        return productionFolder() + fileFolder() + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
 
-        return filePath;
     }
 
     public String imageQualityType(){return imageQualityType;}

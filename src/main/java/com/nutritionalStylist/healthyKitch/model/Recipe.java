@@ -6,14 +6,10 @@ import org.springframework.beans.support.PropertyComparator;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.imageio.ImageIO;
 import javax.persistence.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.math.BigDecimal;
 import java.util.*;
+
 
 @Entity
 @Table(name = "Recipe")
@@ -23,6 +19,12 @@ public class Recipe extends NamedEntity{
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date created;
+
+    private Integer numServings;
+
+    private Integer readyInMins;
+
+    private String descText;
 
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "recipeImageID")
@@ -116,6 +118,13 @@ public class Recipe extends NamedEntity{
         return getDefaultImage().isPresent();
     }
 
+    public String getDescText() {
+        return descText;
+    }
+
+    public void setDescText(String descText) {
+        this.descText = descText;
+    }
 
     public Set<MeasuredIngredient> getMeasuredIngredients(){ return measuredIngredients;}
 
@@ -127,6 +136,22 @@ public class Recipe extends NamedEntity{
 
     public void setMealTypes(Set<MealType> mealTypes) {
         this.mealTypes = mealTypes;
+    }
+
+    public Integer getNumServings() {
+        return numServings;
+    }
+
+    public void setNumServings(Integer numServings) {
+        this.numServings = numServings;
+    }
+
+    public Integer getReadyInMins() {
+        return readyInMins;
+    }
+
+    public void setReadyInMins(Integer readyInMins) {
+        this.readyInMins = readyInMins;
     }
 
     public Set<NutritionalBenefit> getNutritionalBenefits() {
@@ -255,7 +280,7 @@ public class Recipe extends NamedEntity{
 
 
     //Nutrional Benefits Area
-    protected Set<NutritionalBenefit> getNutritionalBenefitInternal() {
+    private Set<NutritionalBenefit> getNutritionalBenefitInternal() {
         if (this.nutritionalBenefits == null) {
             this.nutritionalBenefits = new HashSet<>();
         }
@@ -281,14 +306,14 @@ public class Recipe extends NamedEntity{
     }
 
     //Nutrional Benefits Area
-    protected Set<Cuisine> getCuisinesInternal() {
+    private Set<Cuisine> getCuisinesInternal() {
         if (this.cuisines == null) {
             this.cuisines = new HashSet<>();
         }
         return this.cuisines;
     }
 
-    protected void setCuisinesInternal(Set<Cuisine> cuisines) {
+    private void setCuisinesInternal(Set<Cuisine> cuisines) {
         this.nutritionalBenefits = nutritionalBenefits;
     }
 

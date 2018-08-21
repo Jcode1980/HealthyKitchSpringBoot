@@ -49,6 +49,7 @@ public class SessionController {
             Recipe foundRecipe = foundRecipeOpt.get();
             recipe = RecipeDto.convertToEntity(recipeDto);
 
+            System.out.println("ready in mins?? " + recipeDto.getReadyInMins());
             System.out.println("how many ingredients: " + recipeDto.getMeasuredIngredients().toArray().length);
             if(recipeDto.getMeasuredIngredients().toArray().length > 0) {
 
