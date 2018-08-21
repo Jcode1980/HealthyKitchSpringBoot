@@ -5,14 +5,7 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.imageio.ImageIO;
 import javax.persistence.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Entity
@@ -158,65 +151,11 @@ public class Recipe extends NamedEntity{
         this.recipeImages = recipeImages;
     }
 
-    //    protected List<MeasuredIngredient> getMesauredIngredientsInternal() {
-//        if (this.measuredIngredients == null) {
-//            this.measuredIngredients = new HashSet<>();
-//        }
-//        return this.measuredIngredients;
-//    }
-
-//    protected void setMeasuredIngredientsInternal(Set<MeasuredIngredient> measuredIngredients) {
-//        this.measuredIngredients = measuredIngredients;
-//    }
-
-//    public List<MeasuredIngredient> sortedMeasuredIngredients() {
-//        List<MeasuredIngredient> sortedMeasuredIngredients = new ArrayList<>(getMesauredIngredientsInternal());
-//        PropertyComparator.sort(sortedMeasuredIngredients, new MutableSortDefinition("name", true, true));
-//        return Collections.unmodifiableList(sortedMeasuredIngredients);
-//    }
-
-//    public void addMeasuredIngredient(MeasuredIngredient ingredient) {
-//        getMesauredIngredientsInternal().add(ingredient);
-//    }
-
-
-//    //Instructions Area
-//    protected List<Instruction> getInstructionsInternal() {
-//        if (this.instructions == null) {
-//            this.instructions = new ArrayList<>();
-//        }
-//        return this.instructions;
-//    }
-
-//    protected void setInstructionsInternal(List<Instruction> instructions) {
-//        this.instructions = instructions;
-//    }
-
-//    public List<Instruction> sortedInstructions() {
-//        List<Instruction> sortedInstructions = new ArrayList<>(getInstructionsInternal());
-//        PropertyComparator.sort(sortedInstructions, new MutableSortDefinition("name", true, true));
-//        return Collections.unmodifiableList(sortedInstructions);
-//    }
-
-//    public void addInstruction(Instruction instruction) {
-//        getInstructionsInternal().add(instruction);
-//    }
-
-
 
     //TODO: Add functionality to reassign ID's
     public void reassignSortIDs() {
 
     }
-
-//    public Optional<Instruction> lastInstruction(){
-//        return sortedInstructions().stream().reduce((first, second) -> second);
-//    }
-
-
-//    public  Optional<MeasuredIngredient> lastMesauredIngredient(){
-//        return sortedMeasuredIngredients().stream().reduce((first, second) -> second);
-//    }
 
     public boolean mealTypeExistsInRecipe(MealType mealType){
         return getMealTypesInternal().contains(mealType);
