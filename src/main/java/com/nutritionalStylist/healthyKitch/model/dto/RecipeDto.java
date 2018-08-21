@@ -1,16 +1,13 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.model.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
 
+@SuppressWarnings("unused")
 public class RecipeDto {
    // private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     static private ModelMapper MODEL_MAPPER;
@@ -20,6 +17,12 @@ public class RecipeDto {
     private String name;
     @JsonView({Views.ListView.class})
     private Integer defaultImageID;
+    @JsonView({Views.ListView.class})
+    private Integer numServings;
+    @JsonView({Views.ListView.class})
+    private BigDecimal readyInMins;
+    @JsonView({Views.DetailedView.class})
+    private String descText;
     @JsonView({Views.DetailedView.class})
     private String instructions;
     @JsonView({Views.DetailedView.class})
@@ -27,7 +30,6 @@ public class RecipeDto {
     @JsonView({Views.DetailedView.class})
     private Collection<MeasuredIngredient> measuredIngredients;
     @JsonView({Views.DetailedView.class})
-    @JsonIgnoreProperties({"name"})
     private Collection<DietaryCategory> dietaryCategories;
     @JsonView({Views.DetailedView.class})
     private Collection<Cuisine> cuisines;
@@ -74,7 +76,9 @@ public class RecipeDto {
         this.instructions = instructions;
     }
 
+    public String getDescText() { return descText; }
 
+    public void setDescText(String descText) { this.descText = descText; }
 
     public Collection<MealType> getMealTypes() {
         return mealTypes;
@@ -124,14 +128,29 @@ public class RecipeDto {
         this.defaultImageID = defaultImageID;
     }
 
-
-    static public RecipeDto convertToDto(Recipe recipe) {
-        RecipeDto recipeDto = MODEL_MAPPER.map(recipe, RecipeDto.class);
-        return recipeDto;
+    public Integer getNumServings() {
+        return numServings;
     }
 
-    static public Recipe convertToEntity(RecipeDto recipeDto) throws ParseException {
-        Recipe recipe = MODEL_MAPPER.map(recipeDto, Recipe.class);
+    public void setNumServings(Integer numServings) {
+        this.numServings = numServings;
+    }
+
+    public BigDecimal getReadyInMins() {
+        return readyInMins;
+    }
+
+    public void setReadyInMins(BigDecimal readyInMins) {
+        this.readyInMins = readyInMins;
+    }
+
+    static public RecipeDto convertToDto(Recipe recipe) {
+        return MODEL_MAPPER.map(recipe, RecipeDto.class);
+
+    }
+
+    static public Recipe convertToEntity(RecipeDto recipeDto) {
+        return MODEL_MAPPER.map(recipeDto, Recipe.class);
 
         //Enrich mapped recipe with old data.
 //        if (recipeDto.getId() != null) {
@@ -139,6 +158,6 @@ public class RecipeDto {
 //            recipe.setRedditID(oldRecipe.getRedditID());
 //            recipe.setSent(oldRecipe.isSent());
 //        }
-        return recipe;
+//        return recipe;
     }
 }

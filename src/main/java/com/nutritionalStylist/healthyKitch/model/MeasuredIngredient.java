@@ -7,6 +7,7 @@ import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import javax.persistence.*;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "MeasuredIngredient")
 public class MeasuredIngredient extends NamedEntity{
@@ -36,7 +37,7 @@ public class MeasuredIngredient extends NamedEntity{
     }
 
     @JsonIgnore
-    public String metricDisplay(){
+    private String metricDisplay(){
         return Optional.ofNullable(metric()).map(Metric::code).orElse("");
     }
 

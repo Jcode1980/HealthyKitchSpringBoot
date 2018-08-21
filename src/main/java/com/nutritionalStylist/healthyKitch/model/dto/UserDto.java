@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
+@SuppressWarnings("unused")
 public class UserDto {
 
     private String username;

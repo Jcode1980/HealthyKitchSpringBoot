@@ -141,11 +141,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         recipeImageRepository.save(recipeImage);
 
-        if(!theRecipe.getDefaultImage().isPresent() ){
-
-            theRecipe.setDefaultImage(recipeImage);
-
-        }
+        theRecipe.setDefaultImage(recipeImage);
 
         System.out.println("the default image of the recipe is: " + recipeImage);
         recipeRepository.save(theRecipe);

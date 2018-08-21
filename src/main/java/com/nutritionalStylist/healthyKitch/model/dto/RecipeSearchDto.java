@@ -1,12 +1,8 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
-import com.nutritionalStylist.healthyKitch.model.Instruction;
-import com.nutritionalStylist.healthyKitch.model.MealType;
-import com.nutritionalStylist.healthyKitch.model.MeasuredIngredient;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
+@SuppressWarnings("unused")
 public class RecipeSearchDto {
     private Collection<String> searchStrings;
     private Collection<Integer> mealTypesID;
