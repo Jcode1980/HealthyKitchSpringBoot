@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class RecipeDto {
@@ -26,15 +27,15 @@ public class RecipeDto {
     @JsonView({Views.DetailedView.class})
     private String instructions;
     @JsonView({Views.DetailedView.class})
-    private Collection<MealType> mealTypes;
+    private Set<MealType> mealTypes;
     @JsonView({Views.DetailedView.class})
-    private Collection<MeasuredIngredient> measuredIngredients;
+    private Set<MeasuredIngredient> measuredIngredients;
     @JsonView({Views.DetailedView.class})
-    private Collection<DietaryCategory> dietaryCategories;
+    private Set<DietaryCategory> dietaryCategories;
     @JsonView({Views.DetailedView.class})
-    private Collection<Cuisine> cuisines;
+    private Set<Cuisine> cuisines;
     @JsonView({Views.DetailedView.class})
-    private Collection<NutritionalBenefit> nutritionalBenefits;
+    private Set<NutritionalBenefit> nutritionalBenefits;
 
 
     static{
@@ -84,39 +85,39 @@ public class RecipeDto {
         return mealTypes;
     }
 
-    public void setMealTypes(Collection<MealType> mealTypes) {
+    public void setMealTypes(Set<MealType> mealTypes) {
         this.mealTypes = mealTypes;
     }
 
-    public Collection<MeasuredIngredient> getMeasuredIngredients() {
+    public Set<MeasuredIngredient> getMeasuredIngredients() {
         return measuredIngredients;
     }
 
-    public void setMeasuredIngredients(Collection<MeasuredIngredient> measuredIngredients) {
+    public void setMeasuredIngredients(Set<MeasuredIngredient> measuredIngredients) {
         this.measuredIngredients = measuredIngredients;
     }
 
-    public Collection<DietaryCategory> getDietaryCategories() {
+    public Set<DietaryCategory> getDietaryCategories() {
         return dietaryCategories;
     }
 
-    public void setDietaryCategories(Collection<DietaryCategory> dietaryCategories) {
+    public void setDietaryCategories(Set<DietaryCategory> dietaryCategories) {
         this.dietaryCategories = dietaryCategories;
     }
 
-    public Collection<Cuisine> getCuisines() {
+    public Set<Cuisine> getCuisines() {
         return cuisines;
     }
 
-    public void setCuisines(Collection<Cuisine> cuisines) {
+    public void setCuisines(Set<Cuisine> cuisines) {
         this.cuisines = cuisines;
     }
 
-    public Collection<NutritionalBenefit> getNutritionalBenefits() {
+    public Set<NutritionalBenefit> getNutritionalBenefits() {
         return nutritionalBenefits;
     }
 
-    public void setNutritionalBenefits(Collection<NutritionalBenefit> nutritionalBenefits) {
+    public void setNutritionalBenefits(Set<NutritionalBenefit> nutritionalBenefits) {
         this.nutritionalBenefits = nutritionalBenefits;
     }
 
