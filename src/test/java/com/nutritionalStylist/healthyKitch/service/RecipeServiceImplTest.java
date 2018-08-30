@@ -71,25 +71,25 @@ public class RecipeServiceImplTest {
         assertThat(recipeRepository.findById(1).get().getId(), is(1));
     }
 
-    @Test
-    public void getRecipeUsingSearchDTOTest(){
-        RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
-        ArrayList<String> searchStrings = new ArrayList<>();
-        searchStrings.add("Test");
-        searchStrings.add("st");
-
-        ArrayList<Integer> mealTypes = new ArrayList<>();
-        mealTypes.add(new Integer(1));
-
-
-        recipeSearchDTO.setSearchStrings(searchStrings);
-        recipeSearchDTO.setMealTypesID(mealTypes);
-        recipeSearchDTO.setNutritionalBenefitID(mealTypes);
-        recipeSearchDTO.setDietaryRequirementsID(mealTypes);
-        recipeSearchDTO.setCuisinesID(mealTypes);
-        List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
-        assertThat(recipes.size(), greaterThan(0));
-    }
+//    @Test
+//    public void getRecipeUsingSearchDTOTest(){
+//        RecipeSearchDto recipeSearchDTO = new RecipeSearchDto();
+//        ArrayList<String> searchStrings = new ArrayList<>();
+//        searchStrings.add("Test");
+//        searchStrings.add("st");
+//
+//        ArrayList<Integer> mealTypes = new ArrayList<>();
+//        mealTypes.add(new Integer(1));
+//
+//
+//        recipeSearchDTO.setSearchStrings(searchStrings);
+//        recipeSearchDTO.setMealTypesID(mealTypes);
+//        recipeSearchDTO.setNutritionalBenefitID(mealTypes);
+//        recipeSearchDTO.setDietaryRequirementsID(mealTypes);
+//        recipeSearchDTO.setCuisinesID(mealTypes);
+//        List<Recipe> recipes  = recipeRepository.getRecipeUsingSearchDTO(recipeSearchDTO);
+//        assertThat(recipes.size(), greaterThan(0));
+//    }
 
 //    @Test
 //    public void getRecipeUsingPagination(){
@@ -135,32 +135,32 @@ public class RecipeServiceImplTest {
     }
 
 
-    @Test
-    public void removeDietaryCartegoryTest(){
-        Optional<Recipe> recipeOpt = recipeRepository.findById(1);
-        Recipe recipe = recipeOpt.get();
-        Set<DietaryCategory> dietaryCategories  = recipe.getDietaryCategories();
-
-        System.out.println("found dietary categories : " + dietaryCategories.size());
-        System.out.println("found dietary categories objects : " + dietaryCategories);
-
-        for(DietaryCategory dietaryCategory : dietaryCategories){
-            System.out.println("found category: " + dietaryCategory.getId() + " " + dietaryCategory.getName());
-        }
-
-        ArrayList<DietaryCategory> dietaryCategoriesList = new ArrayList<>();
-        dietaryCategoriesList.addAll(dietaryCategories);
-        dietaryCategoriesList.remove(dietaryCategoriesList.get(0));
-
-        System.out.println("numbers in List: " + dietaryCategoriesList.size());
-
-        Set<DietaryCategory> lSet = new HashSet<DietaryCategory>();
-        lSet.addAll(dietaryCategoriesList);
-
-        System.out.println("numbers in set: " + lSet.size());
-
-        recipe.setDietaryCategories(lSet);
-        recipeService.saveRecipe(recipe);
-        assertThat(recipe.getDietaryCategories().size(), is(1));
-    }
+//    @Test
+//    public void removeDietaryCartegoryTest(){
+//        Optional<Recipe> recipeOpt = recipeRepository.findById(1);
+//        Recipe recipe = recipeOpt.get();
+//        Set<DietaryCategory> dietaryCategories  = recipe.getDietaryCategories();
+//
+//        System.out.println("found dietary categories : " + dietaryCategories.size());
+//        System.out.println("found dietary categories objects : " + dietaryCategories);
+//
+//        for(DietaryCategory dietaryCategory : dietaryCategories){
+//            System.out.println("found category: " + dietaryCategory.getId() + " " + dietaryCategory.getName());
+//        }
+//
+//        ArrayList<DietaryCategory> dietaryCategoriesList = new ArrayList<>();
+//        dietaryCategoriesList.addAll(dietaryCategories);
+//        dietaryCategoriesList.remove(dietaryCategoriesList.get(0));
+//
+//        System.out.println("numbers in List: " + dietaryCategoriesList.size());
+//
+//        Set<DietaryCategory> lSet = new HashSet<DietaryCategory>();
+//        lSet.addAll(dietaryCategoriesList);
+//
+//        System.out.println("numbers in set: " + lSet.size());
+//
+//        recipe.setDietaryCategories(lSet);
+//        recipeService.saveRecipe(recipe);
+//        assertThat(recipe.getDietaryCategories().size(), is(1));
+//    }
 }

@@ -51,6 +51,8 @@ public class RecipeController {
     }
 
 
+
+
     @GetMapping("/allRecipes")
     public Collection<RecipeDto> getAllRecipes(){
         System.out.println("got to all recipes");
