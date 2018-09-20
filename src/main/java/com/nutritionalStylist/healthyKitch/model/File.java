@@ -117,7 +117,7 @@ public abstract class File extends BaseEntity{
     }
 
     public String productionFolder(){
-        return System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/johnadolfo/Desktop/WorkRelated/HK/")
+        return System.getProperty("com.nutritionalStylist.ROOT_FOLDER", "/Users/john/Desktop/WorkRelated/HK/")
                 + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/");
     }
 
