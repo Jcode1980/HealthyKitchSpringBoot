@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -19,6 +21,9 @@ public class MeasuredIngredient extends NamedEntity{
 
     @JsonView({Views.DetailedView.class})
     private String amount;
+
+    @NotNull
+    private Integer sortID;
 
     public String amount(){
         return amount;
@@ -35,6 +40,10 @@ public class MeasuredIngredient extends NamedEntity{
     public void setMetric(Metric value){
         this.metric = value;
     }
+
+    public Integer getSortID() { return sortID; }
+
+    public void setSortID(Integer sortID) { this.sortID = sortID; }
 
     @JsonIgnore
     private String metricDisplay(){

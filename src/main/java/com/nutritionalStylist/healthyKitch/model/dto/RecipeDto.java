@@ -6,7 +6,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class RecipeDto {
@@ -29,7 +32,7 @@ public class RecipeDto {
     @JsonView({Views.DetailedView.class})
     private Set<MealType> mealTypes;
     @JsonView({Views.DetailedView.class})
-    private Set<MeasuredIngredient> measuredIngredients;
+    private List<MeasuredIngredient> measuredIngredients;
     @JsonView({Views.DetailedView.class})
     private Set<DietaryCategory> dietaryCategories;
     @JsonView({Views.DetailedView.class})
@@ -89,11 +92,11 @@ public class RecipeDto {
         this.mealTypes = mealTypes;
     }
 
-    public Set<MeasuredIngredient> getMeasuredIngredients() {
+    public List<MeasuredIngredient> getMeasuredIngredients() {
         return measuredIngredients;
     }
 
-    public void setMeasuredIngredients(Set<MeasuredIngredient> measuredIngredients) {
+    public void setMeasuredIngredients(List<MeasuredIngredient> measuredIngredients) {
         this.measuredIngredients = measuredIngredients;
     }
 
@@ -146,8 +149,11 @@ public class RecipeDto {
     }
 
     static public RecipeDto convertToDto(Recipe recipe) {
-        return MODEL_MAPPER.map(recipe, RecipeDto.class);
-
+        RecipeDto recipeDto =  MODEL_MAPPER.map(recipe, RecipeDto.class);
+        List<MeasuredIngredient> sortedIngredients = recipeDto.measuredIngredients.stream().sorted(Comparator.comparing(MeasuredIngredient::getSortID)).collect(Collectors.toList());
+        System.out.println("sorted ingredient: " + sortedIngredients);
+        recipeDto.setMeasuredIngredients(sortedIngredients);
+        return recipeDto;
     }
 
     static public Recipe convertToEntity(RecipeDto recipeDto) {
@@ -161,4 +167,4 @@ public class RecipeDto {
 //        }
 //        return recipe;
     }
-}
+            }

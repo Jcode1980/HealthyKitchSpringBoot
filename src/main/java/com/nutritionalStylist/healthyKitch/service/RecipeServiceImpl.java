@@ -88,8 +88,8 @@ public class RecipeServiceImpl implements RecipeService {
 //        }else{
 //            mealTypes = Collections.EMPTY_LIST;
 //        }
-//        System.out.println("these are the meal Types: "+ mealTypes);
-//        System.out.println("this is the search String: " + searchString);
+//        log.info("these are the meal Types: "+ mealTypes);
+//        log.info("this is the search String: " + searchString);
 //
 //        if(mealTypes.size() == 0){
 //            return recipeRepository.findByNameLike(recipeDto.getSearchString());
@@ -146,7 +146,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         theRecipe.setDefaultImage(recipeImage);
 
-        System.out.println("the default image of the recipe is: " + recipeImage);
+        log.info("the default image of the recipe is: " + recipeImage);
         recipeRepository.save(theRecipe);
 
           imageHandler.processAndSaveFile(recipeImage, file);
@@ -202,13 +202,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException{
-        System.out.println("Going to do an update review  using merge");
+        log.info("Going to do an update review  using merge");
         entityManager.merge(reviewDTO);
     }
 
     @Override
     public void updateRecipe(Recipe recipeDto) throws ResourceNotFoundException{
-        System.out.println("Going to do an update review  using merge");
+        log.info("Going to do an update review  using merge");
         entityManager.merge(recipeDto);
 
     }

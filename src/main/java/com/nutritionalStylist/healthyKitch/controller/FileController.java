@@ -5,6 +5,7 @@ import com.nutritionalStylist.healthyKitch.repository.RecipeImageRepository;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageFileNotFoundException;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/files")
 public class FileController {
+    private Logger log = Logger.getLogger(FileController.class);
     private final StorageService storageService;
     private final RecipeService recipeService;
 
@@ -65,7 +67,7 @@ public class FileController {
             produces=MediaType.IMAGE_JPEG_VALUE
     )
     public ResponseEntity<Resource> serveImage(@PathVariable Integer fileID) {
-        System.out.println("got ehre serveImage");
+        log.info("got ehre serveImage");
         Resource file = null;
         try{
             file = storageService.resourceForFileID(fileID);
@@ -82,7 +84,7 @@ public class FileController {
             produces=MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<Resource> serveRecipeImage(@PathVariable int recipeImageID,
                                                      @RequestParam(value = "quality", required = false) Integer quality) {
-        System.out.println("got here");
+        log.info("got here");
         //Resource file = storageService.loadAsResource(filename);
         Resource file = storageService.recipeImageAsResource(recipeImageID, quality != null ? quality : 1);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,

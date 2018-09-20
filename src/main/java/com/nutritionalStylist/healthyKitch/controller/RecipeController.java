@@ -13,6 +13,7 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
+    private Logger log = Logger.getLogger(RecipeController.class);
     private final RecipeService recipeService;
     private final StorageService storageService;
     //private ModelMapper modelMapper;
@@ -55,7 +57,7 @@ public class RecipeController {
 
     @GetMapping("/allRecipes")
     public Collection<RecipeDto> getAllRecipes(){
-        System.out.println("got to all recipes");
+        log.info("got to all recipes");
         return recipeService.findAllRecipes().stream().map(recipe -> RecipeDto.convertToDto(recipe)).
                 collect(Collectors.toList());
     }
@@ -64,7 +66,7 @@ public class RecipeController {
     @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
         Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
-        System.out.println("found recipes : " + recipes);
+        log.info("found recipes : " + recipes);
         return recipes.stream().map(recipe -> RecipeDto.convertToDto(recipe)).collect(Collectors.toList());
     }
 
@@ -72,7 +74,7 @@ public class RecipeController {
     @GetMapping(value = "/{recipeID}")
     public RecipeDto getRecipeById(@PathVariable("recipeID") int recipeID) {
         Recipe recipe = recipeService.findRecipeByID(recipeID).orElseThrow(IllegalArgumentException::new);
-        System.out.println("how many ingredients??" + recipe.getMeasuredIngredients().size());
+        log.info("how many ingredients??" + recipe.getMeasuredIngredients().size());
         return RecipeDto.convertToDto(recipe);
     }
 
@@ -85,7 +87,7 @@ public class RecipeController {
     @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(Authentication authentication){
         //Object user = authentication.getPrincipal();
-        //System.out.println("user is : " + user);
+        //log.info("user is : " + user);
         return recipeService.findAllMealTypes(); }
 
 
@@ -106,7 +108,7 @@ public class RecipeController {
     @PostMapping("/UploadRecipeImage/{recipeID}")
     public void handleFileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile file) {
 
-        System.out.println("got here UploadRecipeImage");
+        log.info("got here UploadRecipeImage");
         try{
             recipeService.addImageToRecipe(recipeID, file);
         }
@@ -121,8 +123,8 @@ public class RecipeController {
     public void handleMultipfileUpload(@PathVariable("recipeID") int recipeID, @RequestParam("file") MultipartFile[] file,
                                 RedirectAttributes redirectAttributes) throws Exception {
 
-        System.out.println("got here UploadRecipeImage: " + file);
-        System.out.println("got here UploadRecipeImage: " + file.length);
+        log.info("got here UploadRecipeImage: " + file);
+        log.info("got here UploadRecipeImage: " + file.length);
 
             for(MultipartFile uploadedFile : file) {
                 recipeService.addImageToRecipe(recipeID, uploadedFile);

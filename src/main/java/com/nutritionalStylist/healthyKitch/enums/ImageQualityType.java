@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ImageQualityType {
-    THUMBNAIL(200,200, 3), PREVIEW(600,600, 2), ORIGINAL(10000,10000, 1);
+    THUMBNAIL(320,320, 3), PREVIEW(600,600, 2), ORIGINAL(10000,10000, 1);
     private int width;
     private int height;
     private int id;

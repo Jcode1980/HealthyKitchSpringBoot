@@ -1,6 +1,8 @@
 package com.nutritionalStylist.healthyKitch.config.security;
+import com.nutritionalStylist.healthyKitch.Application;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +22,7 @@ import static com.nutritionalStylist.healthyKitch.config.security.SecurityConsta
 
 
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-
+    private static final Logger log = Logger.getLogger(JWTAuthenticationFilter.class);
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -32,8 +34,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String header = req.getHeader(HEADER_STRING);
         String username = null;
         String authToken = null;
-        System.out.println("Request: " + req.getRequestURI());
-        System.out.println("header is: " + header);
+        log.info("Request: " + req.getRequestURI());
+        log.info("header is: " + header);
         if (header != null && header.startsWith(TOKEN_PREFIX)) {
             authToken = header.replace(TOKEN_PREFIX,"");
             try {

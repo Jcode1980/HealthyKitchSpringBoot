@@ -9,6 +9,8 @@ import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
 import com.nutritionalStylist.healthyKitch.service.UserService;
+import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,8 @@ public class SessionController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private Logger log = Logger.getLogger(SessionController.class);
+
     private final RecipeService recipeService;
     private final StorageService storageService;
     private final UserService userService;
@@ -50,6 +54,7 @@ public class SessionController {
     @PutMapping(value = "/{recipeID}")
     @ResponseStatus(HttpStatus.OK)
     public void updateRecipe(@Valid @RequestBody RecipeDto recipeDto ) {
+        log.info("updateRecipe");
         Recipe recipe;
         //TODO: investigate proper way of handling exceptions.
         try{
@@ -57,22 +62,22 @@ public class SessionController {
             Recipe foundRecipe = foundRecipeOpt.get();
             recipe = RecipeDto.convertToEntity(recipeDto);
 
-            System.out.println("ready in mins?? " + recipeDto.getReadyInMins());
-            System.out.println("how many ingredients: " + recipeDto.getMeasuredIngredients().toArray().length);
+            log.info("ready in mins?? " + recipeDto.getReadyInMins());
+            log.info("how many ingredients: " + recipeDto.getMeasuredIngredients().toArray().length);
             if(recipeDto.getMeasuredIngredients().toArray().length > 0) {
 
-                System.out.println("thisssss is the recipe from mappedModel DTO : " + ((MeasuredIngredient) recipeDto.getMeasuredIngredients().toArray()[0]).metric());
+                log.info("thisssss is the recipe from mappedModel DTO : " + ((MeasuredIngredient) recipeDto.getMeasuredIngredients().toArray()[0]).metric());
             }
             else{
-                System.out.println("No ingredients found");
+                log.info("No ingredients found");
             }
         }catch (Exception e){
-            System.out.println("something went wrong when converting dto to recipe");
+            log.info("something went wrong when converting dto to recipe");
             e.printStackTrace();
             return;
         }
 
-        //System.out.println("thisssss is the recipe from mappedModel : " + ((MeasuredIngredient)recipe.getMeasuredIngredients().toArray()[0]).metric());
+        //log.info("thisssss is the recipe from mappedModel : " + ((MeasuredIngredient)recipe.getMeasuredIngredients().toArray()[0]).metric());
 
         this.recipeService.updateRecipe(recipe);
         //this.recipeService.saveRecipe(recipe);
@@ -98,22 +103,22 @@ public class SessionController {
 
 //        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        String name = user.getUsername(); //get logged in username
-//        System.out.println("Person logged in is: " + user.getFullName() );
+//        log.info("Person logged in is: " + user.getFullName() );
 
-        System.out.println("this is the recipe DTO from measured Ingredient : " + recipeDto.getMeasuredIngredients());
-        System.out.println("this is the recipe DTO from Cusines : " + recipeDto.getCuisines());
-        System.out.println("this is the recipe DTO from Dietary Category : " + recipeDto.getDietaryCategories());
+        log.info("this is the recipe DTO from measured Ingredient : " + recipeDto.getMeasuredIngredients());
+        log.info("this is the recipe DTO from Cusines : " + recipeDto.getCuisines());
+        log.info("this is the recipe DTO from Dietary Category : " + recipeDto.getDietaryCategories());
 
         try{
             recipe = RecipeDto.convertToEntity(recipeDto);
         }catch (Exception e){
-            System.out.println("something went wrong when converting dto to recipe");
+            log.info("something went wrong when converting dto to recipe");
             return null;
         }
 
-        System.out.println("this is the recipe from mappedModel : " + recipe);
-        //System.out.println("this is the instructions from mappedModel : " + recipe.getInstructions().size());
-        //System.out.println("this is the measuredIngredients : " + recipe.getMeasuredIngredients().size());
+        log.info("this is the recipe from mappedModel : " + recipe);
+        //log.info("this is the instructions from mappedModel : " + recipe.getInstructions().size());
+        //log.info("this is the measuredIngredients : " + recipe.getMeasuredIngredients().size());
         //List<NutritionalBenefit> nutritionBenefits = new ArrayList<>(recipe.getNutritionalBenefits());
         //nutritionBenefits.stream().forEach(nutritionalBenefit -> {entityManager.persist(nutritionalBenefit);});
 
@@ -158,8 +163,8 @@ public class SessionController {
         RecipeReview newReview = recipeService.addReviewForRecipe(recipeID, recipeReviewDTO);
 
 
-        System.out.println("this is the recipeReview: " + newReview);
-        System.out.println("this is the recipeReviews user: " + newReview.getUser().getFullName());
+        log.info("this is the recipeReview: " + newReview);
+        log.info("this is the recipeReviews user: " + newReview.getUser().getFullName());
 
         return newReview;
     }

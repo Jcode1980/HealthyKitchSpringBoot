@@ -22,7 +22,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .paths(regex("/api.*|/account.*|/files.*|/token.*|/session.*|/authenticator.*"))
 //                .paths(x->{
 //                    boolean bool =  x.matches("/api.*|/account.*|/files.*");
-//                    System.out.println("path being passed in :  " + x + " is ok? " + bool);
+//                    log.info("path being passed in :  " + x + " is ok? " + bool);
 //                    return bool;
 //                })
                 .build();

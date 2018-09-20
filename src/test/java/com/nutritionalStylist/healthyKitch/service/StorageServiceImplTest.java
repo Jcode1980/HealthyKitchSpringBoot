@@ -46,15 +46,15 @@ public class StorageServiceImplTest {
 //
 //
 //        if (resource.exists() || resource.isReadable()) {
-//            System.out.println("i can read");
+//            log.info("i can read");
 //        } else {
-//            System.out.println("Could not read file");
+//            log.info("Could not read file");
 //            throw new StorageFileNotFoundException(
 //                    "Could not read file: " + filePath);
 //
 //        }
 //    } catch (MalformedURLException e) {
-//            System.out.println("Could not read file catch");
+//            log.info("Could not read file catch");
 //            throw new StorageFileNotFoundException("Could not read file: " + filePath, e);
 //        }
 //    }

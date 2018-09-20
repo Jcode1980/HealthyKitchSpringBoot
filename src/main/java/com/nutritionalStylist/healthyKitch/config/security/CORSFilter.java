@@ -1,5 +1,7 @@
 package com.nutritionalStylist.healthyKitch.config.security;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -12,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class CORSFilter implements Filter {
-
+    private static final Logger log = Logger.getLogger(CORSFilter.class);
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Filtering on...........................................................");
+        log.info("Filtering on...........................................................");
         HttpServletResponse response = (HttpServletResponse) res;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
