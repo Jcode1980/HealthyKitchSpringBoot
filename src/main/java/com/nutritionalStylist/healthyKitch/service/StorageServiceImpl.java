@@ -55,27 +55,6 @@ public class StorageServiceImpl implements StorageService {
     }
 
 
-//    public void store(MultipartFile file) {
-//        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-//        try {
-//            if (file.isEmpty()) {
-//                throw new StorageException("Failed to store empty file " + filename);
-//            }
-//            if (filename.contains("..")) {
-//                // This is a security check
-//                throw new StorageException(
-//                        "Cannot store file with relative path outside current directory "
-//                                + filename);
-//            }
-//            try (InputStream inputStream = file.getInputStream()) {
-//                Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-//            }
-//        }
-//        catch (IOException e) {
-//            throw new StorageException("Failed to store file " + filename, e);
-//        }
-//    }
-
     private String storeToTempFile(MultipartFile file) throws Exception{
         System.out.println("what is the tmp folder? " + tmpFolder);
         System.out.println("what is the root folder? " + rootFolder);
@@ -112,7 +91,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public HashMap<ImageQualityType, BufferedImage> processAndStoreImage(Recipe recipe, MultipartFile file) throws Exception {
+    public HashMap<ImageQualityType, BufferedImage> processAndStoreImage(MultipartFile file) throws Exception {
         //Check if file is image
 
         //store file in tmp folder
@@ -186,8 +165,8 @@ public class StorageServiceImpl implements StorageService {
         }
 
         System.out.println("found recipe image??1 " + imageQualityType);
-        Optional<RecipeFile> recipeFileOpt = recipeImage.get().recipeFileForImageType(imageQualityType);
-        RecipeFile recipeFile = recipeFileOpt.get();
+        Optional<File> recipeFileOpt = recipeImage.get().fileForImageType(imageQualityType);
+        File recipeFile = recipeFileOpt.get();
         System.out.println("found recipeFile:  " + recipeFile);
         String filePath = null;
         try{

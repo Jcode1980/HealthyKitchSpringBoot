@@ -1,9 +1,14 @@
 package com.nutritionalStylist.healthyKitch.service;
 
 import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
+import com.nutritionalStylist.healthyKitch.image.ImageHandler;
+import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.RecipeImage;
 import com.nutritionalStylist.healthyKitch.model.User;
+import com.nutritionalStylist.healthyKitch.model.UserProfileImage;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.repository.UserRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,15 +16,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserDetailsService, UserService {
+    private Logger log = Logger.getLogger(UserDetailsService.class);
+
+    @Autowired
+    private ImageHandler imageHandler;
 
     @Autowired
     private UserRepository userRepository;
+
 
     @Autowired
     private NoEncoder bcryptEncoder;
@@ -79,5 +90,27 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         //newUser.setAge(user.getAge());
         //newUser.setSalary(user.getSalary());
         return userRepository.save(newUser);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password){
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
+
+    @Override
+    public void addImageToUser(User user, MultipartFile file) throws Exception {
+        String fileName = file.getOriginalFilename();
+        log.info("user profile being uploaded: " + fileName);
+//        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
+//        Recipe theRecipe = recipeOptional.get();
+
+        //two step process which first creates the file objects then the image
+        //handler will save the files... This seems pretty dodgey.. might
+        //need to revise this in the future.
+        UserProfileImage userProfileImage = user.createUserProfileImage(fileName);
+
+        userRepository.save(user);
+
+        imageHandler.processAndSaveFile(userProfileImage, file);
     }
 }

@@ -70,5 +70,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthToken(token));
     }
 
+    @GetMapping(value="/token-status")
+    public ResponseEntity checkTokenStatus(){
+        //FIX ME.. should check the token
+        return ResponseEntity.ok().build();
+    }
+
 
 }

@@ -2,6 +2,8 @@ package com.nutritionalStylist.healthyKitch.config;
 
 
 import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
+import com.nutritionalStylist.healthyKitch.image.ImageHandler;
+import com.nutritionalStylist.healthyKitch.service.StorageService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -17,7 +19,7 @@ public class AppConfig {
         driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
         driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/HealthyKitch?useSSL=false");
         driverManagerDataSource.setUsername("root");
-        driverManagerDataSource.setPassword("");
+        driverManagerDataSource.setPassword("games");
         return driverManagerDataSource;
     }
 
@@ -29,6 +31,11 @@ public class AppConfig {
         loggingFilter.setIncludePayload(true);
         loggingFilter.setIncludeHeaders(true);
         return loggingFilter;
+    }
+
+    @Bean
+    public ImageHandler imageHandler(){
+        return new ImageHandler();
     }
 
 

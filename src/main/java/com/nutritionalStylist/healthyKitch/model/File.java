@@ -1,10 +1,12 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.apache.log4j.Logger;
 import org.springframework.boot.web.server.MimeMappings;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
@@ -13,6 +15,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "File")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 public abstract class File extends BaseEntity{
     @Transient
     private Logger log = Logger.getLogger(File.class);
@@ -21,8 +25,8 @@ public abstract class File extends BaseEntity{
     @Column(name = "created")
     private Date created;
 
-    @Column(name = "type")
-    private int type;
+//    @Column(name = "type")
+//    private int type;
 
     @Column(name = "mimeType")
     private String mimeType;
@@ -39,7 +43,7 @@ public abstract class File extends BaseEntity{
     @PrePersist
     protected void onCreate() {
         created = new Date();
-        type = type();
+        //type = type();
     }
 
     protected String fileName;
@@ -52,13 +56,13 @@ public abstract class File extends BaseEntity{
         this.created = created;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
+//    public int getType() {
+//        return type;
+//    }
+//
+//    public void setType(int type) {
+//        this.type = type;
+//    }
 
     public String getMimeType() {
         return mimeType;
@@ -76,7 +80,7 @@ public abstract class File extends BaseEntity{
         this.fileSize = fileSize;
     }
 
-    public abstract int type();
+    //public abstract int type();
 
     public abstract String filePath();
 
@@ -89,6 +93,8 @@ public abstract class File extends BaseEntity{
     public int getWidth() { return width; }
 
     public void setWidth(int width) { this.width = width; }
+
+
 
     //Maybe in future check if fileName doesn't exists in the directory?
     //however this might not be an issue isn't tmp fils will be moved to orginal file location
@@ -121,4 +127,5 @@ public abstract class File extends BaseEntity{
         setWidth(img.getWidth());
         setFileSize(img.getRaster().getDataBuffer().getSize());
     }
+
 }

@@ -1,5 +1,9 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,6 +18,7 @@ public class RecipeReview extends BaseEntity{
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date createdDate;
+
 
     @ManyToOne
     @JoinColumn(name = "recipeID")
@@ -68,6 +73,7 @@ public class RecipeReview extends BaseEntity{
         this.comment = comment;
     }
 
+    @JsonIgnore
     public Recipe getRecipe() { return recipe; }
 
     public void setRecipe(Recipe recipe) { this.recipe = recipe; }

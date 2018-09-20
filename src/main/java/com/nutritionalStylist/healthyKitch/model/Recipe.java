@@ -307,9 +307,7 @@ public class Recipe extends NamedEntity{
 //    }
 
     public RecipeImage createRecipeImage( String fileName) throws Exception{
-        MimeMappings mimeMappings = new MimeMappings();
         RecipeImage recipeImage = new RecipeImage();
-        //recipeImage.setRecipe(this);
         recipeImage.setName(fileName);
         recipeImage.setRecipe(this);
 

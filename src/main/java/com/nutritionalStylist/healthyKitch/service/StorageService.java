@@ -18,7 +18,7 @@ public interface StorageService {
 
     //void store(MultipartFile file);
 
-    HashMap<ImageQualityType, BufferedImage> processAndStoreImage(Recipe recipe, MultipartFile file) throws Exception;
+    HashMap<ImageQualityType, BufferedImage> processAndStoreImage(MultipartFile file) throws Exception;
 
     //Stream<Path> loadAll();
 

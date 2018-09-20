@@ -1,25 +1,30 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
+import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
+import com.nutritionalStylist.healthyKitch.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -30,10 +35,13 @@ public class SessionController {
 
     private final RecipeService recipeService;
     private final StorageService storageService;
+    private final UserService userService;
+
     @Autowired
-    public SessionController(RecipeService recipeService, StorageService storageService) {
+    public SessionController(RecipeService recipeService, StorageService storageService, UserService userService) {
         this.storageService = storageService;
         this.recipeService = recipeService;
+        this.userService = userService;
     }
 
     /**
@@ -143,15 +151,17 @@ public class SessionController {
      */
     @PostMapping(value = "/review/{recipeID}")
     @ResponseStatus(HttpStatus.OK)
-    public void createReview(@PathVariable("recipeID") Integer recipeID, @Valid @RequestBody RecipeReview recipeReview) throws Exception {
+    public RecipeReview createReview(@PathVariable("recipeID") Integer recipeID, @Valid @RequestBody RecipeReview recipeReviewDTO) throws Exception {
 
-        recipeService.addReviewForRecipe(recipeID, recipeReview);
+        recipeReviewDTO.setUser(getAuthenticatedUser());
 
-        System.out.println("this is the recipeReview: " + recipeReview);
-        System.out.println("this is the recipeReviews user: " + recipeReview.getUser().getFullName());
-
+        RecipeReview newReview = recipeService.addReviewForRecipe(recipeID, recipeReviewDTO);
 
 
+        System.out.println("this is the recipeReview: " + newReview);
+        System.out.println("this is the recipeReviews user: " + newReview.getUser().getFullName());
+
+        return newReview;
     }
 
     /**
@@ -162,6 +172,49 @@ public class SessionController {
     public void updateReview(@PathVariable("reviewID") Integer reviewID, @Valid @RequestBody RecipeReview recipeReviewDTO){
         recipeService.updateReview(recipeReviewDTO);
     }
+
+    @GetMapping(value = "/loggedInUser")
+    public String currentUserFullName() {
+        return getAuthenticatedUser().getFullName();
+    }
+
+
+    @JsonView(Views.ListView.class)
+    @GetMapping("/myRecipes")
+    public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
+
+        User user = getAuthenticatedUser();
+
+        searchDto.setCreatedByUserID(user.getId());
+        Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
+        System.out.println("found recipes : " + recipes);
+        return recipes.stream().map(recipe -> RecipeDto.convertToDto(recipe)).collect(Collectors.toList());
+    }
+
+    @PostMapping("/uploadUserProfileImage")
+    public void uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
+        System.out.println("got here uploadUserProfileImage");
+        User user = getAuthenticatedUser();
+
+        try{
+            userService.addImageToUser(user, file);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private User getAuthenticatedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails =  ((UserDetails)auth.getPrincipal());
+        System.out.println("username; " + userDetails.getUsername() + " password: " + userDetails.getPassword());
+        return userService.findByUsernameAndPassword(userDetails.getUsername(), userDetails.getPassword());
+
+    }
+
+
 
 
 

@@ -8,9 +8,11 @@ package com.nutritionalStylist.healthyKitch.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.persistence.*;
 
+import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +35,7 @@ public  class User implements UserDetails {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     /**
      * Description of the property email.
      */
@@ -59,6 +61,10 @@ public  class User implements UserDetails {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userProfileImageID" )
+    protected UserProfileImage userProfileImage;
 
     public User() {
 
@@ -122,7 +128,7 @@ public  class User implements UserDetails {
         return username;
     }
 
-
+    @JsonIgnore
     public String getRole() {
         return role;
     }
@@ -143,14 +149,16 @@ public  class User implements UserDetails {
         return getGiven() + getSurname();
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
+    @JsonIgnore
     public String getGiven() { return given; }
 
     public void setGiven(String given) { this.given = given; }
 
+    @JsonIgnore
     public String getSurname() {return surname; }
 
     public void setSurname(String surname) { this.surname = surname; }
@@ -158,4 +166,47 @@ public  class User implements UserDetails {
     public String getEmail() { return email; }
 
     public void setEmail(String email) { this.email = email; }
+
+    @JsonIgnore
+    public Optional<UserProfileImage> getUserProfileImage() { return Optional.ofNullable(userProfileImage);}
+
+    public void setUserProfileImage(UserProfileImage userProfileImage) { this.userProfileImage = userProfileImage; }
+
+    public Integer profileImageThumbnailURL(){
+        if(getUserProfileImage().isPresent()){
+            return getUserProfileImage().get().getThumbnailImage().map(File::getId).orElse(null);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Integer profileImagePreviewID(){
+        if(getUserProfileImage().isPresent()){
+            return getUserProfileImage().get().getPreviewImage().map(File::getId).orElse(null);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public UserProfileImage createUserProfileImage(String fileName) throws Exception{
+        UserProfileImage profileImage = new UserProfileImage();
+        profileImage.setName(fileName);
+
+        UserImageFile orginalFile = new UserImageFile(fileName, ImageQualityType.ORIGINAL);
+        UserImageFile previewFile = new UserImageFile(fileName, ImageQualityType.PREVIEW);
+        UserImageFile thumbnailFile = new UserImageFile(fileName, ImageQualityType.THUMBNAIL);
+        profileImage.setOrginalImage(orginalFile);
+        profileImage.setPreviewImage(previewFile);
+        profileImage.setThumbnailImage(thumbnailFile);
+
+        setUserProfileImage(profileImage);
+
+        return profileImage;
+    }
+
+
+
+
 }

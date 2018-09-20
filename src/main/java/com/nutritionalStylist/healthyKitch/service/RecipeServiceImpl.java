@@ -3,6 +3,7 @@ package com.nutritionalStylist.healthyKitch.service;
 import com.google.common.collect.Lists;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
+import com.nutritionalStylist.healthyKitch.image.ImageHandler;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
@@ -41,12 +42,13 @@ public class RecipeServiceImpl implements RecipeService {
     private RecipeImageRepository recipeImageRepository;
     private MetricRepository metricRepository;
     private RecipeReviewRepository recipeReviewRepository;
+    private ImageHandler imageHandler;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository,
                              CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository,
                              StorageService storageService, RecipeImageRepository recipeImageRepository, MetricRepository metricRepository,
-                            RecipeReviewRepository recipeReviewRepository){
+                            RecipeReviewRepository recipeReviewRepository, ImageHandler imageHandler){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
@@ -56,6 +58,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.recipeImageRepository = recipeImageRepository;
         this.metricRepository = metricRepository;
         this.recipeReviewRepository = recipeReviewRepository;
+        this.imageHandler = imageHandler;
 
     }
 
@@ -136,7 +139,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeID);
         Recipe theRecipe = recipeOptional.get();
 
-        HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processAndStoreImage(theRecipe, file);
+
         RecipeImage recipeImage = theRecipe.createRecipeImage(fileName);
 
         recipeImageRepository.save(recipeImage);
@@ -146,22 +149,9 @@ public class RecipeServiceImpl implements RecipeService {
         System.out.println("the default image of the recipe is: " + recipeImage);
         recipeRepository.save(theRecipe);
 
-        //TODO: tmp file should be removed.
-        String fileExtension =  recipeImage.getOrginalImage().get().fileExtension();
-
-//        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
-//        ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
-//        ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));
-        recipeImage.getPreviewImage().get().processBufferedImage(imagesMap.get(ImageQualityType.PREVIEW));
-        recipeImage.getThumbnailImage().get().processBufferedImage(imagesMap.get(ImageQualityType.THUMBNAIL));
-        recipeImage.getOrginalImage().get().processBufferedImage(imagesMap.get(ImageQualityType.ORIGINAL));
-
-        log.info("this is the previewPath : " + recipeImage.displayPreviewImagePath());
-        log.info("this is the originalPath : " + recipeImage.displayOriginalImagePath());
-        log.info("this is the thumbnailPath : " + recipeImage.displayThumbnailImagePath());
-
-
+          imageHandler.processAndSaveFile(recipeImage, file);
     }
+
 
     @Override
     public void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception{
@@ -183,7 +173,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Integer addReviewForRecipe(Integer recipeID, RecipeReview review) throws ResourceNotFoundException{
+    public RecipeReview addReviewForRecipe(Integer recipeID, RecipeReview reviewDTO) throws ResourceNotFoundException{
         Optional<Recipe> recipeOpt = recipeRepository.findById(recipeID);
 
         if(!recipeOpt.isPresent()){
@@ -191,10 +181,15 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         Recipe recipe = recipeOpt.get();
-        review.setRecipe(recipe);
 
-        recipeReviewRepository.save(review);
-        return review.getId();
+        RecipeReview newReview = new RecipeReview();
+        newReview.setRecipe(recipe);
+        newReview.setRating(reviewDTO.getRating());
+        newReview.setComment(reviewDTO.getComment());
+        newReview.setUser(reviewDTO.getUser());
+
+        recipeReviewRepository.save(newReview);
+        return newReview;
     }
 
 //    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
