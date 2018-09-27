@@ -23,6 +23,7 @@ public class MeasuredIngredient extends NamedEntity{
     private String amount;
 
     @NotNull
+    @JsonView({Views.DetailedView.class})
     private Integer sortID;
 
     public String amount(){

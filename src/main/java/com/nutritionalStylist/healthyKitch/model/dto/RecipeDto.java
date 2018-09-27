@@ -39,7 +39,8 @@ public class RecipeDto {
     private Set<Cuisine> cuisines;
     @JsonView({Views.DetailedView.class})
     private Set<NutritionalBenefit> nutritionalBenefits;
-
+    @JsonView({Views.DetailedView.class})
+    private List<IngredientSubHeading> ingredientSubHeadings;
 
     static{
         MODEL_MAPPER = new ModelMapper();
@@ -98,6 +99,14 @@ public class RecipeDto {
 
     public void setMeasuredIngredients(List<MeasuredIngredient> measuredIngredients) {
         this.measuredIngredients = measuredIngredients;
+    }
+
+    public List<IngredientSubHeading> getIngredientSubHeadings() {
+        return ingredientSubHeadings;
+    }
+
+    public void setIngredientSubHeadings(List<IngredientSubHeading> ingredientSubHeadings) {
+        this.ingredientSubHeadings = ingredientSubHeadings;
     }
 
     public Set<DietaryCategory> getDietaryCategories() {

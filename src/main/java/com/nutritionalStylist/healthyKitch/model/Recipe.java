@@ -35,6 +35,10 @@ public class Recipe extends NamedEntity{
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipeid")
+    private Set<IngredientSubHeading> ingredientSubHeadings;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "recipeid")
     private Set<MeasuredIngredient> measuredIngredients;
 
 //    //NOTUS BETAS: mappedby annotation will not set the FK relationship whilst join column annotation will.
@@ -323,9 +327,15 @@ public class Recipe extends NamedEntity{
         return recipeImage;
     }
 
+    public Set<IngredientSubHeading> getIngredientSubHeadings() {
+        return ingredientSubHeadings;
+    }
 
+    public void setIngredientSubHeadings(Set<IngredientSubHeading> ingredientSubHeadings) {
+        this.ingredientSubHeadings = ingredientSubHeadings;
+    }
 
-    //public List<Instruction> getInstructions() {
+//public List<Instruction> getInstructions() {
     //    return new ArrayList<>(instructions);
     //}
 
@@ -387,6 +397,7 @@ public class Recipe extends NamedEntity{
 //
 //        return $readyInString;
 //    }
+
 
 }
 
