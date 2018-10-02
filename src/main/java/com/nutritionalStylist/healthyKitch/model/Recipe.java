@@ -1,5 +1,6 @@
 package com.nutritionalStylist.healthyKitch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
@@ -17,6 +18,11 @@ public class Recipe extends NamedEntity{
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date created;
+
+    @JsonIgnore
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    private Date deleted;
 
     private Integer numServings;
 
@@ -355,7 +361,10 @@ public class Recipe extends NamedEntity{
 
     public void setCuisines(Set<Cuisine> cuisines) { this.cuisines = cuisines; }
 
-    //    public function removeMealType($mealType){
+    public Date getDeleted() { return deleted; }
+
+    public void setDeleted(Date deleted) { this.deleted = deleted; }
+//    public function removeMealType($mealType){
 //        $this->removeObjectFromManyToManytRelationship($mealType, "MealTypeRecipe", "mealTypeID");
 //    }
 //

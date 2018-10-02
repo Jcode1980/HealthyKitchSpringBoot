@@ -26,7 +26,6 @@ public interface RecipeService {
 
     Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto searchDto);
 
-    Collection<Recipe> findAllRecipes();
 
     Collection<Metric> findAllMetrics();
 
@@ -34,11 +33,13 @@ public interface RecipeService {
 
     void addImageToMealType(int mealTypeID, MultipartFile file) throws Exception;
 
-     Collection<RecipeReview> reviewsForRecipe(int recipeID) throws Exception;
+    Collection<RecipeReview> reviewsForRecipe(int recipeID) throws Exception;
 
     RecipeReview addReviewForRecipe(Integer recipeID, RecipeReview review) throws Exception;
 
     void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException;
 
     void updateRecipe(Recipe recipeDto) throws ResourceNotFoundException;
+
+    void deleteRecipe(int recipeID) throws Exception;
 }

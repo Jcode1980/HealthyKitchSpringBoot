@@ -211,6 +211,21 @@ public class SessionController {
     }
 
 
+    @PutMapping(value = "/recipe/deleteRecipe/{recipeID}")
+    public ResponseEntity<?> deleteRecipe(@PathVariable("recipeID") Integer recipeID){
+        ResponseEntity<?> response;
+        try{
+            recipeService.deleteRecipe(recipeID);
+            response = ResponseEntity.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            response =  ResponseEntity.badRequest().build();
+        }
+
+        return response;
+    }
+
+
     private User getAuthenticatedUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails =  ((UserDetails)auth.getPrincipal());

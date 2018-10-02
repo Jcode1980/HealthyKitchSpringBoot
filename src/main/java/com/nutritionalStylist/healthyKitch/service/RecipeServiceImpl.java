@@ -99,11 +99,11 @@ public class RecipeServiceImpl implements RecipeService {
 //        }
     }
 
-    @Override
-    public Collection<Recipe> findAllRecipes() {
-        return (Collection<Recipe>) recipeRepository.findAll();
-    }
-
+//    @Override
+//    public Collection<Recipe> findAllRecipes() {
+//        return (Collection<Recipe>) recipeRepository.findAll();
+//    }
+//
 
     @Override
     @Transactional(readOnly = true)
@@ -211,6 +211,17 @@ public class RecipeServiceImpl implements RecipeService {
         log.info("Going to do an update review  using merge");
         entityManager.merge(recipeDto);
 
+    }
+
+    @Override
+    public void deleteRecipe(int recipeID) throws ResourceNotFoundException{
+        Optional<Recipe> recipeOpt = recipeRepository.findById(recipeID);
+
+        if(!recipeOpt.isPresent()){
+            throw new ResourceNotFoundException("Recipe with id-" + recipeID);
+        }
+
+        recipeOpt.get().setDeleted(new Date());
     }
 
 }

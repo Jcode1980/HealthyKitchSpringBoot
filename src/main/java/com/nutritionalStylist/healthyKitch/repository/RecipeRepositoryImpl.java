@@ -57,9 +57,8 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
         searchQuery.append(createJoinPartOfQuery(searchDto));
 
-        if(!searchDto.hasNoSearchCriteria()) {
-            searchQuery.append(createWherePartOfQuery(searchDto));
-        }
+        searchQuery.append(createWherePartOfQuery(searchDto));
+
         log.info("goat here getRecipeUsingSearchDTO " +  searchQuery.toString());
 //        Query query = entityManager.createNativeQuery("SELECT em.* FROM spring_data_jpa_example.employee as em " +
 //                "WHERE em.firstname LIKE ?", Employee.class);
@@ -178,6 +177,11 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         }
 
 
+        isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
+        whereClauseStringBuffer.append(" r.deleted is null");
+
+
+
         return whereClauseStringBuffer.toString();
 
     }
@@ -195,7 +199,7 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
     //TODO: Figure out logic to this.. but for now it returns the newest recipes.
     private String queryForTrendingRecipes(){
-        StringBuilder query = new StringBuilder("Select r.* FROM recipe as r\n" );
+        StringBuilder query = new StringBuilder("Select r.* FROM recipe as r where r.deleted is null\n" );
         query.append("order by created desc\n");
         query.append("LIMIT 6;");
 

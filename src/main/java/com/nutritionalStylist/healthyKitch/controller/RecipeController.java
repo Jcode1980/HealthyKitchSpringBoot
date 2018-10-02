@@ -55,12 +55,12 @@ public class RecipeController {
 
 
 
-    @GetMapping("/allRecipes")
-    public Collection<RecipeDto> getAllRecipes(){
-        log.info("got to all recipes");
-        return recipeService.findAllRecipes().stream().map(recipe -> RecipeDto.convertToDto(recipe)).
-                collect(Collectors.toList());
-    }
+//    @GetMapping("/allRecipes")
+//    public Collection<RecipeDto> getAllRecipes(){
+//        log.info("got to all recipes");
+//        return recipeService.findAllRecipes().stream().map(recipe -> RecipeDto.convertToDto(recipe)).
+//                collect(Collectors.toList());
+//    }
 
     @JsonView(Views.ListView.class)
     @GetMapping("/recipes")
