@@ -1,5 +1,7 @@
 package com.nutritionalStylist.healthyKitch.model.dto;
 
+import com.nutritionalStylist.healthyKitch.model.RecipeStatus;
+
 import java.util.Collection;
 
 @SuppressWarnings("unused")
@@ -11,6 +13,7 @@ public class RecipeSearchDto {
     private Collection<Integer> dietaryRequirementsID;
     private boolean searchForTrending;
     private Integer createdByUser;
+    private Integer recipeStatusID;
 
 
     public Collection<Integer> getMealTypesID() {
@@ -59,8 +62,13 @@ public class RecipeSearchDto {
 
     public void setCreatedByUserID(Integer createdByUser) { this.createdByUser = createdByUser; }
 
+    public Integer getRecipeStatusID() { return recipeStatusID; }
+
+    public void setRecipeStatusID(Integer recipeStatusID) { this.recipeStatusID = recipeStatusID; }
+
     public boolean hasNoSearchCriteria(){
         return !hasMealTypesSearch() && !hasNutritionalBenefitSearch() && !hasCuisineSearch() && !hasDietaryRequirementSearch() &&
-                !hasDietaryRequirementSearch() && !hasSearchStrings() && !isSearchForTrending() && getCreatedByUserID() == null;
+                !hasDietaryRequirementSearch() && !hasSearchStrings() && !isSearchForTrending() && getCreatedByUserID() == null &&
+                getRecipeStatusID() == null;
     }
 }

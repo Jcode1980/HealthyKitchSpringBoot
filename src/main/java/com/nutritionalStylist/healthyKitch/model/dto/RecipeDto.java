@@ -5,10 +5,7 @@ import com.nutritionalStylist.healthyKitch.model.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -25,6 +22,8 @@ public class RecipeDto {
     private Integer numServings;
     @JsonView({Views.ListView.class})
     private BigDecimal readyInMins;
+    @JsonView({Views.ListView.class})
+    private User createdby;
     @JsonView({Views.DetailedView.class})
     private String descText;
     @JsonView({Views.DetailedView.class})
@@ -41,6 +40,14 @@ public class RecipeDto {
     private Set<NutritionalBenefit> nutritionalBenefits;
     @JsonView({Views.DetailedView.class})
     private List<IngredientSubHeading> ingredientSubHeadings;
+
+    @JsonView({Views.DetailedView.class})
+    private RecipeStatus recipeStatus;
+
+    @JsonView({Views.DetailedView.class})
+    private Date created;
+
+
 
     static{
         MODEL_MAPPER = new ModelMapper();
@@ -157,6 +164,18 @@ public class RecipeDto {
         this.readyInMins = readyInMins;
     }
 
+    public Date getCreated() { return created; }
+
+    public void setCreated(Date created) { this.created = created; }
+
+    public User getCreatedby() { return createdby; }
+
+    public void setCreatedby(User createdby) { this.createdby = createdby; }
+
+    public RecipeStatus getRecipeStatus() { return recipeStatus; }
+
+    public void setRecipeStatus(RecipeStatus recipeStatus) { this.recipeStatus = recipeStatus; }
+
     static public RecipeDto convertToDto(Recipe recipe) {
         RecipeDto recipeDto =  MODEL_MAPPER.map(recipe, RecipeDto.class);
         List<MeasuredIngredient> sortedIngredients = recipeDto.measuredIngredients.stream().sorted(Comparator.comparing(MeasuredIngredient::getSortID)).collect(Collectors.toList());
@@ -176,4 +195,5 @@ public class RecipeDto {
 //        }
 //        return recipe;
     }
-            }
+
+    }

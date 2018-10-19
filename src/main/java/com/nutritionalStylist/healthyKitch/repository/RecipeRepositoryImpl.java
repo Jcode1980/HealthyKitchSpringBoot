@@ -72,14 +72,14 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
         return searchQuery.toString();
     }
 
-
-    private String queryQualsForSearchStrings(Collection<String> searchStrings){
-        String searchString = searchStrings.stream().filter(s->(s!=null && s.length() > 0)).map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
-        //searchString = searchString.substring(0, searchString.lastIndexOf(" and "));
-        log.info("returning search String : " + searchString);
-        return searchString;
-
-    }
+//
+//    private String queryQualsForSearchStrings(Collection<String> searchStrings){
+//        String searchString = searchStrings.stream().filter(s->(s!=null && s.length() > 0)).map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
+//        //searchString = searchString.substring(0, searchString.lastIndexOf(" and "));
+//        log.info("returning search String : " + searchString);
+//        return searchString;
+//
+//    }
 
     private String createJoinPartOfQuery(RecipeSearchDto recipeSearchDto){
         StringBuilder joinTableStringBuffer = new StringBuilder("");
@@ -109,93 +109,65 @@ public class RecipeRepositoryImpl implements RecipeRepositoryCustom {
 
 
     private String createWherePartOfQuery(RecipeSearchDto recipeSearchDto){
-        StringBuilder whereClauseStringBuffer = new StringBuilder(" where ");
-        boolean isFirstCriteria = true;
+        StringBuilder whereClauseStringBuffer = new StringBuilder(" where r.deleted is null ");
+
         if(recipeSearchDto.hasSearchStrings()) {
-            whereClauseStringBuffer.append(queryQualsForSearchStrings(recipeSearchDto.getSearchStrings()));
-            isFirstCriteria = false;
+            String searchString = recipeSearchDto.getSearchStrings().stream().filter(s->(s!=null && s.length() > 0)).map(s->"r.name like '%"+s+"%'").collect(Collectors.joining(" or "));
+            whereClauseStringBuffer.append(" and ");
+            whereClauseStringBuffer.append( searchString);
         }
 
         if(recipeSearchDto.hasMealTypesSearch()){
-
-//            if(!isFirstCriteria) {
-//                whereClauseStringBuffer.append(" and ");
-//            }
-//            else{
-//                isFirstCriteria = false;
-//            }
-            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String mealTypeSearchString = " m.ID in (" +recipeSearchDto.getMealTypesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(" and ");
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasNutritionalBenefitSearch()){
-            if(!isFirstCriteria)
-//            {
-//                whereClauseStringBuffer.append(" and ");
-//            }
-//            else{
-//                isFirstCriteria = false;
-//            }
-            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String mealTypeSearchString = " n.ID in (" +recipeSearchDto.getNutritionalBenefitID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(" and ");
             whereClauseStringBuffer.append(mealTypeSearchString);
         }
 
         if(recipeSearchDto.hasDietaryRequirementSearch()){
-//            if(!isFirstCriteria)
-//            {
-//                whereClauseStringBuffer.append(" and ");
-//            }
-//            else{
-//                isFirstCriteria = false;
-//            }
-            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String dietarySearchString = " dc.ID in (" +recipeSearchDto.getDietaryRequirementsID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(" and ");
             whereClauseStringBuffer.append(dietarySearchString);
 
         }
 
         if(recipeSearchDto.hasCuisineSearch()){
-//            if(!isFirstCriteria)
-//            {
-//                whereClauseStringBuffer.append(" and ");
-//            }
-//            else{
-//                isFirstCriteria = false;
-//            }
-            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String cuisineSearchString = " c.ID in (" +recipeSearchDto.getCuisinesID().stream().map(i -> String.valueOf(i)).collect(Collectors.joining(", ")) + ")\n";
+            whereClauseStringBuffer.append(" and ");
             whereClauseStringBuffer.append(cuisineSearchString);
 
         }
 
         if(recipeSearchDto.getCreatedByUserID() != null){
-            isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
             String createdBySearchString = " r.created_byid = " +  recipeSearchDto.getCreatedByUserID();
+            whereClauseStringBuffer.append(" and ");
             whereClauseStringBuffer.append(createdBySearchString);
         }
 
-
-        isFirstCriteria = appendAndString(whereClauseStringBuffer, isFirstCriteria);
-        whereClauseStringBuffer.append(" r.deleted is null");
-
-
+        if(recipeSearchDto.getRecipeStatusID() != null){
+            whereClauseStringBuffer.append(" and ");
+            whereClauseStringBuffer.append(" r.recipe_statusid =  " + recipeSearchDto.getRecipeStatusID());
+        }
 
         return whereClauseStringBuffer.toString();
 
     }
 
-    private boolean appendAndString(StringBuilder theQuery, boolean isFirstCriteria){
-        if(!isFirstCriteria)
-        {
-            theQuery.append(" and ");
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+//    private boolean appendAndString(StringBuilder theQuery, boolean isFirstCriteria){
+//        if(!isFirstCriteria)
+//        {
+//            theQuery.append(" and ");
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+//    }
 
     //TODO: Figure out logic to this.. but for now it returns the newest recipes.
     private String queryForTrendingRecipes(){

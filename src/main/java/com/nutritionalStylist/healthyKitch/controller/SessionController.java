@@ -58,9 +58,26 @@ public class SessionController {
         Recipe recipe;
         //TODO: investigate proper way of handling exceptions.
         try{
-            Optional<Recipe> foundRecipeOpt = recipeService.findRecipeByID(recipeDto.getId());
-            Recipe foundRecipe = foundRecipeOpt.get();
             recipe = RecipeDto.convertToEntity(recipeDto);
+
+
+
+            //re setting the created by date and user when DTO returns null for those values
+            Optional<Recipe> foundRecipeOpt = recipeService.findRecipeByID(recipeDto.getId());
+
+            Recipe foundRecipe = foundRecipeOpt.get();
+            if(recipe.getCreated() == null) {
+                recipe.setCreated(foundRecipe.getCreated());
+            }
+
+            if(recipe.getCreatedby() == null){
+                recipe.setCreatedby(foundRecipe.getCreatedby());
+            }
+
+            if(recipe.getRecipeStatus() == null){
+                recipe.setRecipeStatus(foundRecipe.getRecipeStatus());
+            }
+
 
             log.info("ready in mins?? " + recipeDto.getReadyInMins());
             log.info("how many ingredients: " + recipeDto.getMeasuredIngredients().toArray().length);
@@ -121,6 +138,10 @@ public class SessionController {
         //log.info("this is the measuredIngredients : " + recipe.getMeasuredIngredients().size());
         //List<NutritionalBenefit> nutritionBenefits = new ArrayList<>(recipe.getNutritionalBenefits());
         //nutritionBenefits.stream().forEach(nutritionalBenefit -> {entityManager.persist(nutritionalBenefit);});
+
+        //Recipe Status set on client side.
+//        if(recipe)
+//        recipe.setRecipeStatus(entityManager.find(RecipeStatus.class, 1));
 
         recipeService.saveRecipe(recipe);
         return recipe.getId();

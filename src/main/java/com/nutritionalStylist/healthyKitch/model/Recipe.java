@@ -28,12 +28,13 @@ public class Recipe extends NamedEntity{
 
     private Integer readyInMins;
 
+
+
     private String descText;
 
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "recipeImageID")
     private RecipeImage defaultImage;
-
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "recipeid")
@@ -88,6 +89,10 @@ public class Recipe extends NamedEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="createdByID")
     private User createdby;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="recipeStatusID")
+    private RecipeStatus recipeStatus;
 
     public Integer getViewCount() {
         return viewCount;
@@ -191,6 +196,9 @@ public class Recipe extends NamedEntity{
         this.recipeImages = recipeImages;
     }
 
+    public RecipeStatus getRecipeStatus() { return recipeStatus; }
+
+    public void setRecipeStatus(RecipeStatus recipeStatus) { this.recipeStatus = recipeStatus; }
 
     //TODO: Add functionality to reassign ID's
     public void reassignSortIDs() {
@@ -289,6 +297,7 @@ public class Recipe extends NamedEntity{
     public Integer getDefaultImageID(){
         return getDefaultImage().map(RecipeImage::getId).orElse(null);
     }
+
 
 
 

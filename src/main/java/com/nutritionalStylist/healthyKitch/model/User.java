@@ -12,7 +12,9 @@ import java.util.Optional;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,9 +55,11 @@ public  class User implements UserDetails {
     @Column(name = "role")
     private String role;
 
+    @JsonView({Views.ListView.class})
     @Column(name = "given")
     private String given;
 
+    @JsonView({Views.ListView.class})
     @Column(name = "surname")
     private String surname;
 
@@ -172,7 +176,8 @@ public  class User implements UserDetails {
 
     public void setUserProfileImage(UserProfileImage userProfileImage) { this.userProfileImage = userProfileImage; }
 
-    public Integer profileImageThumbnailURL(){
+    @JsonView({Views.ListView.class})
+    public Integer profileImageThumbnailID(){
         if(getUserProfileImage().isPresent()){
             return getUserProfileImage().get().getThumbnailImage().map(File::getId).orElse(null);
         }
@@ -181,6 +186,7 @@ public  class User implements UserDetails {
         }
     }
 
+    @JsonView({Views.ListView.class})
     public Integer profileImagePreviewID(){
         if(getUserProfileImage().isPresent()){
             return getUserProfileImage().get().getPreviewImage().map(File::getId).orElse(null);

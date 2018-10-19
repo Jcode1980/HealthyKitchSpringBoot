@@ -38,6 +38,7 @@ public class RecipeServiceImpl implements RecipeService {
     private NutritionalBenefitRepository nutritionalBenefitRepository;
     private CuisineRepository cuisineRepository;
     private DietaryCategoryRepository dietaryCategoryRepository;
+    private RecipeStatusRepository recipeStatusRepository;
     private StorageService storageService ;
     private RecipeImageRepository recipeImageRepository;
     private MetricRepository metricRepository;
@@ -48,7 +49,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl(RecipeRepository recipeRepository, MealTypeRepository mealTypeRepository,NutritionalBenefitRepository nutritionalBenefitRepository,
                              CuisineRepository cuisineRepository, DietaryCategoryRepository dietaryCategoryRepository,
                              StorageService storageService, RecipeImageRepository recipeImageRepository, MetricRepository metricRepository,
-                            RecipeReviewRepository recipeReviewRepository, ImageHandler imageHandler){
+                            RecipeReviewRepository recipeReviewRepository, ImageHandler imageHandler, RecipeStatusRepository recipeStatusRepository){
         this.recipeRepository  = recipeRepository;
         this.mealTypeRepository  = mealTypeRepository;
         this.nutritionalBenefitRepository  = nutritionalBenefitRepository;
@@ -59,6 +60,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.metricRepository = metricRepository;
         this.recipeReviewRepository = recipeReviewRepository;
         this.imageHandler = imageHandler;
+        this.recipeStatusRepository = recipeStatusRepository;
 
     }
 
@@ -126,6 +128,9 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional(readOnly = true)
     public Collection<Metric> findAllMetrics() throws DataAccessException { return (Collection<Metric>) metricRepository.findAll(); }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<RecipeStatus> findAllRecipeStatuses() throws DataAccessException { return (Collection<RecipeStatus>) recipeStatusRepository.findAll(); }
 
     @Override
     @Transactional(readOnly = true)

@@ -53,8 +53,6 @@ public class RecipeController {
     }
 
 
-
-
 //    @GetMapping("/allRecipes")
 //    public Collection<RecipeDto> getAllRecipes(){
 //        log.info("got to all recipes");
@@ -101,6 +99,9 @@ public class RecipeController {
     @GetMapping("/allCuisines")
     public Collection<Cuisine> getAllCuisines(){ return recipeService.findAllCuisines();}
 
+    @GetMapping("/allRecipeStatuses")
+    public Collection<RecipeStatus> getAllRecipeStatuses(){ return recipeService.findAllRecipeStatuses();}
+
     @GetMapping("/allDietaryCategories")
     public Collection<DietaryCategory> getAllDietaryCategories(){ return recipeService.findAllDietaryCategories(); }
 
@@ -115,7 +116,6 @@ public class RecipeController {
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
 

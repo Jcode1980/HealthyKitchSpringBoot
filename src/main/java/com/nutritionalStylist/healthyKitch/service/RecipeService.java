@@ -26,6 +26,7 @@ public interface RecipeService {
 
     Collection<Recipe> findRecipesUsingRecipeDTO(RecipeSearchDto searchDto);
 
+    Collection<RecipeStatus> findAllRecipeStatuses();
 
     Collection<Metric> findAllMetrics();
 
