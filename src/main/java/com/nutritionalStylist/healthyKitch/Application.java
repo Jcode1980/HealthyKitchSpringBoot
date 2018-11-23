@@ -1,5 +1,7 @@
 package com.nutritionalStylist.healthyKitch;
 
+import com.nutritionalStylist.healthyKitch.controller.FileController;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,8 +16,10 @@ import java.util.Properties;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
+    private static Logger log = Logger.getLogger(Application.class);
 
     public static void main(String[] args) {
+        log.debug("blah bah");
         SpringApplication.run(Application.class, args);
         setSystemProperties();
 
@@ -36,6 +40,7 @@ public class Application extends SpringBootServletInitializer {
     }
 
     private static void setSystemProperties(){
+
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         String appConfigPath = rootPath + "application.properties";
 

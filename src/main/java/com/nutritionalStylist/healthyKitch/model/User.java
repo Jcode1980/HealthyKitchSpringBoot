@@ -70,6 +70,22 @@ public  class User implements UserDetails {
     @JoinColumn(name = "userProfileImageID" )
     protected UserProfileImage userProfileImage;
 
+
+    private String gender;
+
+    private Integer yearOfBirth;
+
+    private String aboutMe;
+
+    private String websiteURL;
+
+    private String blogURL;
+
+    private String instagramURL;
+
+    private String facebookURL;
+
+
     public User() {
 
     }
@@ -170,6 +186,54 @@ public  class User implements UserDetails {
     public String getEmail() { return email; }
 
     public void setEmail(String email) { this.email = email; }
+
+    public String getGender() { return gender; }
+
+    public void setGender(String gender) { this.gender = gender; }
+
+    public Integer getYearOfBirth() { return yearOfBirth; }
+
+    public void setYearOfBirth(Integer yearOfBirth) { this.yearOfBirth = yearOfBirth; }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public String getWebsiteURL() {
+        return websiteURL;
+    }
+
+    public void setWebsiteURL(String wesiteURL) {
+        this.websiteURL = wesiteURL;
+    }
+
+    public String getBlogURL() {
+        return blogURL;
+    }
+
+    public void setBlogURL(String blogURL) {
+        this.blogURL = blogURL;
+    }
+
+    public String getInstagramURL() {
+        return instagramURL;
+    }
+
+    public void setInstagramURL(String instagramURL) {
+        this.instagramURL = instagramURL;
+    }
+
+    public String getFacebookURL() {
+        return facebookURL;
+    }
+
+    public void setFacebookURL(String facebookURL) {
+        this.facebookURL = facebookURL;
+    }
 
     @JsonIgnore
     public Optional<UserProfileImage> getUserProfileImage() { return Optional.ofNullable(userProfileImage);}

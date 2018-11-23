@@ -1,8 +1,11 @@
 package com.nutritionalStylist.healthyKitch.model.security;
 
+import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
+
 public class AuthToken {
 
     private String token;
+    private UserDto userDto;
 
     public AuthToken(){
 
@@ -20,6 +23,7 @@ public class AuthToken {
         this.token = token;
     }
 
+    public UserDto getUserDto() { return userDto; }
 
-
+    public void setUserDto(UserDto userDto) { this.userDto = userDto; }
 }

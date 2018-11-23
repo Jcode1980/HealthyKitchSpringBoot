@@ -5,6 +5,7 @@ import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
+import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
@@ -200,8 +201,8 @@ public class SessionController {
     }
 
     @GetMapping(value = "/loggedInUser")
-    public String currentUserFullName() {
-        return getAuthenticatedUser().getFullName();
+    public UserDto currentUser() {
+        return UserDto.convertToDto(getAuthenticatedUser());
     }
 
 
