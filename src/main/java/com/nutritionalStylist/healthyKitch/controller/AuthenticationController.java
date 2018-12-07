@@ -57,6 +57,7 @@ public class AuthenticationController {
         User user = userService.findByUsernameAndPassword(email, password);
         System.out.println("Found user :" + user.getFullName());
         authToken.setUserDto(UserDto.convertToDto(user));
+        System.out.println("returning DTO user: " + UserDto.convertToDto(user));
         return ResponseEntity.ok(authToken);
 
         //return ResponseEntity.ok(new AuthToken(token));

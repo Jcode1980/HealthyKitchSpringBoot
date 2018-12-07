@@ -18,7 +18,7 @@ public class UserDto {
     private Integer id;
     private String password;
     private Integer userProfileImageID;
-    private String firstName;
+    private String given;
     private String surname;
     private String gender;
     private Integer yearOfBirth;
@@ -27,6 +27,8 @@ public class UserDto {
     private String blogURL;
     private String instagramURL;
     private String facebookURL;
+    private String email;
+
 
 //    private String token;
 
@@ -54,6 +56,12 @@ public class UserDto {
         this.password = password;
     }
 
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     static public UserDto convertToDto(User user) {
         return MODEL_MAPPER.map(user, UserDto.class);
     }
@@ -70,13 +78,9 @@ public class UserDto {
         this.userProfileImageID = userProfileImageID;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getGiven() { return given; }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    public void setGiven(String given) { this.given = given; }
 
     public String getSurname() {
         return surname;
