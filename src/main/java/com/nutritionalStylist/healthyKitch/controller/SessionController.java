@@ -7,6 +7,7 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
+import com.nutritionalStylist.healthyKitch.service.EmailService;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
 import com.nutritionalStylist.healthyKitch.service.UserService;
@@ -41,12 +42,14 @@ public class SessionController {
     private final RecipeService recipeService;
     private final StorageService storageService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public SessionController(RecipeService recipeService, StorageService storageService, UserService userService) {
+    public SessionController(RecipeService recipeService, StorageService storageService, UserService userService, EmailService emailService) {
         this.storageService = storageService;
         this.recipeService = recipeService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     /**
@@ -209,14 +212,17 @@ public class SessionController {
     @JsonView(Views.ListView.class)
     @GetMapping("/myRecipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
+        log.info("status for search is ? " + searchDto.getRecipeStatusID());
 
+        //Could this logic be moved into the recipeService???
         User user = getAuthenticatedUser();
-
         searchDto.setCreatedByUserID(user.getId());
+
         Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
         System.out.println("found recipes : " + recipes);
         return recipes.stream().map(recipe -> RecipeDto.convertToDto(recipe)).collect(Collectors.toList());
     }
+
 
     @PostMapping("/uploadUserProfileImage")
     public void uploadUserProfileImage(@RequestParam("file") MultipartFile file) {
@@ -250,13 +256,45 @@ public class SessionController {
 
     private User getAuthenticatedUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("auth details " + auth.getDetails());
+        System.out.println("auth.getPrincipal()" + auth.getPrincipal().getClass().getName());
+        System.out.println(auth.getPrincipal());
         UserDetails userDetails =  ((UserDetails)auth.getPrincipal());
         System.out.println("username; " + userDetails.getUsername() + " password: " + userDetails.getPassword());
         return userService.findByUsernameAndPassword(userDetails.getUsername(), userDetails.getPassword());
 
     }
 
+    @PostMapping("/sendTestEmail")
+    public void sendTestEmail(){
+        //String[] toArray, String[] bccArray, String subject
+        Mail mail = new Mail(new String[]{"j_adolfo@hotmail.com"}, new String[]{}, "johnadolfo1980@gmail.com", "Test HTML email yay");
+        try{
+            emailService.sendSimpleMessage(mail);
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+        }
 
+    }
+
+
+    @PostMapping("/sendEmail")
+    public void sendEmail(@Valid @RequestBody Mail mail){
+        log.info("Sending email " + mail);
+        log.info("to Array: " +  mail.getToArray());
+        log.info("from: " +  mail.getFrom());
+
+        //String[] toArray, String[] bccArray, String subject
+        //Mail mail = new Mail(new String[]{"j_adolfo@hotmail.com"}, new String[]{}, "johnadolfo1980@gmail.com", "Test HTML email yay");
+        try{
+            emailService.sendSimpleMessage(mail);
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+        }
+
+    }
 
 
 

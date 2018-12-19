@@ -13,11 +13,13 @@ import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.service.RecipeService;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
+import com.nutritionalStylist.healthyKitch.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -31,11 +33,13 @@ public class RecipeController {
     private Logger log = Logger.getLogger(RecipeController.class);
     private final RecipeService recipeService;
     private final StorageService storageService;
+    private final UserService userService;
     //private ModelMapper modelMapper;
 
     @Autowired
-    public RecipeController(RecipeService recipeService, StorageService storageService) {
+    public RecipeController(RecipeService recipeService, StorageService storageService, UserService userService) {
         this.storageService = storageService;
+        this.userService = userService;
         this.recipeService = recipeService;
 
 //        modelMapper = new ModelMapper();
@@ -63,6 +67,7 @@ public class RecipeController {
     @JsonView(Views.ListView.class)
     @GetMapping("/recipes")
     public Collection<RecipeDto> searchRecipesByDTO(RecipeSearchDto searchDto) {
+        log.info("status for search is ? " + searchDto.getRecipeStatusID());
         Collection<Recipe> recipes = recipeService.findRecipesUsingRecipeDTO(searchDto);
         log.info("found recipes : " + recipes);
         return recipes.stream().map(recipe -> RecipeDto.convertToDto(recipe)).collect(Collectors.toList());
@@ -84,6 +89,9 @@ public class RecipeController {
 
     @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(Authentication authentication){
+
+        User user = getAuthenticatedUser();
+        System.out.println("my user is: " + user);
         //Object user = authentication.getPrincipal();
         //log.info("user is : " + user);
         return recipeService.findAllMealTypes(); }
@@ -146,5 +154,16 @@ public class RecipeController {
 //        return recipe;
 //    }
 
+
+    private User getAuthenticatedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("auth details " + auth.getDetails());
+        System.out.println("auth.getPrincipal()" + auth.getPrincipal().getClass().getName());
+        System.out.println(auth.getPrincipal());
+        UserDetails userDetails =  ((UserDetails)auth.getPrincipal());
+        System.out.println("username; " + userDetails.getUsername() + " password: " + userDetails.getPassword());
+        return userService.findByUsernameAndPassword(userDetails.getUsername(), userDetails.getPassword());
+
+    }
 
 }

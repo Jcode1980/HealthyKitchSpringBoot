@@ -28,6 +28,8 @@ public class UserDto {
     private String instagramURL;
     private String facebookURL;
     private String email;
+    private String role;
+
 
 
 //    private String token;
@@ -58,17 +60,7 @@ public class UserDto {
 
     public String getEmail() { return email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    static public UserDto convertToDto(User user) {
-        return MODEL_MAPPER.map(user, UserDto.class);
-    }
-
-    static public Recipe convertToEntity(RecipeDto recipeDto) {
-        return MODEL_MAPPER.map(recipeDto, Recipe.class);
-    }
+    public void setEmail(String email) { this.email = email; }
 
     public Integer getUserProfileImageID() {
         return userProfileImageID;
@@ -144,5 +136,17 @@ public class UserDto {
 
     public void setFacebookURL(String facebookURL) {
         this.facebookURL = facebookURL;
+    }
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
+
+    static public UserDto convertToDto(User user) {
+        return MODEL_MAPPER.map(user, UserDto.class);
+    }
+
+    static public Recipe convertToEntity(RecipeDto recipeDto) {
+        return MODEL_MAPPER.map(recipeDto, Recipe.class);
     }
 }

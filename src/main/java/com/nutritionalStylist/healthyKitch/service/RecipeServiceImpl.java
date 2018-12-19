@@ -81,7 +81,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         //Collection<MealType> mealTypes;
         //String searchString = searchDto.getSearchString();
-
+        System.out.println("ttthis is the search DTO: " + searchDto.getRecipeStatusID() );
         return recipeRepository.getRecipeUsingSearchDTO(searchDto);
 //
 //        if(recipeDto.getMealTypesID() != null) {

@@ -58,6 +58,16 @@ public class AuthenticationController {
         System.out.println("Found user :" + user.getFullName());
         authToken.setUserDto(UserDto.convertToDto(user));
         System.out.println("returning DTO user: " + UserDto.convertToDto(user));
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("auth details " + auth.getDetails());
+        System.out.println("auth.getPrincipal()" + auth.getPrincipal().getClass().getName());
+        System.out.println(auth.getPrincipal());
+        UserDetails userDetails =  ((UserDetails)auth.getPrincipal());
+        System.out.println("username; " + userDetails.getUsername() + " password: " + userDetails.getPassword());
+
+
         return ResponseEntity.ok(authToken);
 
         //return ResponseEntity.ok(new AuthToken(token));

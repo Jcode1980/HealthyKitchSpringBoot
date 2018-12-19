@@ -1,6 +1,8 @@
 package com.nutritionalStylist.healthyKitch;
 
 import com.nutritionalStylist.healthyKitch.controller.FileController;
+import com.nutritionalStylist.healthyKitch.model.Mail;
+import com.nutritionalStylist.healthyKitch.service.EmailServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,12 +13,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
     private static Logger log = Logger.getLogger(Application.class);
+
+    @Autowired
+    static EmailServiceImpl emailService;
 
     public static void main(String[] args) {
         log.debug("blah bah");
@@ -37,7 +44,9 @@ public class Application extends SpringBootServletInitializer {
                 System.out.println(beanName);
             }
         };
+
     }
+
 
     private static void setSystemProperties(){
 
