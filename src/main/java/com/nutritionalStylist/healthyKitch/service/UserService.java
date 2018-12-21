@@ -15,6 +15,7 @@ public interface UserService {
     User findOne(String username);
     User findById(Integer id);
     User findByUsernameAndPassword(String username, String password);
+    User findByEmail(String email);
 
     void addImageToUser(User user, MultipartFile file) throws Exception;
 

@@ -98,6 +98,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public void addImageToUser(User user, MultipartFile file) throws Exception {
         String fileName = file.getOriginalFilename();
         log.info("user profile being uploaded: " + fileName);
