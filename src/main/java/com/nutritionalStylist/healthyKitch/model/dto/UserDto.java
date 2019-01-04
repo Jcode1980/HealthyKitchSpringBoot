@@ -2,6 +2,7 @@ package com.nutritionalStylist.healthyKitch.model.dto;
 
 import com.nutritionalStylist.healthyKitch.model.MeasuredIngredient;
 import com.nutritionalStylist.healthyKitch.model.Recipe;
+import com.nutritionalStylist.healthyKitch.model.Role;
 import com.nutritionalStylist.healthyKitch.model.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -9,6 +10,9 @@ import org.modelmapper.PropertyMap;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import sun.security.util.Password;
 
 @SuppressWarnings("unused")
 public class UserDto {
@@ -146,7 +150,12 @@ public class UserDto {
         return MODEL_MAPPER.map(user, UserDto.class);
     }
 
-    static public Recipe convertToEntity(RecipeDto recipeDto) {
-        return MODEL_MAPPER.map(recipeDto, Recipe.class);
+    static public User convertToEntity(UserDto userDto, PasswordEncoder encoder) {
+        User user = MODEL_MAPPER.map(userDto, User.class);
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setUsername(user.getEmail());
+        if(userDto.getRole() == null){user.setRole(Role.ROLE_USER);}
+
+        return user;
     }
 }

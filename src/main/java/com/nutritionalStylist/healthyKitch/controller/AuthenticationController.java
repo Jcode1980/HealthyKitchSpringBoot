@@ -47,12 +47,13 @@ public class AuthenticationController {
         authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         log.info("Do i have authentication?? " + authentication);
         //log.info("these are the auth cred: " + authentication.getCredentials().toString());
-        log.info("Do i have authentication?? " + authentication);
         //log.info("these are the auth cred: " + authentication.getCredentials().toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(authentication);
+        log.info("Sending back auth token: " + token );
 
-        return new AuthToken(token);
+        User user = userService.findByUsernameAndPassword(email, password);
+        return new AuthToken(token, UserDto.convertToDto(user));
 
     }
 
@@ -60,23 +61,6 @@ public class AuthenticationController {
     @PostMapping(value = "/signIn")
     public ResponseEntity<?> signIn(@RequestParam String email, @RequestParam String password) throws AuthenticationException {
         log.info("got here generate");
-//
-//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(email, password);
-//        Authentication authentication;
-//        try{
-//            //log.info("Username: " + usernamePasswordAuthenticationToken.get() +"Credentials:" + usernamePasswordAuthenticationToken.getCredentials());
-//            authentication = createAuthenticationToken(email, password);
-//            log.info("Do i have authentication?? " + authentication);
-//            //log.info("these are the auth cred: " + authentication.getCredentials().toString());
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            return ResponseEntity.badRequest().build();
-//        }
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final String token = jwtTokenUtil.generateToken(authentication);
-//
-//        AuthToken authToken = new AuthToken(token);
 
         AuthToken authToken;
         try{
@@ -86,18 +70,6 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
 
-        User user = userService.findByUsernameAndPassword(email, password);
-        System.out.println("Found user :" + user.getFullName());
-        authToken.setUserDto(UserDto.convertToDto(user));
-        System.out.println("returning DTO user: " + UserDto.convertToDto(user));
-
-
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println("auth details " + auth.getDetails());
-//        System.out.println("auth.getPrincipal()" + auth.getPrincipal().getClass().getName());
-//        System.out.println(auth.getPrincipal());
-//        UserDetails userDetails =  ((UserDetails)auth.getPrincipal());
-//        System.out.println("username; " + userDetails.getUsername() + " password: " + userDetails.getPassword());
 
 
         return ResponseEntity.ok(authToken);
@@ -107,10 +79,13 @@ public class AuthenticationController {
 
 
     @PostMapping(value = "/sign-up")
-    public ResponseEntity<?> signIn(@Valid @RequestBody UserDto signUpDto) throws AuthenticationException {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto signUpDto) throws AuthenticationException {
         ResponseEntity responseEntity;
 
-        System.out.println("Goat here: sign-up");
+//        System.out.println("Goat here: sign-up" + signUpDto.getEmail());
+//        System.out.println("Goat here: sign-up" + signUpDto.getGiven());
+//        System.out.println("Goat here: sign-up" + signUpDto.getYearOfBirth());
+
 
         //Check if user already exists with same email
         User user = userService.findByEmail(signUpDto.getEmail());

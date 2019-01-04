@@ -11,8 +11,9 @@ public class AuthToken {
 
     }
 
-    public AuthToken(String token){
+    public AuthToken(String token, UserDto userDto){
         this.token = token;
+        this.userDto = userDto;
     }
 
     public String getToken() {

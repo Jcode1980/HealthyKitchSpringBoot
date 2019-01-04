@@ -90,8 +90,8 @@ public class RecipeController {
     @GetMapping("/allMealTypes")
     public Collection<MealType> getAllMealtypes(Authentication authentication){
 
-        User user = getAuthenticatedUser();
-        System.out.println("my user is: " + user);
+//        User user = getAuthenticatedUser();
+//        System.out.println("my user is: " + user);
         //Object user = authentication.getPrincipal();
         //log.info("user is : " + user);
         return recipeService.findAllMealTypes(); }

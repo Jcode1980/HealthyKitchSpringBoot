@@ -281,7 +281,7 @@ public class SessionController {
 
     @PostMapping("/sendEmail")
     public void sendEmail(@Valid @RequestBody Mail mail){
-        log.info("Sending email " + mail);
+        log.info("sending email " + mail);
         log.info("to Array: " +  mail.getToArray());
         log.info("from: " +  mail.getFrom());
 
@@ -295,6 +295,27 @@ public class SessionController {
         }
 
     }
+
+    @GetMapping(value = "/canCreateReview/{recipeID}")
+    public boolean loggedInUserCanCreateReview(@PathVariable("recipeID") Integer recipeID){
+        User authenticatedUser = getAuthenticatedUser();
+
+        log.info("go to loggedInUserCanCreateReview with recipeID: " + recipeID + " and user " + authenticatedUser.getEmail());
+
+        Optional<Recipe> recipeOpt = recipeService.findRecipeByID(recipeID);
+        if(!recipeOpt.isPresent()){
+            throw new ResourceNotFoundException("Recipe with id-" + recipeID);
+        }
+
+//
+//        return authenticatedUser.reviewForRecipe(recipeOpt.get()).isPresent() ? false : true;
+
+        //should this logic be in User class??
+        List<RecipeReview> recipeReviews =  recipeService.reviewsForRecipeAndUser(recipeID, authenticatedUser);
+        System.out.println("Number of recipe reviews: " + recipeReviews.size());
+        return recipeReviews.size() == 0;
+    }
+
 
 
 

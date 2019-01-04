@@ -1,15 +1,12 @@
 package com.nutritionalStylist.healthyKitch.service;
 
 import com.google.common.collect.Lists;
-import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.image.ImageHandler;
 import com.nutritionalStylist.healthyKitch.model.*;
-import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @Service
 @Transactional
@@ -193,8 +193,44 @@ public class RecipeServiceImpl implements RecipeService {
         newReview.setComment(reviewDTO.getComment());
         newReview.setUser(reviewDTO.getUser());
 
+        //get all recipes and find
+        recipe.setAverageRating(averageReviewForRecipe(recipe));
+
+        //set number of reviews for recipe.
+        recipe.setNumberOfReviews(numberOfReviewsForRecipe(recipe).intValue());
+
         recipeReviewRepository.save(newReview);
+        recipeRepository.save(recipe);
         return newReview;
+    }
+
+    private BigDecimal averageReviewForRecipe(Recipe recipe){
+        Query query = entityManager.createNativeQuery("select (sum(rr.rating) / count(*))\n" +
+                "from recipe_review rr\n" +
+                "where rr.recipeid = " + recipe.getId() + ";");
+
+        BigDecimal calculatedRating = (BigDecimal)query.getResultList().get(0);
+        BigDecimal roundedDecimal = roundToHalf(calculatedRating.doubleValue());
+        //Object result = q.getSingleResult();
+        System.out.println("average review is: " + roundedDecimal);
+        System.out.println(roundedDecimal);
+        return roundedDecimal;
+    }
+
+    private BigDecimal roundToHalf(double d) {
+        double roundedDobule =  Math.round(d * 2) / 2.0;
+        return new BigDecimal(roundedDobule).setScale(1);
+    }
+
+
+
+    private BigInteger numberOfReviewsForRecipe(Recipe recipe){
+        Query query = entityManager.createNativeQuery("SELECT count(*) FROM recipe_review where recipeid = " + recipe.getId());
+        BigInteger numReviews = (BigInteger)query.getResultList().get(0);
+
+        System.out.println("this is the number of reviews result: ");
+        System.out.println(numReviews);
+        return numReviews;
     }
 
 //    public static <E> Collection<E> makeCollection(Iterable<E> iter) {
@@ -227,6 +263,16 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         recipeOpt.get().setDeleted(new Date());
+    }
+
+    @Override
+    public List<RecipeReview> reviewsForRecipeAndUser(Integer recipeID, User user){
+        Optional<Recipe> recipeOpt = recipeRepository.findById(recipeID);
+        if(!recipeOpt.isPresent()){
+            throw new ResourceNotFoundException("Recipe with id-" + recipeID);
+        }
+
+        return recipeReviewRepository.findByRecipeAndUserOrderByCreatedDateDesc(recipeOpt.get(), user);
     }
 
 }

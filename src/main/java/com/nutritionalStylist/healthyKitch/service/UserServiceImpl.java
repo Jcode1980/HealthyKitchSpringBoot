@@ -2,10 +2,7 @@ package com.nutritionalStylist.healthyKitch.service;
 
 import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import com.nutritionalStylist.healthyKitch.image.ImageHandler;
-import com.nutritionalStylist.healthyKitch.model.Recipe;
-import com.nutritionalStylist.healthyKitch.model.RecipeImage;
-import com.nutritionalStylist.healthyKitch.model.User;
-import com.nutritionalStylist.healthyKitch.model.UserProfileImage;
+import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.repository.UserRepository;
 import org.apache.log4j.Logger;
@@ -83,12 +80,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User save(UserDto user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        //newUser.setAge(user.getAge());
-        //newUser.setSalary(user.getSalary());
+    public User save(UserDto userDto) {
+        //User newUser = new User();
+        //newUser.setUsername(user.getUsername());
+        //newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+
+        System.out.println("Year of Birth dto: " + userDto.getYearOfBirth());
+        User newUser = UserDto.convertToEntity(userDto, bcryptEncoder);
+        System.out.println("Year of Birth after convert: " + newUser.getYearOfBirth());
         return userRepository.save(newUser);
     }
 
@@ -113,7 +112,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         //handler will save the files... This seems pretty dodgey.. might
         //need to revise this in the future.
         UserProfileImage userProfileImage = user.createUserProfileImage(fileName);
-
         userRepository.save(user);
 
         imageHandler.processAndSaveFile(userProfileImage, file);

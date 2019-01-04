@@ -40,6 +40,10 @@ public class RecipeDto {
     private Set<NutritionalBenefit> nutritionalBenefits;
     @JsonView({Views.DetailedView.class})
     private List<IngredientSubHeading> ingredientSubHeadings;
+    @JsonView({Views.ListView.class})
+    private BigDecimal averageRating;
+    @JsonView({Views.ListView.class})
+    private Integer numberOfReviews;
 
     @JsonView({Views.DetailedView.class})
     private RecipeStatus recipeStatus;
@@ -175,6 +179,14 @@ public class RecipeDto {
     public RecipeStatus getRecipeStatus() { return recipeStatus; }
 
     public void setRecipeStatus(RecipeStatus recipeStatus) { this.recipeStatus = recipeStatus; }
+
+    public BigDecimal getAverageRating() { return averageRating; }
+
+    public void setAverageRating(BigDecimal averageRating) { this.averageRating = averageRating; }
+
+    public Integer getNumberOfReviews() { return numberOfReviews; }
+
+    public void setNumberOfReviews(Integer numberOfReviews) { this.numberOfReviews = numberOfReviews; }
 
     static public RecipeDto convertToDto(Recipe recipe) {
         RecipeDto recipeDto =  MODEL_MAPPER.map(recipe, RecipeDto.class);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,9 +39,15 @@ public interface RecipeService {
 
     RecipeReview addReviewForRecipe(Integer recipeID, RecipeReview review) throws Exception;
 
+
+    List<RecipeReview> reviewsForRecipeAndUser(Integer recipeID, User user);
+
     void updateReview(RecipeReview reviewDTO) throws ResourceNotFoundException;
 
     void updateRecipe(Recipe recipeDto) throws ResourceNotFoundException;
 
     void deleteRecipe(int recipeID) throws Exception;
+
+
+
 }

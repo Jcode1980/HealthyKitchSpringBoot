@@ -7,6 +7,7 @@ import org.springframework.beans.support.PropertyComparator;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -93,6 +94,11 @@ public class Recipe extends NamedEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="recipeStatusID")
     private RecipeStatus recipeStatus;
+
+
+    private BigDecimal averageRating;
+
+    private Integer numberOfReviews;
 
     public Integer getViewCount() {
         return viewCount;
@@ -199,6 +205,14 @@ public class Recipe extends NamedEntity{
     public RecipeStatus getRecipeStatus() { return recipeStatus; }
 
     public void setRecipeStatus(RecipeStatus recipeStatus) { this.recipeStatus = recipeStatus; }
+
+    public BigDecimal getAverageRating() { return averageRating; }
+
+    public void setAverageRating(BigDecimal averageRating) { this.averageRating = averageRating; }
+
+    public Integer getNumberOfReviews() { return numberOfReviews; }
+
+    public void setNumberOfReviews(Integer numberOfReviews) { this.numberOfReviews = numberOfReviews; }
 
     //TODO: Add functionality to reassign ID's
     public void reassignSortIDs() {
@@ -373,6 +387,8 @@ public class Recipe extends NamedEntity{
     public Date getDeleted() { return deleted; }
 
     public void setDeleted(Date deleted) { this.deleted = deleted; }
+
+
 //    public function removeMealType($mealType){
 //        $this->removeObjectFromManyToManytRelationship($mealType, "MealTypeRecipe", "mealTypeID");
 //    }

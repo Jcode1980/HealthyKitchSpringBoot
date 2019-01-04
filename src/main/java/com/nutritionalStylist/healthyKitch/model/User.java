@@ -8,6 +8,7 @@ package com.nutritionalStylist.healthyKitch.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.*;
@@ -15,6 +16,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
+import com.nutritionalStylist.healthyKitch.repository.RecipeReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -85,6 +88,8 @@ public  class User implements UserDetails {
 
     private String facebookURL;
 
+//    @Autowired
+//    private RecipeReviewRepository reviewRepository;
 
     public User() {
 
@@ -235,6 +240,10 @@ public  class User implements UserDetails {
         this.facebookURL = facebookURL;
     }
 
+//    public RecipeReviewRepository getReviewRepository() { return reviewRepository; }
+//
+//    public void setReviewRepository(RecipeReviewRepository reviewRepository) { this.reviewRepository = reviewRepository; }
+
     @JsonIgnore
     public Optional<UserProfileImage> getUserProfileImage() { return Optional.ofNullable(userProfileImage);}
 
@@ -276,6 +285,13 @@ public  class User implements UserDetails {
         return profileImage;
     }
 
+    public Optional<RecipeReview> reviewForRecipe(Recipe recipe){
+//        List<RecipeReview> reviews = reviewRepository.findByRecipeAndByUserOrderByCreatedDateDesc(recipe, this);
+//        System.out.println("thse are the reviews: " + reviews);
+//
+//        return reviews.stream().findFirst();
+        return Optional.empty();
+    }
 
 
 
