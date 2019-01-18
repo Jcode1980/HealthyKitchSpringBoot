@@ -312,6 +312,10 @@ public class Recipe extends NamedEntity{
         return getDefaultImage().map(RecipeImage::getId).orElse(null);
     }
 
+    public Integer getCreateByUserID(){
+        return getCreatedby().getId();
+    }
+
 
 
 

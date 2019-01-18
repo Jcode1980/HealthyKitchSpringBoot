@@ -1,16 +1,14 @@
 package com.nutritionalStylist.healthyKitch.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import com.nutritionalStylist.healthyKitch.exception.ResourceNotFoundException;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeSearchDto;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
-import com.nutritionalStylist.healthyKitch.service.EmailService;
-import com.nutritionalStylist.healthyKitch.service.RecipeService;
-import com.nutritionalStylist.healthyKitch.service.StorageService;
-import com.nutritionalStylist.healthyKitch.service.UserService;
+import com.nutritionalStylist.healthyKitch.service.*;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +41,19 @@ public class SessionController {
     private final StorageService storageService;
     private final UserService userService;
     private final EmailService emailService;
+    private final CookbookService cookbookService;
 
     @Autowired
-    public SessionController(RecipeService recipeService, StorageService storageService, UserService userService, EmailService emailService) {
+    private NoEncoder bcryptEncoder;
+
+    @Autowired
+    public SessionController(RecipeService recipeService, StorageService storageService, UserService userService, EmailService emailService,
+        CookbookService cookbookService) {
         this.storageService = storageService;
         this.recipeService = recipeService;
         this.userService = userService;
         this.emailService = emailService;
+        this.cookbookService = cookbookService;
     }
 
     /**
@@ -316,7 +320,63 @@ public class SessionController {
         return recipeReviews.size() == 0;
     }
 
+    @PostMapping(value="/changePassword")
+    public  ResponseEntity<?> changePassword(@RequestParam("newPassword") String newPassword){
+        ResponseEntity<?> response;
+
+        log.info("got to change password " + newPassword);
+
+        User user = getAuthenticatedUser();
+        user.setPassword(bcryptEncoder.encode(newPassword));
+        userService.save(user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value="/updateUserDetails")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto userDto){
+        User user = getAuthenticatedUser();
+
+        user.updateUserWithUserDto(userDto);
+        userService.save(user);
+
+        return ResponseEntity.ok().build();
+    }
 
 
+    /**
+     * Create cookbook
+     */
+    @PostMapping(value = "/createCookbook")
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public ResponseEntity<?> createCookbook() {
 
+        //fixme add me when done testing
+        //User user = getAuthenticatedUser();
+        User user = null;
+        Cookbook cookbook = cookbookService.createCookbookForUser(user);
+        return ResponseEntity.ok(cookbook);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/saveCookbook")
+    public void saveCookbook(@Valid @RequestBody Cookbook cookbook){
+        cookbookService.saveCookbook(cookbook);
+    }
+
+    @PostMapping(value = "/addRecipeToCookbook")
+    @ResponseStatus(HttpStatus.OK)
+    public void addRecipeToCookBook(Integer cookbookID, Integer recipeID){
+        cookbookService.addRecipeToCookbook(cookbookID, recipeID);
+    }
+
+    @GetMapping(value = "/cookbooksForUser")
+    public ResponseEntity<Collection<Cookbook>> cookbooksForUser(){
+        //fixme add me when done testing
+        //User user = getAuthenticatedUser();
+        User user = null;
+        Collection<Cookbook> cookbooks = cookbookService.cookbooksForUser(user);
+        return ResponseEntity.ok(cookbooks);
+    }
 }

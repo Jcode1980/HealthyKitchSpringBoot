@@ -12,11 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,6 +58,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.recipeReviewRepository = recipeReviewRepository;
         this.imageHandler = imageHandler;
         this.recipeStatusRepository = recipeStatusRepository;
+
 
     }
 
@@ -154,7 +152,7 @@ public class RecipeServiceImpl implements RecipeService {
         log.info("the default image of the recipe is: " + recipeImage);
         recipeRepository.save(theRecipe);
 
-          imageHandler.processAndSaveFile(recipeImage, file);
+          imageHandler.processAndMoveDataToFile(recipeImage, file);
     }
 
 

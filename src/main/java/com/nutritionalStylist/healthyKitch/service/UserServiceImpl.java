@@ -4,6 +4,7 @@ import com.nutritionalStylist.healthyKitch.config.security.NoEncoder;
 import com.nutritionalStylist.healthyKitch.image.ImageHandler;
 import com.nutritionalStylist.healthyKitch.model.*;
 import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
+import com.nutritionalStylist.healthyKitch.repository.ProfileImageRepository;
 import com.nutritionalStylist.healthyKitch.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +27,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProfileImageRepository profileImageRepository;
 
 
     @Autowired
@@ -92,6 +95,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public void save(User user){
+        userRepository.save(user);
+    }
+
+    @Override
     public User findByUsernameAndPassword(String username, String password){
         return userRepository.findByUsernameAndPassword(username, password);
     }
@@ -112,8 +120,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         //handler will save the files... This seems pretty dodgey.. might
         //need to revise this in the future.
         UserProfileImage userProfileImage = user.createUserProfileImage(fileName);
+
+        profileImageRepository.save(userProfileImage);
         userRepository.save(user);
 
-        imageHandler.processAndSaveFile(userProfileImage, file);
+
+        log.info("Profile actual id: " + userProfileImage.getId());
+        log.info("Profile orginal id: " + userProfileImage.getOrginalImage().get().getId());
+        log.info("Profile preview id: " + userProfileImage.getThumbnailImage().get().getId());
+        log.info("Profile thumb id: " + userProfileImage.getPreviewImage().get().getId());
+
+        imageHandler.processAndMoveDataToFile(userProfileImage, file);
     }
 }

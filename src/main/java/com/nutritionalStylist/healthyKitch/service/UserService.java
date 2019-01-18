@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService {
 
     User save(UserDto user);
+    void save(User user);
     List<User> findAll();
     void delete(Integer id);
     User findOne(String username);

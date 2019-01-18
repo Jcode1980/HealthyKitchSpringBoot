@@ -121,7 +121,7 @@ public abstract class File extends BaseEntity{
                 + System.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", "Production/");
     }
 
-    public void processBufferedImage(BufferedImage img) throws Exception{
+    public void processAndSaveBufferedImageToFile(BufferedImage img) throws Exception{
         ImageIO.write(img, fileExtension(), new java.io.File(filePath()));
         setHeight(img.getHeight());
         setWidth(img.getWidth());

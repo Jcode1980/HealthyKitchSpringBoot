@@ -2,7 +2,6 @@ package com.nutritionalStylist.healthyKitch.image;
 
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
 import com.nutritionalStylist.healthyKitch.model.ImageHolder;
-import com.nutritionalStylist.healthyKitch.service.RecipeServiceImpl;
 import com.nutritionalStylist.healthyKitch.service.StorageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +18,15 @@ public class ImageHandler {
 
     public ImageHandler(){ }
 
-    public void processAndSaveFile(ImageHolder imageHolder, MultipartFile file) throws Exception{
+    public void processAndMoveDataToFile(ImageHolder imageHolder, MultipartFile file) throws Exception{
         //TODO: tmp file should be removed.
         String fileExtension =  imageHolder.getOrginalImage().get().fileExtension();
-        HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processAndStoreImage(file);
+        HashMap<ImageQualityType, BufferedImage> imagesMap =  storageService.processImage(file);
 
 
-//        ImageIO.write(imagesMap.get(ImageQualityType.PREVIEW), fileExtension, new java.io.File(recipeImage.displayPreviewImagePath()));
-//        ImageIO.write(imagesMap.get(ImageQualityType.THUMBNAIL), fileExtension, new java.io.File(recipeImage.displayThumbnailImagePath()));
-//        ImageIO.write(imagesMap.get(ImageQualityType.ORIGINAL), fileExtension, new java.io.File(recipeImage.displayOriginalImagePath()));
-        imageHolder.getPreviewImage().get().processBufferedImage(imagesMap.get(ImageQualityType.PREVIEW));
-        imageHolder.getThumbnailImage().get().processBufferedImage(imagesMap.get(ImageQualityType.THUMBNAIL));
-        imageHolder.getOrginalImage().get().processBufferedImage(imagesMap.get(ImageQualityType.ORIGINAL));
+        imageHolder.getPreviewImage().get().processAndSaveBufferedImageToFile(imagesMap.get(ImageQualityType.PREVIEW));
+        imageHolder.getThumbnailImage().get().processAndSaveBufferedImageToFile(imagesMap.get(ImageQualityType.THUMBNAIL));
+        imageHolder.getOrginalImage().get().processAndSaveBufferedImageToFile(imagesMap.get(ImageQualityType.ORIGINAL));
 
         log.info("this is the previewPath : " + imageHolder.displayPreviewImagePath());
         log.info("this is the originalPath : " + imageHolder.displayOriginalImagePath());

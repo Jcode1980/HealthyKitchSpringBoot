@@ -15,6 +15,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.enums.ImageQualityType;
+import com.nutritionalStylist.healthyKitch.model.dto.UserDto;
 import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import com.nutritionalStylist.healthyKitch.repository.RecipeReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +70,9 @@ public  class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "userProfileImageID" )
     protected UserProfileImage userProfileImage;
-
 
     private String gender;
 
@@ -249,26 +249,27 @@ public  class User implements UserDetails {
 
     public void setUserProfileImage(UserProfileImage userProfileImage) { this.userProfileImage = userProfileImage; }
 
-    @JsonView({Views.ListView.class})
-    public Integer profileImageThumbnailID(){
-        if(getUserProfileImage().isPresent()){
-            return getUserProfileImage().get().getThumbnailImage().map(File::getId).orElse(null);
-        }
-        else{
-            return null;
-        }
-    }
+//    @JsonView({Views.ListView.class})
+//    public Integer profileImageThumbnailID(){
+//        if(getUserProfileImage().isPresent()){
+//            return getUserProfileImage().get().getThumbnailImage().map(File::getId).orElse(null);
+//        }
+//        else{
+//            return null;
+//        }
+//    }
+//
+//    @JsonView({Views.ListView.class})
+//    public Integer profileImagePreviewID(){
+//        if(getUserProfileImage().isPresent()){
+//            return getUserProfileImage().get().getPreviewImage().map(File::getId).orElse(null);
+//        }
+//        else{
+//            return null;
+//        }
+//    }
 
-    @JsonView({Views.ListView.class})
-    public Integer profileImagePreviewID(){
-        if(getUserProfileImage().isPresent()){
-            return getUserProfileImage().get().getPreviewImage().map(File::getId).orElse(null);
-        }
-        else{
-            return null;
-        }
-    }
-
+    //creating the profile IMage and it's associated files (original, preview and thumbnail)
     public UserProfileImage createUserProfileImage(String fileName) throws Exception{
         UserProfileImage profileImage = new UserProfileImage();
         profileImage.setName(fileName);
@@ -293,6 +294,28 @@ public  class User implements UserDetails {
         return Optional.empty();
     }
 
+    //used by RecipeDTO
+    @JsonView({Views.ListView.class})
+    public Integer getUserProfileImageID(){
+        return getUserProfileImage().map(UserProfileImage::getId).orElse(null);
+    }
+
+
+    public void updateUserWithUserDto(UserDto userDto){
+
+        setGiven(userDto.getGiven());
+        setSurname(userDto.getSurname());
+        setEmail(userDto.getEmail());
+        setGender(userDto.getGender());
+        setYearOfBirth(userDto.getYearOfBirth());
+        setAboutMe(userDto.getAboutMe());
+
+        setWebsiteURL(userDto.getWebsiteURL());
+        setBlogURL(userDto.getBlogURL());
+        setInstagramURL(userDto.getInstagramURL());
+        setFacebookURL(userDto.getFacebookURL());
+
+    }
 
 
 }

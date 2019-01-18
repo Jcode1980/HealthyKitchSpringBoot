@@ -22,6 +22,7 @@ public class UserImageFile extends File{
         this.imageQualityType = qualityType.name();
     }
 
+    public UserImageFile(){ }
 
     @JsonIgnore
     public  String fileFolder(){ return "UserImageFile/"; }
@@ -31,4 +32,7 @@ public class UserImageFile extends File{
         return productionFolder() + fileFolder() + imageQualityType.toLowerCase() + "/" + getId() + "." + fileExtension() ;
 
     }
+
+
+
 }

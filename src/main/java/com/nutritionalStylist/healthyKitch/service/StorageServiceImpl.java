@@ -18,7 +18,6 @@ import com.nutritionalStylist.healthyKitch.repository.RecipeImageRepository;
 import com.nutritionalStylist.healthyKitch.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -91,7 +90,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public HashMap<ImageQualityType, BufferedImage> processAndStoreImage(MultipartFile file) throws Exception {
+    public HashMap<ImageQualityType, BufferedImage> processImage(MultipartFile file) throws Exception {
         //Check if file is image
 
         //store file in tmp folder
@@ -125,7 +124,7 @@ public class StorageServiceImpl implements StorageService {
         MealTypeFile mealTypeFile = new MealTypeFile(file.getOriginalFilename());
         fileRepository.save(mealTypeFile);
         BufferedImage img = ImageIO.read(new java.io.File(tmpFile));
-        mealTypeFile.processBufferedImage(img);
+        mealTypeFile.processAndSaveBufferedImageToFile(img);
         fileRepository.save(mealTypeFile);
         return mealTypeFile;
 
