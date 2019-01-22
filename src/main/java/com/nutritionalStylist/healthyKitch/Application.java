@@ -1,10 +1,10 @@
 package com.nutritionalStylist.healthyKitch;
-
 import com.nutritionalStylist.healthyKitch.controller.FileController;
 import com.nutritionalStylist.healthyKitch.model.Mail;
 import com.nutritionalStylist.healthyKitch.service.EmailServiceImpl;
+
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,10 +20,7 @@ import java.util.Properties;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
-    private static Logger log = Logger.getLogger(Application.class);
-
-    @Autowired
-    static EmailServiceImpl emailService;
+    private static final Logger log = Logger.getLogger(Application.class);
 
     public static void main(String[] args) {
         log.debug("blah bah");
@@ -36,12 +33,12 @@ public class Application extends SpringBootServletInitializer {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
+            log.info("Let's inspect the beans provided by Spring Boot:");
 
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                System.out.println(beanName);
+                log.info(beanName);
             }
         };
 
@@ -56,19 +53,19 @@ public class Application extends SpringBootServletInitializer {
         Properties appProps = new Properties();
         try{
             appProps.load(new FileInputStream(appConfigPath));
-            System.out.println("App properties are: " + appProps.stringPropertyNames());
+            log.info("App properties are: " + appProps.stringPropertyNames());
 
             System.setProperty("com.nutritionalStylist.TMP_FOLDER", appProps.getProperty("com.nutritionalStylist.TMP_FOLDER"));
             System.setProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER", appProps.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER"));
             System.setProperty("com.nutritionalStylist.ROOT_FOLDER", appProps.getProperty("com.nutritionalStylist.ROOT_FOLDER"));
 
 
-            System.out.println("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.TMP_FOLDER"));
-            System.out.println("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER"));
-            System.out.println("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.ROOT_FOLDER"));
+            log.info("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.TMP_FOLDER"));
+            log.info("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.FILES_PRODUCTION_FOLDER"));
+            log.info("Production file proprtly: " + appProps.getProperty("com.nutritionalStylist.ROOT_FOLDER"));
 
 
-            System.out.println("System property is: " + System.getProperty("com.nutritionalStylist.TMP_FOLDER"));
+            log.info("System property is: " + System.getProperty("com.nutritionalStylist.TMP_FOLDER"));
         }catch(Exception e){
             e.printStackTrace();
         }

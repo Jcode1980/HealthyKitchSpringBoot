@@ -1,12 +1,13 @@
 package com.nutritionalStylist.healthyKitch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.nutritionalStylist.healthyKitch.model.dto.RecipeDto;
+import com.nutritionalStylist.healthyKitch.model.dto.Views;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -19,6 +20,7 @@ public class Cookbook extends NamedEntity {
     private Date created;
 
     @ManyToOne
+    @JsonIgnore
     private Recipe defaultRecipe;
 
 
@@ -52,8 +54,24 @@ public class Cookbook extends NamedEntity {
 
     public void setRecipes(Set<Recipe> recipes) { this.recipes = recipes; }
 
-    public Set<RecipeDto> getRecipesDto(){
-        return (Set<RecipeDto>)getRecipes().stream().map(RecipeDto::convertToDto).collect(Collectors.toList());
+    @JsonView(Views.ListView.class)
+    public List<RecipeDto> getRecipesDto(){
+        List<RecipeDto> recipesDtos;
+        if(getRecipes() != null){
+            recipesDtos = (List<RecipeDto>)getRecipes().stream().map(RecipeDto::convertToDto).collect(Collectors.toList());
+        }
+        else{
+            recipesDtos = Collections.emptyList();
+        }
+        return recipesDtos;
     }
 
+    @JsonView(Views.ListView.class)
+    public RecipeDto defaultRecipeDto() {
+        if (getDefaultRecipe() != null) {
+            return RecipeDto.convertToDto(getDefaultRecipe());
+        }else{
+            return null;
+        }
+    }
 }

@@ -6,6 +6,7 @@ import com.nutritionalStylist.healthyKitch.model.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface CookbookService {
     Cookbook createCookbookForUser(User user);
@@ -15,5 +16,9 @@ public interface CookbookService {
     void addRecipeToCookbook(Integer cookbook, Integer recipe) throws IllegalArgumentException;
 
     Collection<Cookbook> cookbooksForUser(User user);
+
+    Optional<Cookbook> findCookbookById(Integer id);
+
+
 
 }

@@ -31,7 +31,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
-    @JsonView({Views.DetailedView.class})
+    @JsonView({Views.ListView.class})
     @Column(name = "name")
     private String name;
 

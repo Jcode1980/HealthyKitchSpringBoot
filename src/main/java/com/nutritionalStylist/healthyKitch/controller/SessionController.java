@@ -371,6 +371,7 @@ public class SessionController {
         cookbookService.addRecipeToCookbook(cookbookID, recipeID);
     }
 
+    @JsonView(Views.ListView.class)
     @GetMapping(value = "/cookbooksForUser")
     public ResponseEntity<Collection<Cookbook>> cookbooksForUser(){
         //fixme add me when done testing

@@ -59,7 +59,11 @@ public class CookbookServiceImpl implements CookbookService {
         //FixME i need to get only the users cookbook
         return StreamSupport.stream(cookbookRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
 
+    @Override
+    public Optional<Cookbook> findCookbookById(Integer id){
+        return cookbookRepository.findById(id);
     }
 
 }

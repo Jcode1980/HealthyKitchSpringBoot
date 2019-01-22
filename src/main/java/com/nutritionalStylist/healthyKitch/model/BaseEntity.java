@@ -34,7 +34,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseEntity {
-    @JsonView({Views.DetailedView.class})
+    @JsonView({Views.ListView.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
