@@ -46,12 +46,21 @@ public class CookbookServiceImpl implements CookbookService {
 
     @Override
     public void addRecipeToCookbook(Integer cookbookID, Integer recipeID) throws IllegalArgumentException {
-        Optional<Cookbook> cookbook = cookbookRepository.findById(cookbookID);
-        Optional<Recipe> recipe = recipeRepository.findById(recipeID);
+        Optional<Cookbook> cookbookOpt = cookbookRepository.findById(cookbookID);
+        Optional<Recipe> recipeOpt = recipeRepository.findById(recipeID);
 
-        if(!(cookbook.isPresent() || recipe.isPresent())){
+
+
+        if(!(cookbookOpt.isPresent() || recipeOpt.isPresent())){
             throw new IllegalArgumentException("Incorrect Id passed in. Can not find either cookbook or recipe");
         }
+
+        Cookbook cookbook = cookbookOpt.get();
+        cookbook.addRecipe(recipeOpt.get());
+
+        cookbookRepository.save(cookbook);
+
+
     }
 
     @Override

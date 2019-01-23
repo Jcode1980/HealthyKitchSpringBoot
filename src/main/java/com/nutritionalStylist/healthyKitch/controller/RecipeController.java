@@ -77,7 +77,7 @@ public class RecipeController {
     @GetMapping(value = "/{recipeID}")
     public RecipeDto getRecipeById(@PathVariable("recipeID") int recipeID) {
         Recipe recipe = recipeService.findRecipeByID(recipeID).orElseThrow(IllegalArgumentException::new);
-        log.info("how many ingredients??" + recipe.getMeasuredIngredients().size());
+        //log.info("how many ingredients??" + recipe.getMeasuredIngredients().size());
         return RecipeDto.convertToDto(recipe);
     }
 

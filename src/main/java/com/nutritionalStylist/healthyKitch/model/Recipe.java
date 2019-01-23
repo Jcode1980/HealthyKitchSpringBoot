@@ -304,7 +304,7 @@ public class Recipe extends NamedEntity{
     }
 
     public boolean cuisineExistsInRecipe(Cuisine value) {
-        return getNutritionalBenefitInternal().contains(value);
+        return getCuisinesInternal().contains(value);
     }
 
     //used by RecipeDTO
