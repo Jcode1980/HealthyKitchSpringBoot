@@ -48,7 +48,7 @@ public class RecipeController {
 //                //map(source.getDefaultImage(, destination.getDefaultImageID());
 //                map(source.sortedMeasuredIngredients(), destination.getMeasuredIngredients());
 //                map(source.getInstructions(), destination.getInstructions());
-//                map(source.sortedDietaryCategories(), destination.getDietaryCategories());
+//                map(sour ce.sortedDietaryCategories(), destination.getDietaryCategories());
 //            }
 //        };
 //
